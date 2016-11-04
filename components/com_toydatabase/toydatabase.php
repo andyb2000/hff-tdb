@@ -52,12 +52,12 @@ switch ($act) {
 		$row = $db->loadAssoc();
 		
 		// Now retrieve the category (ies)
-		$query
+		$query_category
 		->select(array('a.*','b.category'))
 		->from($db->quoteName('#__toydatabase_categorylink','a'))
 		->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
 		->where($db->quoteName('a.equipmentid') . ' = '. $ddid);
-		$db->setQuery((string) $query);
+		$db->setQuery((string) $query_category);
 		$db->execute();
 		$category_rows = $db->loadAssocList();
 		
