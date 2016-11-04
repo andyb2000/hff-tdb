@@ -21,11 +21,17 @@ $controller->redirect();
 
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
-$query->select('id,greeting');
-$query->from('#__toydatabase');
+$query
+->select(array('a.*', 'b.category'))
+->from($db->quoteName('#__toydatabase_equipment', 'a'))
+->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+->where($db->quoteName('status') . ' = '. $db->quote('1'))
+->order($db->quoteNAme('a.name') . ' DESC');
+
+
 $db->setQuery((string) $query);
-$messages = $db->loadObjectList();
-$options  = array();
+$row = $db->loadRowList();
+print_r($row);
 
 echo "Database prefix is : " . $db->getPrefix();
 ?>
