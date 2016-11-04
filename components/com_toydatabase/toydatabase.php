@@ -56,7 +56,11 @@ echo "<BR>";
 if ($num_rows >0) {
 	print_r($row);
 	foreach ($row as $row_key=>$row_value) {
-		echo "KEY: $row_key and VALUE: $row_value<BR>\n";
+		echo "<tr onclick='$row_key'>";
+		echo "<td>".$row_value["name"]."</td>\n";
+		echo "<td>".$row_value["picture"]."</td>\n";
+		echo "<td>".$row_value["status"]."</td>\n";
+		echo "</tr>";
 	};
 } else {
 	// no rows or toys in database found
