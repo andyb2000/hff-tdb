@@ -52,6 +52,7 @@ switch ($act) {
 		$row = $db->loadAssoc();
 		
 		// Now retrieve the category (ies)
+		$query_category = $db->getQuery(true);
 		$query_category
 		->select(array('a.*','b.category'))
 		->from($db->quoteName('#__toydatabase_categorylink','a'))
