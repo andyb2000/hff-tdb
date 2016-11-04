@@ -105,11 +105,28 @@ switch ($act) {
 </tr>
 <tr>
 	<td><B>Toy Loan state :</B></td>
-	<td><?php print_r($loanlink_rows); ?></td>
+	<td><?php
+		switch($loanlink_rows["status"]) {
+			case "3":
+				echo "DAMAGED/NO LONGER AVAILABLE";
+				break;
+			case "2":
+				echo "AWAITING CLEANING/REPAIR";
+				break;
+			case "1":
+				echo "ON LOAN";
+				break;
+			default:
+				echo "AVAILABLE";
+				break;
+		};
+	?></td>
 </tr>
 <tr>
 	<td><B>Toy Return Date :</B></td>
-	<td>xx</td>
+	<td><?php
+		echo $loanlink_rows["loandate"];
+	?></td>
 </tr>
 </table>
 <?php
