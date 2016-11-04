@@ -6,18 +6,18 @@ defined('_JEXEC') or die('Restricted Access');
 	<table class="table table-striped table-hover">
 		<thead>
 		<tr>
-			<th width="1%"><?php echo JText::_('COM_TOYDATABASE_NUM'); ?></th>
+			<th width="1%">ID</th>
 			<th width="2%">
 				<?php echo JHtml::_('grid.checkall'); ?>
 			</th>
 			<th width="90%">
-				<?php echo JText::_('COM_TOYDATABASE_TOYDATABASES_NAME') ;?>
+				Name
 			</th>
 			<th width="5%">
-				<?php echo JText::_('COM_TOYDATABASE_PUBLISHED'); ?>
+				Published
 			</th>
 			<th width="2%">
-				<?php echo JText::_('COM_TOYDATABASE_ID'); ?>
+				Database ID
 			</th>
 		</tr>
 		</thead>
