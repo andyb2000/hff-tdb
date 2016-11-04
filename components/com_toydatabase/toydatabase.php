@@ -30,7 +30,10 @@ $query
 
 
 $db->setQuery((string) $query);
-$row = $db->loadRowList();
+$db->execute();
+$num_rows = $db->getNumRows();
+print_r($num_rows);
+$row = $db->loadAssocList('id');
 print_r($row);
 
 echo "Database prefix is : " . $db->getPrefix();
