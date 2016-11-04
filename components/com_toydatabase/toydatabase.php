@@ -40,11 +40,8 @@ $num_rows = $db->getNumRows();
 $row = $db->loadAssocList('id');
 
 echo "Database prefix is : " . $db->getPrefix()."<BR>";
-echo "Rows found: ";
-print_r($num_rows);
 echo "<BR>";
-echo "Rows data: <BR>";
-print_r($row);
+echo 'Joomla current URI is ' . JURI::current() . "\n";
 echo "<BR>";
 
 ?>
@@ -56,9 +53,16 @@ echo "<BR>";
 if ($num_rows >0) {
 	print_r($row);
 	foreach ($row as $row_key=>$row_value) {
-		echo "<tr onclick='$row_key'>";
+		echo "<tr onclick='self.location=\"".JURI::current()."?rowid=$row_key\"'>";
 		echo "<td>".$row_value["name"]."</td>\n";
-		echo "<td>".$row_value["picture"]."</td>\n";
+		echo "<td>".$row_value["picture"];
+		// check the file exists to display the image
+		if (file_exists("library_images/".$row_value["picture"])) {
+			echo "<img src='' alt=''>";
+		} else {
+			echo "Sorry no image exists";
+		};
+		echo "</td>\n";
 		echo "<td>".$row_value["status"]."</td>\n";
 		echo "</tr>";
 	};
