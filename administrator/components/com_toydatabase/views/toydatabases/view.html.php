@@ -1,6 +1,29 @@
 <?php
+/**
+ * @package     Joomla.Administrator
+* @subpackage  com_helloworld
+*
+* @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+* @license     GNU General Public License version 2 or later; see LICENSE.txt
+*/
+
+// No direct access to this file
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * HelloWorld View
+ *
+ * @since  0.0.1
+ */
 class ToyDatabaseViewToyDatabases extends JViewLegacy
 {
+	/**
+	 * View form
+	 *
+	 * @var         form
+	 */
+	protected $form = null;
+
 	/**
 	 * Display the Hello World view
 	 *
@@ -8,11 +31,11 @@ class ToyDatabaseViewToyDatabases extends JViewLegacy
 	 * a
 	 * @return  void
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		// Get data from the model
-		$this->items		= $this->get('Items');
-		$this->pagination	= $this->get('Pagination');
+		// Get the Data
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -22,7 +45,44 @@ class ToyDatabaseViewToyDatabases extends JViewLegacy
 			return false;
 		}
 
+
+		// Set the toolbar
+		$this->addToolBar();
+
 		// Display the template
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function addToolBar()
+	{
+		$input = JFactory::getApplication()->input;
+
+		// Hide Joomla Administrator Main menu
+		$input->set('hidemainmenu', true);
+
+		$isNew = ($this->item->id == 0);
+
+		if ($isNew)
+		{
+			$title = "New";
+		}
+		else
+		{
+			$title = "Edit";
+		}
+
+		JToolBarHelper::title($title, 'toydatabase');
+		JToolBarHelper::save('toydatabase.save');
+		JToolBarHelper::cancel(
+				'toydatabase.cancel',
+				$isNew ? 'JTOOLBAR_CANCEL' : 'JTOOLBAR_CLOSE'
+				);
 	}
 }
