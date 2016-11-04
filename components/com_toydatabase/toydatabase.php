@@ -48,4 +48,16 @@ print_r($row);
 echo "<BR>";
 
 ?>
-TESTING, try db here<BR>
+<table width=85% border=1 cellpadding=0 cellspacing=0>
+<tr><td><B>Toy name</B></td>
+<td><B>Toy Photo (small)</B></td>
+<td><B>Status</B></td></tr>
+<?php 
+if ($num_rows >0) {
+	print_r($row);
+} else {
+	// no rows or toys in database found
+	echo "<tr><td colspan=3 align=center><B>Sorry - No items found</B></td></tr>\n";
+};
+?>
+</table>
