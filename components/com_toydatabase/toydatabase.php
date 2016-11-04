@@ -55,6 +55,9 @@ echo "<BR>";
 <?php 
 if ($num_rows >0) {
 	print_r($row);
+	foreach ($row as $row_key=>$row_value) {
+		echo "KEY: $row_key and VALUE: $row_value<BR>\n";
+	};
 } else {
 	// no rows or toys in database found
 	echo "<tr><td colspan=3 align=center><B>Sorry - No items found</B></td></tr>\n";
