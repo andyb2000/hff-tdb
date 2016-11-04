@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $jinput = JFactory::getApplication()->input;
 $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
-$ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display
+$ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
@@ -50,7 +50,11 @@ echo "<BR>";
 echo "Act input is: ".$act."<BR>\n";
 echo "DDID input is: ".$ddid."<BR>\n";
 
-
+switch ($act) {
+	case "1":
+		echo "Display record<BR>\n";
+		break;
+	default:
 ?>
 <table width=85% border=1 cellpadding=0 cellspacing=0>
 <tr><td><B>Toy name</B></td>
@@ -79,3 +83,8 @@ if ($num_rows >0) {
 };
 ?>
 </table>
+<?php 
+	// end of default: switch
+	break;
+}; // enc of switch selecting act
+?>
