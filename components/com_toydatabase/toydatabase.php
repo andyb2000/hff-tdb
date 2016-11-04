@@ -70,7 +70,7 @@ switch ($act) {
 		->where($db->quoteName('equipmentid') . ' = '. $ddid);
 		$db->setQuery((string) $query_loanlink);
 		$db->execute();
-		$loanlink_rows = $db->loadAssocList();
+		$loanlink_rows = $db->loadAssoc();
 		
 ?>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
@@ -106,7 +106,7 @@ switch ($act) {
 <tr>
 	<td><B>Toy Loan state :</B></td>
 	<td><PRE><?php
-		print_r($loanlink_rows["status"]);
+		print_r($loanlink_rows);
 		switch($loanlink_rows["status"]) {
 			case "3":
 				echo "DAMAGED/NO LONGER AVAILABLE";
