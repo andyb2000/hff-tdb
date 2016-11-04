@@ -67,7 +67,7 @@ class ToyDatabaseModelToyDatabase extends JModelAdmin
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return  mixed  The data for the form.
-	 *
+	 * go
 	 * @since   1.6
 	 */
 	protected function loadFormData()
