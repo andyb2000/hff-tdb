@@ -21,13 +21,18 @@ defined('_JEXEC') or die('Restricted access');
 
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
+//$query
+//->select(array('a.*', 'b.category'))
+//->from($db->quoteName('#__toydatabase_equipment', 'a'))
+//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+//->where($db->quoteName('status') . ' = '. $db->quote('1'))
+//->order($db->quoteNAme('a.name') . ' DESC');
 $query
-->select(array('a.*', 'b.category'))
-->from($db->quoteName('#__toydatabase_equipment', 'a'))
-->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
-->where($db->quoteName('status') . ' = '. $db->quote('1'))
-->order($db->quoteNAme('a.name') . ' DESC');
-
+->select('*')
+->from($db->quoteName('#__toydatabase_equipment'))
+//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+//->where($db->quoteName('status') . ' = '. $db->quote('1'))
+->order($db->quoteName('name') . ' DESC');
 
 $db->setQuery((string) $query);
 $db->execute();
