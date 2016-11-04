@@ -56,7 +56,7 @@ switch ($act) {
 		->select(array('a.*','b.category'))
 		->from($db->quoteName('#__toydatabase_categorylink','a'))
 		->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
-		->where($db->quoteName('equipmentid') . ' = '. $ddid);
+		->where($db->quoteName('a.equipmentid') . ' = '. $ddid);
 		$db->setQuery((string) $query);
 		$db->execute();
 		$category_rows = $db->loadAssocList();
