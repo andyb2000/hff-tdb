@@ -31,17 +31,7 @@ $query = $db->getQuery(true);
 //->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
 //->where($db->quoteName('status') . ' = '. $db->quote('1'))
 //->order($db->quoteNAme('a.name') . ' DESC');
-$query
-->select('*')
-->from($db->quoteName('#__toydatabase_equipment'))
-//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
-//->where($db->quoteName('status') . ' = '. $db->quote('1'))
-->order($db->quoteName('name') . ' DESC');
 
-$db->setQuery((string) $query);
-$db->execute();
-$num_rows = $db->getNumRows();
-$row = $db->loadAssocList('id');
 
 echo "Database prefix is : " . $db->getPrefix()."<BR>";
 echo "<BR>";
@@ -52,9 +42,64 @@ echo "DDID input is: ".$ddid."<BR>\n";
 
 switch ($act) {
 	case "1":
-		echo "Display record<BR>\n";
+		// retrieve the specific record
+		$query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_equipment'))
+		->where($db->quoteName('id') . ' = '. $ddid);
+		$db->setQuery((string) $query);
+		$db->execute();
+		$row = $db->loadAssoc();
+?>
+<table width=95% border=1 cellpadding=0 cellspacing=0>
+<tr>
+	<td><B>Toy Name :</B></td>
+	<td><?=$row["name"]?></td>
+</tr>
+<tr>
+	<td><B>Toy Image :</B></td>
+	<td>xx</td>
+</tr>
+<tr>
+	<td><B>Toy Description :</B></td>
+	<td>xx</td>
+</tr>
+<tr>
+	<td><B>Toy Location :</B></td>
+	<td>xx</td>
+</tr>
+<tr>
+	<td><B>Toy Status :</B></td>
+	<td>xx</td>
+</tr>
+<tr>
+	<td><B>Toy Category :</B></td>
+	<td>xx</td>
+</tr>
+<tr>
+	<td><B>Toy Loan state :</B></td>
+	<td>xx</td>
+</tr>
+<tr>
+	<td><B>Toy Return Date :</B></td>
+	<td>xx</td>
+</tr>
+</table>
+<?php
 		break;
 	default:
+		// This displays the toy list
+		$query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_equipment'))
+		//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+		//->where($db->quoteName('status') . ' = '. $db->quote('1'))
+		->order($db->quoteName('name') . ' DESC');
+		
+		$db->setQuery((string) $query);
+		$db->execute();
+		$num_rows = $db->getNumRows();
+		$row = $db->loadAssocList('id');
 ?>
 <table width=85% border=1 cellpadding=0 cellspacing=0>
 <tr><td><B>Toy name</B></td>
