@@ -63,6 +63,8 @@ switch ($act) {
 		$category_rows = $db->loadAssocList();
 		
 		// And retrieve the loan state _toydatabase_loanlink
+		// If its on loan it will return a row and its status will be 1
+		// when returned the status should be set to 0 or something other than 1 basically
 		$query_loanlink = $db->getQuery(true);
 		$query_loanlink
 		->select('*')
@@ -106,7 +108,6 @@ switch ($act) {
 <tr>
 	<td><B>Toy Loan state :</B></td>
 	<td><PRE><?php
-		print_r($loanlink_rows);
 		switch($loanlink_rows["status"]) {
 			case "3":
 				echo "DAMAGED/NO LONGER AVAILABLE";
@@ -124,9 +125,9 @@ switch ($act) {
 	?></td>
 </tr>
 <tr>
-	<td><B>Toy Return Date :</B></td>
+	<td><B>Toy Due Return Date :</B></td>
 	<td><?php
-		echo $loanlink_rows["loandate"];
+		echo JFactory::getDate($loanlink_rows["loandate"])->format('%a %d %b %Y - %H:%M');
 	?></td>
 </tr>
 </table>
