@@ -26,5 +26,7 @@ $query->from('#__toydatabase');
 $db->setQuery((string) $query);
 $messages = $db->loadObjectList();
 $options  = array();
+
+echo "Database prefix is : " . $db->getPrefix();
 ?>
 TESTING, try db here<BR>
