@@ -10,7 +10,16 @@
 	<license>Licensed to user only, no distribution</license>
 	<version>1.0.1</version>
 	<description>Toy Database and management system</description>
- 
+ <install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
 	<update>
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
