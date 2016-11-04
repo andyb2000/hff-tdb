@@ -37,10 +37,15 @@ $query
 $db->setQuery((string) $query);
 $db->execute();
 $num_rows = $db->getNumRows();
-print_r($num_rows);
 $row = $db->loadAssocList('id');
-print_r($row);
 
-echo "Database prefix is : " . $db->getPrefix();
+echo "Database prefix is : " . $db->getPrefix()."<BR>";
+echo "Rows found: ";
+print_r($num_rows);
+echo "<BR>";
+echo "Rows data: <BR>";
+print_r($row);
+echo "<BR>";
+
 ?>
 TESTING, try db here<BR>
