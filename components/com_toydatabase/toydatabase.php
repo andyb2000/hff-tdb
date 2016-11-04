@@ -18,5 +18,13 @@ $controller->execute($input->getCmd('task'));
  
 // Redirect if set by the controller
 $controller->redirect();
+
+$db    = JFactory::getDBO();
+$query = $db->getQuery(true);
+$query->select('id,greeting');
+$query->from('#__toydatabase');
+$db->setQuery((string) $query);
+$messages = $db->loadObjectList();
+$options  = array();
 ?>
 TESTING, try db here<BR>
