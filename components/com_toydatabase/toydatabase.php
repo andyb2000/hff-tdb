@@ -87,7 +87,12 @@ switch ($act) {
 </tr>
 <tr>
 	<td><B>Toy Category :</B></td>
-	<td><?php print_r($category_rows); ?></td>
+	<td><?php 
+		foreach ($category_rows as $cat_display) {
+			echo $cat_display["category"]."<BR>\n";
+		};
+	?>
+	</td>
 </tr>
 <tr>
 	<td><B>Toy Loan state :</B></td>
