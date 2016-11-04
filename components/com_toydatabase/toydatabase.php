@@ -50,6 +50,18 @@ switch ($act) {
 		$db->setQuery((string) $query);
 		$db->execute();
 		$row = $db->loadAssoc();
+		
+		// Now retrieve the category (ies)
+		$query
+		->select(array('a.*','b.category'))
+		->from($db->quoteName('#__toydatabase_categorylink','a'))
+		->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+		->where($db->quoteName('equipmentid') . ' = '. $ddid);
+		$db->setQuery((string) $query);
+		$db->execute();
+		$category_rows = $db->loadAssocList();
+		
+		// And retrieve the loan state
 ?>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
 <tr>
@@ -58,23 +70,23 @@ switch ($act) {
 </tr>
 <tr>
 	<td><B>Toy Image :</B></td>
-	<td>xx</td>
+	<td><?=$row["picture"]?></td>
 </tr>
 <tr>
 	<td><B>Toy Description :</B></td>
-	<td>xx</td>
+	<td><?=$row["description"]?></td>
 </tr>
 <tr>
 	<td><B>Toy Location :</B></td>
-	<td>xx</td>
+	<td><?=$row["storagelocation"]?></td>
 </tr>
 <tr>
 	<td><B>Toy Status :</B></td>
-	<td>xx</td>
+	<td><?=$row["status"]?></td>
 </tr>
 <tr>
 	<td><B>Toy Category :</B></td>
-	<td>xx</td>
+	<td><?php print_r($category_rows); ?></td>
 </tr>
 <tr>
 	<td><B>Toy Loan state :</B></td>
