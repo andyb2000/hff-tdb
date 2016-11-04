@@ -19,6 +19,10 @@ defined('_JEXEC') or die('Restricted access');
 // Redirect if set by the controller
 //$controller->redirect();
 
+$jinput = JFactory::getApplication()->input;
+$act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
+$ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display
+
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
 //$query
@@ -43,6 +47,9 @@ echo "Database prefix is : " . $db->getPrefix()."<BR>";
 echo "<BR>";
 echo 'Joomla current URI is ' . JURI::current() . "\n";
 echo "<BR>";
+echo "Act input is: ".$act."<BR>\n";
+echo "DDID input is: ".$ddid."<BR>\n";
+
 
 ?>
 <table width=85% border=1 cellpadding=0 cellspacing=0>
@@ -53,7 +60,7 @@ echo "<BR>";
 if ($num_rows >0) {
 	print_r($row);
 	foreach ($row as $row_key=>$row_value) {
-		echo "<tr onclick='self.location=\"".JURI::current()."?rowid=$row_key\"'>";
+		echo "<tr onclick='self.location=\"".JURI::current()."?act=1&ddid=$row_key\"'>";
 		echo "<td>".$row_value["name"]."</td>\n";
 		echo "<td>".$row_value["picture"];
 		// check the file exists to display the image
