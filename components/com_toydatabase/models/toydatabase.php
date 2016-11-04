@@ -24,7 +24,18 @@ class ToyDatabaseModelToyDatabase extends JModelItem
 	{
 		if (!isset($this->message))
 		{
-			$this->message = 'Toy Database hello (from model)!';
+			$jinput = JFactory::getApplication()->input;
+			$id     = $jinput->get('id', 1, 'INT');
+			switch ($id)
+			{
+				case 2:
+					$this->message = 'Goodbye Toy Database';
+					break;
+				default:
+				case 1:
+					$this->message = 'Hello Toy Database';
+					break;
+			}
 		}
 
 		return $this->message;

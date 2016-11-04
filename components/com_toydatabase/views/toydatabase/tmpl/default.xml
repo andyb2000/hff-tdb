@@ -3,4 +3,17 @@
 	<layout title="COM_TOYDATABASE_TOYDATABASE_VIEW_DEFAULT_TITLE">
 		<message>COM_TOYDATABASE_TOYDATABASE_VIEW_DEFAULT_DESC</message>
 	</layout>
+	<fields name="request">
+		<fieldset name="request">
+			<field
+					name="id"
+					type="list"
+					label="COM_TOYDATABASE_TOYDATABASE_FIELD_GREETING_LABEL"
+					description="COM_TOYDATABASE_TOYDATABASE_FIELD_GREETING_DESC"
+					default="1">
+                                <option value="1">Hello Toy Database!</option>
+                                <option value="2">Goodbye Toy Database!</option>
+                        </field>
+		</fieldset>
+	</fields>
 </metadata>
