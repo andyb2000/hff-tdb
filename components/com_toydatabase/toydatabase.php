@@ -18,3 +18,5 @@ $controller->execute($input->getCmd('task'));
  
 // Redirect if set by the controller
 $controller->redirect();
+?>
+TESTING, try db here<BR>
