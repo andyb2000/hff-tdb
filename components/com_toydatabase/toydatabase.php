@@ -244,11 +244,16 @@ switch ($act) {
 		//->where($db->quoteName('status') . ' = '. $db->quote('1'))
 		->order($db->quoteName('name') . ' DESC');
 		
-		$db->setQuery((string) $query);
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 2, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($query,$limitstart, $limit);
 		$db->execute();
 		$num_rows = $db->getNumRows();
 		$row = $db->loadAssocList('id');
-		
+		jimport('joomla.html.pagination');
+		$pager= new JPagination($db->loadResult(), $limitstart, $limit);
 		
 ?>
 
@@ -317,7 +322,8 @@ if ($num_rows >0) {
 };
 ?>
 </table>
-<?php 
+<?php
+	echo $pager->getListFooter();
 	// end of default: switch
 	break;
 }; // enc of switch selecting act
