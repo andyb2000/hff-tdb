@@ -249,7 +249,7 @@ Toy loan request:
 <tr><td>Loan toy name:</td><td><input type=text name='toyname' size=35 value="<?=$row["name"]?>" disabled/></td></tr>
 <tr><td>Your Name:</td><td><input name="name" type="text" class="required" size="30" value="<?=$user->name?>" disabled/></td></tr>
 <tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" value="<?=$user->email?>" size="30" disabled/></td></tr>
-<tr><td>Requested loan date:</td><td><?=JHTML::_('calendar', $in_stdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
+<tr><td>Requested loan date:<?=$in_stdate?></td><td><?=JHTML::_('calendar', $in_stdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
 <tr><td>Requested return date:</td><td><?=JHTML::_('calendar', $in_stdate, "requestedloanreturndate" , "requestedloanreturndate", '%d-%m-%Y'); ?></td></tr>
 <tr><td>Days on loan:</td><td><input type=text name='daysonloan' id='daysonloan' onclick='Javascript:self.daysonloan.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'></td></tr>
 <tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
