@@ -90,9 +90,39 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
           cursor: pointer;
     }
 </style>
+ <script>
+         function showResult(str) {
+			
+            if (str.length == 0) {
+               document.getElementById("livesearch").innerHTML = "";
+               document.getElementById("livesearch").style.border = "0px";
+               return;
+            }
+            
+            if (window.XMLHttpRequest) {
+               xmlhttp = new XMLHttpRequest();
+            }else {
+               xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            xmlhttp.onreadystatechange = function() {
+				
+               if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                  document.getElementById("livesearch").innerHTML = xmlhttp.responseText;
+                  document.getElementById("livesearch").style.border = "1px solid #A5ACB2";
+               }
+            }
+            
+            xmlhttp.open("GET","toydatabase_livesearch.php?q="+str,true);
+            xmlhttp.send();
+         }
+      </script>
 <?php
 
 switch ($act) {
+	case "3":
+		// library search
+		break;
 	case "2":
 		// Book a specific toy out
 		break;
@@ -220,13 +250,22 @@ switch ($act) {
 		$row = $db->loadAssocList('id');
 ?>
 
+<!-- Toy database search -->
+<form method=post>
+<input type=hidden name='act' value='3'>
+<table width=100% border=1 cellpadding=0 cellspacing=0>
+<tr align=right><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
+</table>
+</form>
+<!-- END Toy database search -->
+
 <table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 <tr><td width=40%><B>Toy name</B></td>
 <td width=40%><B>Toy Photo (small)</B></td>
 <td width=20%><B>Status</B></td></tr>
 <?php 
 if ($num_rows >0) {
-	print_r($row);
+	// print_r($row);
 	foreach ($row as $row_key=>$row_value) {
 		echo "<tr onclick='self.location=\"".JURI::current()."?act=1&ddid=$row_key\"'>";
 		echo "<td>".$row_value["name"]."</td>\n";
