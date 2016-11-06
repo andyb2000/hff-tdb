@@ -244,16 +244,15 @@ switch ($act) {
 		//->where($db->quoteName('status') . ' = '. $db->quote('1'))
 		->order($db->quoteName('name') . ' ASC');
 		
-		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 5, 'int');
+		$limit = 5;
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
 		$db->execute();
 		$num_rows = $db->getNumRows();
-		$row = $db->loadAssocList('id');
+		// $row = $db->loadAssocList('id');
 		jimport('joomla.html.pagination');
-		$pager= new JPagination($db->loadResult(), $limitstart, $limit);
+		$pager= new JPagination($row=$db->loadAssocList('id'), $limitstart, $limit);
 		
 ?>
 
