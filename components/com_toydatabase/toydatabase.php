@@ -120,8 +120,12 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
             xmlhttp.send();
          }
 
-         function toy_calculateDate(str2, str1) {
-        	 return Math.floor(( Date.parse(str2) - Date.parse(str1) ) / 86400000);
+         function toy_calculateDate(str1, str2) {
+             var date1=str1.split("-");
+             var date2=str2.split("-");
+             var outp=Math.floor(( Date.parse(date1[2]."/".date1[1]."/".date1[0]) - Date.parse(date2[2]."/".date2[1]."/".date2[0] ) / 86400000);
+             alert(outp);
+        	 return outp;
          };
       </script>
 <?php
