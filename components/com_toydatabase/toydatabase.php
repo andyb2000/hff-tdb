@@ -137,7 +137,7 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 			var ret_num = toy_daysBetween(date1[2]."/".date1[1]."/".date1[0],date2[2]."/".date2[1]."/".date2[0]);
 			alert(ret_num);
 			return ret_num;
-         };
+         }
       </script>
 <?php
 
