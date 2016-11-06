@@ -262,16 +262,17 @@ switch ($act) {
 <!-- END Toy database search -->
 
 <table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
-<tr><td width=40%><B>Toy name</B></td>
-<tr><td width=40%><B>Toy category</B></td>
-<td width=40%><B>Toy Photo (small)</B></td>
-<td width=20%><B>Status</B></td></tr>
+<tr><td width=30%><B>Toy name</B></td>
+<tr><td width=30%><B>Toy category</B></td>
+<td width=30%><B>Toy Photo (small)</B></td>
+<td width=10%><B>Status</B></td></tr>
 <?php 
 if ($num_rows >0) {
 	// print_r($row);
 	foreach ($row as $row_key=>$row_value) {
 		echo "<tr onclick='self.location=\"".JURI::current()."?act=1&ddid=$row_key\"'>";
 		echo "<td>".$row_value["name"]."</td>\n";
+		echo "<td>";
 		// Now retrieve the category (ies)
 		$query_category = $db->getQuery(true);
 		$query_category
@@ -285,6 +286,7 @@ if ($num_rows >0) {
 		foreach ($category_rows as $cat_display) {
 			echo $cat_display["category"]."<BR>\n";
 		};
+		echo "</td>";
 		echo "<td>";
 		// check the file exists to display the image
 		if (file_exists("library_images/".$row_value["picture"])) {
