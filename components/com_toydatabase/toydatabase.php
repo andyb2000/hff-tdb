@@ -39,6 +39,26 @@ echo 'Joomla current URI is ' . JURI::current() . "\n";
 echo "<BR>";
 echo "Act input is: ".$act."<BR>\n";
 echo "DDID input is: ".$ddid."<BR>\n";
+?>
+<style style="text/css">
+  	.hoverTable{
+		width:100%; 
+		border-collapse:collapse; 
+	}
+	.hoverTable td{ 
+		padding:7px; border:#4e95f4 1px solid;
+	}
+	/* Define the default color for all the table rows */
+	.hoverTable tr{
+		background: #b8d1f3;
+	}
+	/* Define the hover highlight color for the table row */
+    .hoverTable tr:hover {
+          background-color: #ffff99;
+          cursor: pointer;
+    }
+</style>
+<?php
 
 switch ($act) {
 	case "1":
@@ -75,7 +95,7 @@ switch ($act) {
 		$loanlink_rows = $db->loadAssoc();
 		
 ?>
-<table width=95% border=1 cellpadding=0 cellspacing=0>
+<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 <tr>
 	<td><B>Toy Name :</B></td>
 	<td><?=$row["name"]?></td>
@@ -153,24 +173,6 @@ switch ($act) {
 		$num_rows = $db->getNumRows();
 		$row = $db->loadAssocList('id');
 ?>
-<style style="text/css">
-  	.hoverTable{
-		width:100%; 
-		border-collapse:collapse; 
-	}
-	.hoverTable td{ 
-		padding:7px; border:#4e95f4 1px solid;
-	}
-	/* Define the default color for all the table rows */
-	.hoverTable tr{
-		background: #b8d1f3;
-	}
-	/* Define the hover highlight color for the table row */
-    .hoverTable tr:hover {
-          background-color: #ffff99;
-          cursor: pointer;
-    }
-</style>
 
 <table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 <tr><td width=40%><B>Toy name</B></td>
