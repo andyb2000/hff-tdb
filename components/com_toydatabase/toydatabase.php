@@ -125,13 +125,11 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
         	    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
         	    return result;
         	}
-
         function toy_daysBetween(startDate, endDate) {
         	    var millisecondsPerDay = 24 * 60 * 60 * 1000;
         	    var retval= (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
         	    return retval;
         	}
-        	
          function toy_calculateDate(str1, str2) {
 			var date1_split=str1.split("-");
 			var date2_split=str2.split("-");
