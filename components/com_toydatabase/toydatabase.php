@@ -44,6 +44,23 @@ print_r($user->groups);
 echo "<BR>";
 echo "User block: ".$user->block."<BR>\n";
 echo "Guest status: ".$user->guest."<BR>\n";
+
+// Groups for toydatabase are in db t94us_toydatabase_permissions so retrieve if this user is in the right group
+$query_toypermissions = $db->getQuery(true);
+$query_toypermissions
+->select('*')
+->from($db->quoteName('#__toydatabase_permissions'))
+->where($db->quoteName('function') . ' = "member"');
+$db->setQuery((string) $query_toypermissions);
+$db->execute();
+$toydatabase_permissions_num_rows = $db->getNumRows();
+$toydatabase_permissions = $db->loadAssoc();
+
+if ($toydatabase_permissions_num_rows <1) {
+	echo "<BR><h2>WARNING: Installation not complete, administrator please set permissions</h2><BR><BR>";
+} else {
+	echo "DB permissions group: ".$toydatabase_permissions["groupname"];
+};
 ?>
 <style style="text/css">
   	.hoverTable{
