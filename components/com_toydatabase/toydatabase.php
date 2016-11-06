@@ -456,14 +456,20 @@ if (!empty($row)) {
 		echo "</td>\n";
 		echo "<td>";
 		switch($row_value["status"]) {
+			case "3":
+				echo "Damaged/No longer available";
+				break;
 			case "2":
-				echo "On Loan";
+				echo "Awaiting cleaning/repair";
 				break;
 			case "1":
+				echo "On Loan";
+				break;
+			case "0":
 				echo "Available";
 				break;
 			default:
-				echo "Unavailable";
+				echo "Unknown";
 				break;
 		};
 		echo "</td>\n";
