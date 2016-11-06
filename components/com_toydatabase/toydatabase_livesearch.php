@@ -28,7 +28,7 @@ if (strlen($q)>2) {
 			if ($hint) {
 				$hint=$hint."<BR/>";
 			};
-			$hint=$hint."<a href='".$toy_value["id"]."'>".$toy_value["name"]."</a>";
+			$hint=$hint."<a href='".JURI::current()."?".$toy_value["id"]."'>".$toy_value["name"]."</a>";
 		};
 	};
 }
