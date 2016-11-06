@@ -134,7 +134,10 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
          function toy_calculateDate(str1, str2) {
 			var date1_split=str1.split("-");
 			var date2_split=str2.split("-");
-			alert(date1_split[1]);
+			var new_date1=date1_split[2]+"/"+date1_split[1]+"/"+date1_split[0];
+			var new_date2=date2_split[2]+"/"+date2_split[1]+"/"+date2_split[0];
+			var ret_num=toy_daysBetween(new_date1,new_date2);
+			alert(ret_num);
 			return ret_num;
          }
       </script>
