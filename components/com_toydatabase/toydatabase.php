@@ -119,6 +119,13 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
             xmlhttp.open("GET","<?=JURI::root()?>components/com_toydatabase/toydatabase_livesearch.php?pname=<?=JURI::current()?>&q="+str,true);
             xmlhttp.send();
          }
+         function toy_calculateDate(date1, date2){
+             alert(date1);
+             alert(date2);
+        	  diffc = date1.getTime() - date2.getTime();
+        	  days = Math.round(Math.abs(diffc/(1000*60*60*24)));
+        	return days;
+        	}
       </script>
 <?php
 
@@ -139,16 +146,14 @@ switch ($act) {
 <form name='toyloan' class="form-validate">
 Toy loan request:
 <table width=95% border=1 cellpadding=0 cellspacing=0>
-<tr><td>Loan toy URN:</td><td>URN</td></tr>
-<tr><td>Loan toy name:</td><td>Name</td></tr>
+<tr><td>Loan toy URN:</td><td><input type=text name='toyurn' size=5></td></tr>
+<tr><td>Loan toy name:</td><td><input type=text name='toyname' size=35></td></tr>
 <tr><td>Your Name:</td><td><input name="name" type="text" class="required" size="30" /></td></tr>
 <tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" size="30" /></td></tr>
-<tr><td>Requested loan date:</td><td>
-<?php echo JHTML::_('calendar', $startdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?>
-</td></tr>
-<tr><td>Requested return date:</td><td>DATESELECT</td></tr>
-<tr><td>Days on loan:</td><td>DAYS</td></tr>
-<tr><td>Any Notes/Comments?:</td><td>TEXTAREA</td></tr>
+<tr><td>Requested loan date:</td><td><?=JHTML::_('calendar', $startdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
+<tr><td>Requested return date:</td><td><?=JHTML::_('calendar', $startdate, "requestedloanreturndate" , "requestedloanreturndate", '%d-%m-%Y'); ?></td></tr>
+<tr><td>Days on loan:</td><td><input type=text name='daysonloan' id='daysonloan' onclick='Javascript:toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'></td></tr>
+<tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
 <tr><td colspan=2 align=right><input type=submit class="validate"></td></tr>
 </table>
 </form><BR>
