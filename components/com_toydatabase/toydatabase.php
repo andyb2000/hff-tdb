@@ -248,8 +248,8 @@ switch ($act) {
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
-		//$db->execute();
-		//$num_rows = $db->getNumRows();
+		$db->execute();
+		$num_rows = $db->getNumRows();
 		$row = $db->loadAssocList('id');
 		$db->setQuery('SELECT FOUND_ROWS();');
 		jimport('joomla.html.pagination');
