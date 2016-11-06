@@ -245,7 +245,7 @@ switch ($act) {
 		->order($db->quoteName('name') . ' ASC');
 		
 		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 2, 'int');
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 4, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 
@@ -256,6 +256,7 @@ switch ($act) {
 			$db->setQuery('SELECT FOUND_ROWS();');
 			jimport('joomla.html.pagination');
 			$pager= new JPagination($db->loadResult(), $limitstart, $limit);
+			print_r($pager);
 		};
 		
 ?>
