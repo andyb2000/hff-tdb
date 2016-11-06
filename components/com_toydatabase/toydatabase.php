@@ -62,10 +62,13 @@ if ($toydatabase_permissions_num_rows <1) {
 	echo "DB permissions group: ".$toydatabase_permissions["groupname"]."<BR>";;
 };
 
+$user_toymembership=0;
 if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 	echo "Welcome back toydatabase membership user<BR>";
+	$user_toymembership=1;
 } else {
 	echo "Why not join our toydatabase membership system?<BR>\n";
+	$user_toymembership=0;
 };
 ?>
 <BR>
@@ -90,6 +93,9 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 <?php
 
 switch ($act) {
+	case "2":
+		// Book a specific toy out
+		break;
 	case "1":
 		// retrieve the specific record
 		$query
@@ -184,6 +190,17 @@ switch ($act) {
 			echo JHtml::_('date', $loanlink_rows["returnbydate"], 'G:i j/M/Y');
 		};
 	?></td>
+</tr>
+<tr>
+	<td><B>Book toy :</B></td>
+	<td><?php
+	if (is_set($user_toymembership)) {
+		echo "<a href='".JURI::current()."?act=2&ddid=$ddid'>Book this toy</a>\n";
+	} else {
+		echo "Sorry - You need to be a member and logged into book a toy out";
+	};
+	?>
+	</td>
 </tr>
 </table>
 <?php
