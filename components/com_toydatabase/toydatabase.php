@@ -107,7 +107,7 @@ switch ($act) {
 </tr>
 <tr>
 	<td><B>Toy Loan state :</B></td>
-	<td><PRE><?php
+	<td><?php
 		switch($loanlink_rows["status"]) {
 			case "3":
 				echo "DAMAGED/NO LONGER AVAILABLE";
