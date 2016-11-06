@@ -127,7 +127,7 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
         	}
         function toy_daysBetween(startDate, endDate) {
         	    var millisecondsPerDay = 24 * 60 * 60 * 1000;
-        	    var retval= (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
+        	    var retval= (toy_treatAsUTC(endDate) - toy_treatAsUTC(startDate)) / millisecondsPerDay;
         	    return retval;
         	}
     	
