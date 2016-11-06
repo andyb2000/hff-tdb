@@ -11,7 +11,7 @@ $app->initialise();
 $db = JFactory::getDBO();// Joomla database object
 
 $q = urlencode($_REQUEST["q"]);
-$pname = urlencode($_REQUEST["pname"]);
+$pname = $_REQUEST["pname"];
 $query_toyname = $db->getQuery(true);
 
 if (strlen($q)>2) {
