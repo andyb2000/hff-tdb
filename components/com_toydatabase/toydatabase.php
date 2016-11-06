@@ -263,7 +263,7 @@ switch ($act) {
 
 <table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 <tr><td width=30%><B>Toy name</B></td>
-<tr><td width=30%><B>Toy category</B></td>
+<td width=30%><B>Toy category</B></td>
 <td width=30%><B>Toy Photo (small)</B></td>
 <td width=10%><B>Status</B></td></tr>
 <?php 
