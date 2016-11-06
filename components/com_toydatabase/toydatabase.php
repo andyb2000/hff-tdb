@@ -169,7 +169,6 @@ switch ($act) {
 					->insert($db->quoteName('#__toydatabase_loanlink'))
 					->columns($db->quoteName($ins_columns))
 					->values(implode(',', $ins_values));
-					echo "<PRE>";print_r($ins_request);echo "</PRE><BR>\n";
 					$db->setQuery($ins_request);
 					$db->execute();
 					
