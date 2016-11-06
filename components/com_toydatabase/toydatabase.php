@@ -24,7 +24,7 @@ $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
 $ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 JHtml::_('behavior.formvalidator');
-JHTML::_( 'behavior.calendar' );
+JHtml::_('behavior.calendar');
 
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
@@ -144,8 +144,9 @@ Toy loan request:
 <tr><td>Your Name:</td><td><input name="name" type="text" class="required" size="30" /></td></tr>
 <tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" size="30" /></td></tr>
 <tr><td>Requested loan date:</td><td>
-<input type="text" size="8" name="publicacao_fim" id="publish_down" value="" alt="date"/>
+<input type="text" size="8" name="requestedloan" id="publish_down" value="" alt="date"/>
 <input type="reset" class="button" value="..." onclick="return showCalendar( 'publish_down', '%d/%m/%Y' );"/>
+<?php echo JHTML::_('calendar', $startdate, "mydate" , "mydate", '%Y-%m-%d'); ?>
 </td></tr>
 <tr><td>Requested return date:</td><td>DATESELECT</td></tr>
 <tr><td>Days on loan:</td><td>DAYS</td></tr>
