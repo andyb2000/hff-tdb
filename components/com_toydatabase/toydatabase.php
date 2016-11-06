@@ -248,15 +248,13 @@ switch ($act) {
 		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 4, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
-
 		$db->setQuery($query,$limitstart, $limit);
 		$row = $db->loadAssocList('id');
 		if(!empty($row)){
 			$num_rows = $db->getNumRows();
 			$db->setQuery('SELECT FOUND_ROWS();');
 			jimport('joomla.html.pagination');
-			$pager= new JPagination($db->loadResult(), $limitstart, $limit);
-			print_r($pager);
+			$pager=new JPagination($db->loadResult(), $limitstart, $limit);
 		};
 		
 ?>
@@ -328,6 +326,8 @@ if (!empty($row)) {
 </table>
 <?php
 	echo $pager->getListFooter();
+	echo $pager->getLimitBox();
+	echo $pager->getPagesCounter();
 	// end of default: switch
 	break;
 }; // enc of switch selecting act
