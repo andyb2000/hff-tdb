@@ -62,7 +62,7 @@ if ($toydatabase_permissions_num_rows <1) {
 	echo "DB permissions group: ".$toydatabase_permissions["groupname"]."<BR>";;
 };
 
-if (in_array($user->groups,$toydatabase_permissions["groupname"])) {
+if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 	echo "Welcome back toydatabase membership user<BR>";
 } else {
 	echo "Why not join our toydatabase membership system?<BR>\n";
