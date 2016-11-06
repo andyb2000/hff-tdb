@@ -113,7 +113,7 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
                }
             }
             
-            xmlhttp.open("GET","<?=JURI::root()?>components/com_toydatabase/toydatabase_livesearch.php?q="+str,true);
+            xmlhttp.open("GET","<?=JURI::root()?>components/com_toydatabase/toydatabase_livesearch.php?pname=<?=JURI::current()?>&q="+str,true);
             xmlhttp.send();
          }
       </script>

@@ -10,7 +10,8 @@ $app = JFactory::getApplication('site');
 $app->initialise();
 $db = JFactory::getDBO();// Joomla database object
 
-$q = urlencode($_GET["q"]);
+$q = urlencode($_REQUEST["q"]);
+$pname = urlencode($_REQUEST["pname"]);
 $query_toyname = $db->getQuery(true);
 
 if (strlen($q)>2) {
@@ -28,7 +29,7 @@ if (strlen($q)>2) {
 			if ($hint) {
 				$hint=$hint."<BR/>";
 			};
-			$hint=$hint."<a href='".JURI::current()."?".$toy_value["id"]."'>".$toy_value["name"]."</a>";
+			$hint=$hint."<a href='".$pname."?act=1&ddid=".$toy_value["id"]."'>".$toy_value["name"]."</a>";
 		};
 	};
 }
