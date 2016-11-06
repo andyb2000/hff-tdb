@@ -238,7 +238,7 @@ switch ($act) {
 	default:
 		// This displays the toy list
 		$query
-		->select('*')
+		->select('SQL_CALC_FOUND_ROWS *')
 		->from($db->quoteName('#__toydatabase_equipment'))
 		//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
 		//->where($db->quoteName('status') . ' = '. $db->quote('1'))
@@ -251,9 +251,8 @@ switch ($act) {
 		$db->setQuery($query,$limitstart, $limit);
 		$row = $db->loadAssocList('id');
 		if(!empty($row)){
-			$db->execute();
-			$num_rows = $db->getNumRows();
 			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
 			jimport('joomla.html.pagination');
 			$pager=new JPagination($num_rows, $limitstart, $limit);
 			echo "<pre>";
