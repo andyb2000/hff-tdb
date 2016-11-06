@@ -164,6 +164,9 @@ switch ($act) {
 				$row = $db->loadAssoc();
 ?>
 <form name='toyloan' class="form-validate">
+<input type=hidden name='act' value='2'>
+<input type=hidden name='subact' value='1'>
+<input type=hidden name='ddid' value='<?=$ddid?>'>
 Toy loan request:
 <table width=95% border=1 cellpadding=0 cellspacing=0>
 <tr><td>Loan toy URN:</td><td><input type=text name='toyurn' size=5 value="<?=$row["urn"]?>" disabled/></td></tr>
