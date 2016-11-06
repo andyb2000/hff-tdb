@@ -251,6 +251,7 @@ switch ($act) {
 		$db->setQuery($query,$limitstart, $limit);
 		$row = $db->loadAssocList('id');
 		if(!empty($row)){
+			$db->execute();
 			$num_rows = $db->getNumRows();
 			$db->setQuery('SELECT FOUND_ROWS();');
 			jimport('joomla.html.pagination');
