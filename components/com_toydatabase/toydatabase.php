@@ -120,12 +120,23 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
             xmlhttp.send();
          }
 
+         function toy_treatAsUTC(date) {
+        	    var result = new Date(date);
+        	    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+        	    return result;
+        	}
+
+        function toy_daysBetween(startDate, endDate) {
+        	    var millisecondsPerDay = 24 * 60 * 60 * 1000;
+        	    return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
+        	}
+        	
          function toy_calculateDate(str1, str2) {
-             var date1=str1.split("-");
-             var date2=str2.split("-");
-             var outp=Math.floor((Date.parse(date1[2] + "/" + date1[1] + "/" + date1[0])) - (Date.parse(date2[2] + "/" + date2[1] + "/" + date2[0] )) / 86400000);
-             alert(outp);
-        	 return outp;
+			var date1_split=str1.split("-");
+			var date2_split=str2.split("-");
+			var ret_num = toy_daysBetween(date1[2]."/".date1[1]."/".date1[0],date2[2]."/".date2[1]."/".date2[0]);
+			alert(ret_num);
+			return ret_num;
          };
       </script>
 <?php
