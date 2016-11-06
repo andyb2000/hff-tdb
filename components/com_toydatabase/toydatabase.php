@@ -154,20 +154,20 @@ switch ($act) {
 		$row = $db->loadAssocList('id');
 ?>
 <table width=85% border=1 cellpadding=0 cellspacing=0>
-<tr><td><B>Toy name</B></td>
-<td><B>Toy Photo (small)</B></td>
-<td><B>Status</B></td></tr>
+<tr><td width=40%><B>Toy name</B></td>
+<td width=40%><B>Toy Photo (small)</B></td>
+<td width=20%><B>Status</B></td></tr>
 <?php 
 if ($num_rows >0) {
 	print_r($row);
 	foreach ($row as $row_key=>$row_value) {
 		echo "<tr onclick='self.location=\"".JURI::current()."?act=1&ddid=$row_key\"'>";
 		echo "<td>".$row_value["name"]."</td>\n";
-		echo "<td>".$row_value["picture"];
+		echo "<td>";
 		// check the file exists to display the image
 		if (file_exists("library_images/".$row_value["picture"])) {
 			// dynamically resize image using php
-			echo "<img src='toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt=''>";
+			echo "<img src='toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
 		} else {
 			echo "Sorry no image exists";
 		};
