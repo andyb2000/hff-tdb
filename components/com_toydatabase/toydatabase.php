@@ -254,7 +254,12 @@ switch ($act) {
 			$num_rows = $db->getNumRows();
 			$db->setQuery('SELECT FOUND_ROWS();');
 			jimport('joomla.html.pagination');
-			$pager=new JPagination($db->loadResult(), $limitstart, $limit);
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+			echo "<pre>";
+			echo "total: ".$num_rows."\n";
+			echo "limitstart: ".$limitstart."\n";
+			echo "limit: ".$limit;
+			echo "</pre>";
 		};
 		
 ?>
@@ -323,11 +328,12 @@ if (!empty($row)) {
 	echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
 };
 ?>
-</table>
+</table><form name='limitdisplay'>
 <?php
 	echo $pager->getListFooter();
 	echo $pager->getLimitBox();
 	echo $pager->getPagesCounter();
+	echo "</form>";
 	// end of default: switch
 	break;
 }; // enc of switch selecting act
