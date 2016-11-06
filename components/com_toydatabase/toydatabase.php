@@ -155,14 +155,21 @@ switch ($act) {
 				break;
 			default:
 				// display the form
+				$query
+				->select('*')
+				->from($db->quoteName('#__toydatabase_equipment'))
+				->where($db->quoteName('id') . ' = '. $ddid);
+				$db->setQuery((string) $query);
+				$db->execute();
+				$row = $db->loadAssoc();
 ?>
 <form name='toyloan' class="form-validate">
 Toy loan request:
 <table width=95% border=1 cellpadding=0 cellspacing=0>
-<tr><td>Loan toy URN:</td><td><input type=text name='toyurn' size=5></td></tr>
-<tr><td>Loan toy name:</td><td><input type=text name='toyname' size=35></td></tr>
-<tr><td>Your Name:</td><td><input name="name" type="text" class="required" size="30" value="<?=$user->name?>"/></td></tr>
-<tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" value="<?=$user->email?>" size="30" /></td></tr>
+<tr><td>Loan toy URN:</td><td><input type=text name='toyurn' size=5 value="<?=$row["urn"]?>" disabled/></td></tr>
+<tr><td>Loan toy name:</td><td><input type=text name='toyname' size=35 value="<?=$row["name"]?>" disabled/></td></tr>
+<tr><td>Your Name:</td><td><input name="name" type="text" class="required" size="30" value="<?=$user->name?>" disabled/></td></tr>
+<tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" value="<?=$user->email?>" size="30" disabled/></td></tr>
 <tr><td>Requested loan date:</td><td><?=JHTML::_('calendar', $startdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
 <tr><td>Requested return date:</td><td><?=JHTML::_('calendar', $startdate, "requestedloanreturndate" , "requestedloanreturndate", '%d-%m-%Y'); ?></td></tr>
 <tr><td>Days on loan:</td><td><input type=text name='daysonloan' id='daysonloan' onclick='Javascript:self.daysonloan.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'></td></tr>
