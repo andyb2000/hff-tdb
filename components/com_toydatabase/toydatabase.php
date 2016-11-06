@@ -164,7 +164,7 @@ switch ($act) {
 					$frm_requestedloanreturndate_out=JFactory::getDate($frm_requestedloanreturndate);
 					$frm_requestedloanreturndate_out=JHtml::_('date', $frm_requestedloanreturndate_out, 'Y-m-d 00:00:00');
 					$ins_columns = array('equipmentid', 'membershipid', 'requestdate', 'loandate', 'returnbydate','status');
-					$ins_values = array($ddid, $user->id, 'NOW()', $db->quote($frm_requestedloandate_out), $db->quote($frm_requestedloanreturndate_out),'1');
+					$ins_values = array($ddid, $user->id, 'NOW()', $db->quote($frm_requestedloandate_out), $db->quote($frm_requestedloanreturndate_out),'2');
 					$ins_request
 					->insert($db->quoteName('#__toydatabase_loanlink'))
 					->columns($db->quoteName($ins_columns))
@@ -290,7 +290,8 @@ receive email confirmation once it has been accepted.<BR>
 		$query_loanlink
 		->select('*')
 		->from($db->quoteName('#__toydatabase_loanlink'))
-		->where($db->quoteName('equipmentid') . ' = '. $ddid);
+		->where($db->quoteName('equipmentid') . ' = '. $ddid, 'AND')
+		->where($db->quoteName('status') . ' = '. '1');
 		$db->setQuery((string) $query_loanlink);
 		$db->execute();
 		$loanlink_rows = $db->loadAssoc();
@@ -315,7 +316,22 @@ receive email confirmation once it has been accepted.<BR>
 </tr>
 <tr>
 	<td><B>Toy Status :</B></td>
-	<td><?=$row["status"]?></td>
+	<td><?php
+	switch($row["status"]) {
+		case "3":
+			echo "DAMAGED/NO LONGER AVAILABLE";
+			break;
+		case "2":
+			echo "AWAITING CLEANING/REPAIR";
+			break;
+		case "1":
+			echo "ON LOAN";
+			break;
+		default:
+			echo "AVAILABLE";
+			break;
+	};
+	?></td>
 </tr>
 <tr>
 	<td><B>Toy Category :</B></td>
@@ -330,12 +346,9 @@ receive email confirmation once it has been accepted.<BR>
 	<td><B>Toy Loan state :</B></td>
 	<td><?php
 		switch($loanlink_rows["status"]) {
-			case "3":
-				echo "DAMAGED/NO LONGER AVAILABLE";
-				break;
 			case "2":
-				echo "AWAITING CLEANING/REPAIR";
-				break;
+				echo "AWAITING LOAN REQUEST";
+		 		break;
 			case "1":
 				echo "ON LOAN";
 				break;
