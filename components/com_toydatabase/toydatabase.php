@@ -132,7 +132,7 @@ switch ($act) {
 		$mysql_date=JFactory::getDate($loanlink_rows["returnbydate"]);
 		echo JHTML::date($mysql_date, 'D F n, Y g:i a');
 		echo "<BR>";
-		echo JHtml::_('date', $loanlink_rows["returnbydate"], '%Y-%m-%d %H:%M:%S');
+		echo JHtml::_('date', $loanlink_rows["returnbydate"], 'G:i j/M/Y');
 //		echo JFactory::getDate($loanlink_rows["loandate"])->format('%a %d %b %Y - %H:%M');
 	?></td>
 </tr>
