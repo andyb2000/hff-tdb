@@ -127,13 +127,13 @@ switch ($act) {
 <tr>
 	<td><B>Toy Due Return Date :</B></td>
 	<td><?php
-	// $date =& JFactory::getDate();
-	// echo 'Current date and time is: ' . $date->format() . "\n";
-		$mysql_date=JFactory::getDate($loanlink_rows["returnbydate"]);
-		echo JHTML::date($mysql_date, 'D F n, Y g:i a');
-		echo "<BR>";
-		echo JHtml::_('date', $loanlink_rows["returnbydate"], 'G:i j/M/Y');
-//		echo JFactory::getDate($loanlink_rows["loandate"])->format('%a %d %b %Y - %H:%M');
+		if (!$loanlink_rows["returnbydate"]) {
+			// No return date!
+			echo "Unknown";
+		} else {
+			$mysql_date=JFactory::getDate($loanlink_rows["returnbydate"]);
+			echo JHtml::_('date', $loanlink_rows["returnbydate"], 'G:i j/M/Y');
+		};
 	?></td>
 </tr>
 </table>
