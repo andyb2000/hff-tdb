@@ -251,9 +251,9 @@ switch ($act) {
 ?>
 
 <!-- Toy database search -->
-<form method=post>
+<form method=post onsubmit="return false">
 <input type=hidden name='act' value='3'>
-<table width=100% border=1 cellpadding=0 cellspacing=0>
+<table width=100% border=0 cellpadding=0 cellspacing=0>
 <tr align=right><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
 </table>
 </form>
