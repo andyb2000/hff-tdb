@@ -22,6 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 $jinput = JFactory::getApplication()->input;
 $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
 $ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
+$subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
+JHtml::_('behavior.formvalidator');
 
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
@@ -125,6 +127,33 @@ switch ($act) {
 		break;
 	case "2":
 		// Book a specific toy out
+		// display the booking form, subact is set when form is submitted so is being sent
+		switch ($subact) {
+			case "1":
+				// form has been submitted so validate and carry out changes
+				break;
+			default:
+				// display the form
+?>
+<form name='toyloan' class="form-validate">
+Toy loan request:
+<table width=95% border=1 cellpadding=0 cellspacing=0>
+<tr><td>Loan toy URN:</td><td>URN</td></tr>
+<tr><td>Loan toy name:</td><td>Name</td></tr>
+<tr><td>Your Name:</td><td><input name="name" type="text" class="required" size="30" /></td></tr>
+<tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" size="30" /></td></tr>
+<tr><td>Requested loan date:</td><td>DATESELECT</td></tr>
+<tr><td>Requested return date:</td><td>DATESELECT</td></tr>
+<tr><td>Days on loan:</td><td>DAYS</td></tr>
+<tr><td>Any Notes/Comments?:</td><td>TEXTAREA</td></tr>
+<tr><td colspan=2 align=right><input type=submit class="validate"></td></tr>
+</table>
+</form><BR>
+Important: A toy loan is NOT a guarantee of the loan, it will be manually approved and you will
+receive email confirmation once it has been accepted.<BR>
+<php
+				break;
+		};
 		break;
 	case "1":
 		// retrieve the specific record
