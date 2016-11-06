@@ -249,7 +249,7 @@ Toy loan request:
 <tr><td>Loan toy name:</td><td><input type=text name='toyname' size=35 value="<?=$row["name"]?>" disabled/></td></tr>
 <tr><td>Your Name:</td><td><input name="name" type="text" class="required" size="30" value="<?=$user->name?>" disabled/></td></tr>
 <tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" value="<?=$user->email?>" size="30" disabled/></td></tr>
-<tr><td>Requested loan date:<?=$in_stdate?></td><td><?=JHTML::_('calendar', $in_stdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
+<tr><td>Requested loan date:</td><td><?=JHTML::_('calendar', $in_stdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
 <tr><td>Requested return date:</td><td><?=JHTML::_('calendar', $in_stdate, "requestedloanreturndate" , "requestedloanreturndate", '%d-%m-%Y'); ?></td></tr>
 <tr><td>Days on loan:</td><td><input type=text name='daysonloan' id='daysonloan' onclick='Javascript:self.daysonloan.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'></td></tr>
 <tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
@@ -369,8 +369,8 @@ receive email confirmation once it has been accepted.<BR>
 			echo "Unknown";
 		} else {
 			$mysql_date=JFactory::getDate($loanlink_rows["returnbydate"]);
-			$mysql_date_html=JHtml::_('date', $loanlink_rows["returnbydate"], 'j/M/Y');
-			echo $mysql_date_html;
+			$mysql_date_url=JHtml::_('date', $loanlink_rows["returnbydate"], 'd-m-Y');
+			echo JHtml::_('date', $loanlink_rows["returnbydate"], 'j/M/Y');
 		};
 	?></td>
 </tr>
@@ -378,7 +378,7 @@ receive email confirmation once it has been accepted.<BR>
 	<td><B>Book toy :</B></td>
 	<td><?php
 	if ($user_toymembership) {
-		echo "<a href='".JURI::current()."?act=2&ddid=$ddid&stdate=$mysql_date_html'>Book this toy</a>\n";
+		echo "<a href='".JURI::current()."?act=2&ddid=$ddid&stdate=$mysql_date_url'>Book this toy</a>\n";
 	} else {
 		echo "Sorry - You need to be a member and logged into book a toy out";
 	};
