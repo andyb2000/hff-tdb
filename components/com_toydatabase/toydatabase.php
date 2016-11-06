@@ -326,8 +326,11 @@ receive email confirmation once it has been accepted.<BR>
 		case "1":
 			echo "ON LOAN";
 			break;
-		default:
+		case "0":
 			echo "AVAILABLE";
+			break;
+		default:
+			echo "UNKNOWN";
 			break;
 	};
 	?></td>
