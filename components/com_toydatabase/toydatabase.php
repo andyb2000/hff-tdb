@@ -244,7 +244,8 @@ switch ($act) {
 		//->where($db->quoteName('status') . ' = '. $db->quote('1'))
 		->order($db->quoteName('name') . ' ASC');
 		
-		$limit = 5;
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 2, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
