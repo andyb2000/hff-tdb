@@ -133,9 +133,7 @@ switch ($act) {
 		echo JHTML::date($mysql_date, 'D F n, Y g:i a');
 		echo "<BR>";
 		echo JHtml::_(
-				'date', $loanlink_rows["returnbydate"],
-				$this->escape($this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))
-				);
+				'date', $loanlink_rows["returnbydate"]);
 //		echo JFactory::getDate($loanlink_rows["loandate"])->format('%a %d %b %Y - %H:%M');
 	?></td>
 </tr>
