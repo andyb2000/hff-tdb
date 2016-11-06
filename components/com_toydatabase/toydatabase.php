@@ -166,7 +166,8 @@ if ($num_rows >0) {
 		echo "<td>".$row_value["picture"];
 		// check the file exists to display the image
 		if (file_exists("library_images/".$row_value["picture"])) {
-			echo "<img src='' alt=''>";
+			// dynamically resize image using php
+			echo "<img src='toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt=''>";
 		} else {
 			echo "Sorry no image exists";
 		};
