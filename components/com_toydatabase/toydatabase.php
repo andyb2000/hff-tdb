@@ -160,9 +160,9 @@ switch ($act) {
 					// add the request to the database
 					$ins_request = $db->getQuery(true);
 					$frm_requestedloandate_out=JFactory::getDate($frm_requestedloandate);
-					$frm_requestedloandate_out=JHtml::_('date', $frm_requestedloandate_out, 'Y-M-j 00:00:00');
+					$frm_requestedloandate_out=JHtml::_('date', $frm_requestedloandate_out, 'Y-m-d 00:00:00');
 					$frm_requestedloanreturndate_out=JFactory::getDate($frm_requestedloanreturndate);
-					$frm_requestedloanreturndate_out=JHtml::_('date', $frm_requestedloanreturndate_out, 'Y-M-j 00:00:00');
+					$frm_requestedloanreturndate_out=JHtml::_('date', $frm_requestedloanreturndate_out, 'Y-m-d 00:00:00');
 					$ins_columns = array('equipmentid', 'membershipid', 'requestdate', 'loandate', 'returnbydate','status');
 					$ins_values = array($ddid, $user->id, 'NOW()', $db->quote($frm_requestedloandate_out), $db->quote($frm_requestedloanreturndate_out),'1');
 					$ins_request
@@ -239,7 +239,7 @@ switch ($act) {
 				$db->execute();
 				$row = $db->loadAssoc();
 ?>
-<form name='toyloan' class="form-validate">
+<form name='toyloan' class="form-validate" method=post>
 <input type=hidden name='act' value='2'>
 <input type=hidden name='subact' value='1'>
 <input type=hidden name='ddid' value='<?=$ddid?>'>
