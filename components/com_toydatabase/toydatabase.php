@@ -59,9 +59,16 @@ $toydatabase_permissions = $db->loadAssoc();
 if ($toydatabase_permissions_num_rows <1) {
 	echo "<BR><h2>WARNING: Installation not complete, administrator please set permissions</h2><BR><BR>";
 } else {
-	echo "DB permissions group: ".$toydatabase_permissions["groupname"];
+	echo "DB permissions group: ".$toydatabase_permissions["groupname"]."<BR>";;
+};
+
+if (in_array($user->groups,$toydatabase_permissions["groupname"])) {
+	echo "Welcome back toydatabase membership user<BR>";
+} else {
+	echo "Why not join our toydatabase membership system?<BR>\n";
 };
 ?>
+<BR>
 <style style="text/css">
   	.hoverTable{
 		width:100%; 
