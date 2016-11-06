@@ -129,7 +129,7 @@ switch ($act) {
 	<td><?php
 	// $date =& JFactory::getDate();
 	// echo 'Current date and time is: ' . $date->format() . "\n";
-		echo JFactory::getDate($loanlink_rows["loandate"])->format();
+		echo JFactory::getDate($loanlink_rows["loandate"])->format('%a %d %b %Y - %H:%M');
 	?></td>
 </tr>
 </table>
