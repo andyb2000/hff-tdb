@@ -39,7 +39,7 @@ echo 'Joomla current URI is ' . JURI::current() . "\n";
 echo "<BR>";
 echo "Act input is: ".$act."<BR>\n";
 echo "DDID input is: ".$ddid."<BR>\n";
-echo "<p>Your name is {$user->name}, your email is {$user->email}, and your username is {$user->username}</p><BR>";
+echo "Your name is {$user->name}, your email is {$user->email}, and your username is {$user->username}<BR>";
 print_r($user->groups);
 echo "<BR>";
 echo "User block: ".$user->block."<BR>\n";
@@ -278,7 +278,19 @@ if ($num_rows >0) {
 			echo "Sorry no image exists";
 		};
 		echo "</td>\n";
-		echo "<td>".$row_value["status"]."</td>\n";
+		echo "<td>";
+		switch($row_value["status"]) {
+			case "2":
+				echo "On Loan";
+				break;
+			case "1":
+				echo "Available";
+				break;
+			default:
+				echo "Unavailable";
+				break;
+		};
+		echo "</td>\n";
 		echo "</tr>";
 	};
 } else {
