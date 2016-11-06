@@ -151,7 +151,7 @@ Toy loan request:
 </form><BR>
 Important: A toy loan is NOT a guarantee of the loan, it will be manually approved and you will
 receive email confirmation once it has been accepted.<BR>
-<php
+<?php
 				break;
 		};
 		break;
