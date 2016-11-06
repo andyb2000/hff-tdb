@@ -168,6 +168,7 @@ switch ($act) {
 	/* Define the hover highlight color for the table row */
     .hoverTable tr:hover {
           background-color: #ffff99;
+          cursor: pointer;
     }
 </style>
 
