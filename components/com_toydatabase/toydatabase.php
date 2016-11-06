@@ -122,6 +122,7 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
          function toy_calculateDate(date1, date2){
         	  diffc = date1.getTime() - date2.getTime();
         	  days = Math.round(Math.abs(diffc/(1000*60*60*24)));
+        	  alert(days);
         	return days;
         	}
       </script>
