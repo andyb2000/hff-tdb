@@ -31,7 +31,7 @@ $query = $db->getQuery(true);
 //->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
 //->where($db->quoteName('status') . ' = '. $db->quote('1'))
 //->order($db->quoteNAme('a.name') . ' DESC');
-
+$user = JFactory::getUser();
 
 echo "Database prefix is : " . $db->getPrefix()."<BR>";
 echo "<BR>";
@@ -39,6 +39,11 @@ echo 'Joomla current URI is ' . JURI::current() . "\n";
 echo "<BR>";
 echo "Act input is: ".$act."<BR>\n";
 echo "DDID input is: ".$ddid."<BR>\n";
+echo "<p>Your name is {$user->name}, your email is {$user->email}, and your username is {$user->username}</p><BR>";
+print_r($user->groups);
+echo "<BR>";
+echo "User block: ".$user->block."<BR>\n";
+echo "Guest status: ".$user->guest."<BR>\n";
 ?>
 <style style="text/css">
   	.hoverTable{
