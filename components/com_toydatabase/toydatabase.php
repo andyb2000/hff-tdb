@@ -248,11 +248,12 @@ switch ($act) {
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
-		$db->execute();
-		$num_rows = $db->getNumRows();
-		// $row = $db->loadAssocList('id');
+		//$db->execute();
+		//$num_rows = $db->getNumRows();
+		$row = $db->loadAssocList('id');
+		$db->setQuery('SELECT FOUND_ROWS();');
 		jimport('joomla.html.pagination');
-		$pager= new JPagination($row=$db->loadAssocList('id'), $limitstart, $limit);
+		$pager= new JPagination($db->loadResult(), $limitstart, $limit);
 		
 ?>
 
