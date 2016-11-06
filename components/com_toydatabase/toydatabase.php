@@ -368,7 +368,7 @@ receive email confirmation once it has been accepted.<BR>
 			echo "Unknown";
 		} else {
 			$mysql_date=JFactory::getDate($loanlink_rows["returnbydate"]);
-			echo JHtml::_('date', $loanlink_rows["returnbydate"], 'G:i j/M/Y');
+			echo JHtml::_('date', $loanlink_rows["returnbydate"], 'j/M/Y');
 		};
 	?></td>
 </tr>
