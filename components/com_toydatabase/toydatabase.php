@@ -142,7 +142,7 @@ Toy loan request:
 <tr><td>Loan toy name:</td><td>Name</td></tr>
 <tr><td>Your Name:</td><td><input name="name" type="text" class="required" size="30" /></td></tr>
 <tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" size="30" /></td></tr>
-<tr><td>Requested loan date:</td><td>DATESELECT</td></tr>
+<tr><td>Requested loan date:</td><td><field name="mycalendar" type="calendar" default="5-10-2008" label="Select a date" description="" format="%d-%m-%Y" /></td></tr>
 <tr><td>Requested return date:</td><td>DATESELECT</td></tr>
 <tr><td>Days on loan:</td><td>DAYS</td></tr>
 <tr><td>Any Notes/Comments?:</td><td>TEXTAREA</td></tr>
