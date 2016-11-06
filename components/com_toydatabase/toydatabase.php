@@ -152,7 +152,7 @@ Toy loan request:
 <tr><td>Your Email:</td><td><input name="email" type="text" class="required validate-email" size="30" /></td></tr>
 <tr><td>Requested loan date:</td><td><?=JHTML::_('calendar', $startdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
 <tr><td>Requested return date:</td><td><?=JHTML::_('calendar', $startdate, "requestedloanreturndate" , "requestedloanreturndate", '%d-%m-%Y'); ?></td></tr>
-<tr><td>Days on loan:</td><td><input type=text name='daysonloan' id='daysonloan' onclick='Javascript:toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'></td></tr>
+<tr><td>Days on loan:</td><td><input type=text name='daysonloan' id='daysonloan' onclick='Javascript:self.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'></td></tr>
 <tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
 <tr><td colspan=2 align=right><input type=submit class="validate"></td></tr>
 </table>
