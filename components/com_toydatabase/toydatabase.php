@@ -242,10 +242,10 @@ switch ($act) {
 		->from($db->quoteName('#__toydatabase_equipment'))
 		//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
 		//->where($db->quoteName('status') . ' = '. $db->quote('1'))
-		->order($db->quoteName('name') . ' DESC');
+		->order($db->quoteName('name') . ' ASC');
 		
 		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 2, 'int');
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 5, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
