@@ -275,7 +275,7 @@ switch ($act) {
 <td width=30%><B>Toy Photo (small)</B></td>
 <td width=10%><B>Status</B></td></tr>
 <?php 
-if ($num_rows >0) {
+if (!empty($row)) {
 	// print_r($row);
 	foreach ($row as $row_key=>$row_value) {
 		echo "<tr onclick='self.location=\"".JURI::current()."?act=1&ddid=$row_key\"'>";
