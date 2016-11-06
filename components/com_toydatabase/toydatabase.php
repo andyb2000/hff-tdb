@@ -185,3 +185,7 @@ if ($num_rows >0) {
 	break;
 }; // enc of switch selecting act
 ?>
+<BR>
+<center>
+<a href="<?=JURI::current()?>">Return to Toy listing</a>
+</center>
