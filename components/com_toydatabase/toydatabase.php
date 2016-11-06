@@ -245,7 +245,7 @@ switch ($act) {
 		->order($db->quoteName('name') . ' ASC');
 		
 		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 4, 'int');
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
@@ -255,11 +255,6 @@ switch ($act) {
 			$num_rows=$db->loadResult();
 			jimport('joomla.html.pagination');
 			$pager=new JPagination($num_rows, $limitstart, $limit);
-			echo "<pre>";
-			echo "total: ".$num_rows."\n";
-			echo "limitstart: ".$limitstart."\n";
-			echo "limit: ".$limit;
-			echo "</pre>";
 		};
 		
 ?>
@@ -331,8 +326,7 @@ if (!empty($row)) {
 </table><form name='limitdisplay'>
 <?php
 	echo $pager->getListFooter();
-	echo $pager->getLimitBox();
-	echo $pager->getPagesCounter();
+	echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
 	echo "</form>";
 	// end of default: switch
 	break;
