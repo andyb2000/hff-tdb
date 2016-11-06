@@ -119,12 +119,8 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
             xmlhttp.open("GET","<?=JURI::root()?>components/com_toydatabase/toydatabase_livesearch.php?pname=<?=JURI::current()?>&q="+str,true);
             xmlhttp.send();
          }
-         function toy_parseDate(str) {
-        	    var mdy = str.split('/');
-        	    return new Date(mdy[2], mdy[0]-1, mdy[1]);
-         };
 
-         function toy_calculateDate(str1, str2) {
+         function toy_calculateDate(str2, str1) {
         	 return Math.floor(( Date.parse(str2) - Date.parse(str1) ) / 86400000);
          };
       </script>
