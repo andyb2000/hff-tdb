@@ -130,6 +130,13 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
         	    var retval= (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
         	    return retval;
         	}
+    	
+         function toy_calculateDate(str1, str2) {
+			var date1_split=str1.split("-");
+			var date2_split=str2.split("-");
+			alert(date1_split[1]);
+			return ret_num;
+         }
       </script>
 <?php
 
