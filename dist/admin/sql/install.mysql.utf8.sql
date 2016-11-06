@@ -88,6 +88,7 @@ CREATE TABLE `#__toydatabase_loanlink` (
 	`membershipid` int(11) NOT NULL,
 	`requestdate` datetime NOT NULL,
 	`loandate` datetime NOT NULL,
+	`returnbydate` datetime NOT NULL,
 	`returndate` datetime NOT NULL,
 	`status` smallint(1) NOT NULL,
 	`adminuser` int(11) NOT NULL,

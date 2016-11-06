@@ -129,8 +129,8 @@ switch ($act) {
 	<td><?php
 	// $date =& JFactory::getDate();
 	// echo 'Current date and time is: ' . $date->format() . "\n";
-		$mysql_date= JFactory::getDate($loanlink_rows["loandate"]);
-		echo JHTML::_('date', $mysql_date);
+		$mysql_date= JFactory::getDate($loanlink_rows["returnbydate"]);
+		echo JHTML::date($mysql_date, 'D F n, Y g:i a');
 //		echo JFactory::getDate($loanlink_rows["loandate"])->format('%a %d %b %Y - %H:%M');
 	?></td>
 </tr>
