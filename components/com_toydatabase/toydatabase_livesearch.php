@@ -10,7 +10,7 @@ $app = JFactory::getApplication('site');
 $app->initialise();
 $db = JFactory::getDBO();// Joomla database object
 
-$q = mysql_real_escape_string($_GET["q"]);
+$q = urlencode($_GET["q"]);
 $query_toyname = $db->getQuery(true);
 
 if (strlen($q)>2) {
