@@ -127,7 +127,7 @@ switch ($act) {
 <tr>
 	<td><B>Toy Due Return Date :</B></td>
 	<td><?php
-		if (!$loanlink_rows["returnbydate"]) {
+		if (!$loanlink_rows["returnbydate"] || $loanlink_rows["returnbydate"] == "0000-00-00 00:00:00") {
 			// No return date!
 			echo "Unknown";
 		} else {
