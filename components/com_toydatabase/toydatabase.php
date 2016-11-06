@@ -194,7 +194,7 @@ switch ($act) {
 <tr>
 	<td><B>Book toy :</B></td>
 	<td><?php
-	if (is_set($user_toymembership)) {
+	if ($user_toymembership) {
 		echo "<a href='".JURI::current()."?act=2&ddid=$ddid'>Book this toy</a>\n";
 	} else {
 		echo "Sorry - You need to be a member and logged into book a toy out";
