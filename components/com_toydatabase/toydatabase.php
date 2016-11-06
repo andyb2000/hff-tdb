@@ -251,7 +251,6 @@ switch ($act) {
 		$db->execute();
 		$num_rows = $db->getNumRows();
 		$row = $db->loadAssocList('id');
-		$db->setQuery('SELECT FOUND_ROWS();');
 		jimport('joomla.html.pagination');
 		$pager= new JPagination($db->loadResult(), $limitstart, $limit);
 		
