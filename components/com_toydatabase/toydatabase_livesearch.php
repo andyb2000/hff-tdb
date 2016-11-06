@@ -10,7 +10,7 @@ $app = JFactory::getApplication('site');
 $app->initialise();
 $db = JFactory::getDBO();// Joomla database object
 
-$q = urlencode($_REQUEST["q"]);
+$q = urldecode($_REQUEST["q"]);
 $pname = $_REQUEST["pname"];
 $query_toyname = $db->getQuery(true);
 

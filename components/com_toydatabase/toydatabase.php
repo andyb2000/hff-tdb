@@ -217,11 +217,11 @@ switch ($act) {
 					$user_mailer->setBody($user_mail);
 					$admin_send = $admin_mailer->Send();
 					if ( $admin_send !== true ) {
-						echo 'Error sending email to admins. this is a FATAL error.. : ' . $admin_send->__toString();
+						echo 'Error sending email to admins. this is a FATAL error.. : ' . $admin_send->__toString().'<BR><BR>';
 					};
 					$user_send = $user_mailer->Send();
 					if ( $user_send !== true ) {
-						echo 'Error sending email to your email address. Please check your email address is correct.' . $user_send->__toString();
+						echo 'Error sending email to your email address. Please check your email address is correct.' . $user_send->__toString(). '<BR><BR>';
 					};
 						
 				} else {
