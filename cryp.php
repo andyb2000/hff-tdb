@@ -1,3 +1,5 @@
+#!/usr/bin/php
+
 <?php
 $res = openssl_pkey_new();
 
