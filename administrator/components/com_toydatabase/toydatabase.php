@@ -243,28 +243,125 @@ $options = array(
 
 echo JHtmlTabs::start('tabs_id',$options);
 echo JHtmlTabs::panel("Toy Database",'panel-id-1');
-echo "<h2>Content of first panel goes here!</h2>";
-echo "<p>You can use JLayouHelper to render a layout if you want to</p>";
-echo JHtmlTabs::panel("Approve/View Requests",'panel-id-2');
-?>
-This is the approval panel.
-<?php
-echo JHtmlTabs::panel("Reports",'panel-id-3');
-?>
-This is the Reports panel.
-<?php
-echo JHtmlTabs::panel("Configuration",'panel-id-4'); //You can use any custom text
-echo "<h2>Content of configuration<h2>";
-echo JHtmlTabs::end();
+echo "<h2>Current Toy Database</h2>";
 
 switch($act) {
 	case "1":
 		break;
 	default:
+		$query = $db->getQuery(true);
+		$query
+		->select('SQL_CALC_FOUND_ROWS *')
+		->from($db->quoteName('#__toydatabase_equipment'))
+		//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+		//->where($db->quoteName('status') . ' = '. $db->quote('1'))
+		->order($db->quoteName('name') . ' ASC');
+		
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($query,$limitstart, $limit);
+		$row = $db->loadAssocList('id');
+		if(!empty($row)){
+			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
+			jimport('joomla.html.pagination');
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+		};
+		
+		?>
+		
+		<!-- Toy database search -->
+		<form method=post onsubmit="return false">
+		<input type=hidden name='act' value='3'>
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
+		</table>
+		</form>
+		<!-- END Toy database search -->
+		
+		<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+		<tr><td width=30%><B>Toy name</B></td>
+		<td width=30%><B>Toy category</B></td>
+		<td width=30%><B>Toy Photo (small)</B></td>
+		<td width=10%><B>Status</B></td></tr>
+		<?php 
+		if (!empty($row)) {
+			// print_r($row);
+			foreach ($row as $row_key=>$row_value) {
+				echo "<tr onclick='self.location=\"".JURI::current()."?act=1&ddid=$row_key\"'>";
+				echo "<td>".$row_value["name"]."</td>\n";
+				echo "<td>";
+				// Now retrieve the category (ies)
+				$query_category = $db->getQuery(true);
+				$query_category
+				->select(array('a.*','b.category'))
+				->from($db->quoteName('#__toydatabase_categorylink','a'))
+				->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+				->where($db->quoteName('a.equipmentid') . ' = '. $row_key);
+				$db->setQuery((string) $query_category);
+				$db->execute();
+				$category_rows = $db->loadAssocList();
+				foreach ($category_rows as $cat_display) {
+					echo $cat_display["category"]."<BR>\n";
+				};
+				echo "</td>";
+				echo "<td>";
+				// check the file exists to display the image
+				if (file_exists("library_images/".$row_value["picture"])) {
+					// dynamically resize image using php
+					echo "<img src='toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
+				} else {
+					echo "Sorry no image exists";
+				};
+				echo "</td>\n";
+				echo "<td>";
+				switch($row_value["status"]) {
+					case "3":
+						echo "Damaged/No longer available";
+						break;
+					case "2":
+						echo "Awaiting cleaning/repair";
+						break;
+					case "1":
+						echo "On Loan";
+						break;
+					case "0":
+						echo "Available";
+						break;
+					default:
+						echo "Unknown";
+						break;
+				};
+				echo "</td>\n";
+				echo "</tr>";
+			};
+		} else {
+			// no rows or toys in database found
+			echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
+		};
+		?>
+		</table><form name='limitdisplay'>
+		<?php
+			echo $pager->getListFooter();
+			echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
+			echo "</form>";
+			// end of default: switch
+			break;
+}; // enc of switch selecting act
+echo JHtmlTabs::panel("Approve/View Requests",'panel-id-2');
 ?>
-Current toy database is shown below:<BR>
+<h2>Approve/View Toy Requests</h2>
+This is the approval panel.
 <?php
-		break;
-};
+echo JHtmlTabs::panel("Reports",'panel-id-3');
+?>
+<h2>Reporting</h2>
+This is the Reports panel.
+<?php
+echo JHtmlTabs::panel("Configuration",'panel-id-4'); //You can use any custom text
+echo "<h2>Configuration<h2>";
+echo JHtmlTabs::end();
 
 ?>
