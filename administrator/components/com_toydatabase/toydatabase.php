@@ -167,14 +167,20 @@ $options = array(
 		'useCookie' => true, // this must not be a string. Don't use quotes.
 );
 
-//Note that the options argument is optional so JHtmlTabs::start() can be called without it
-
 echo JHtmlTabs::start('tabs_id',$options);
-echo JHtmlTabs::panel("Panel Title 1",'panel-id-1');
+echo JHtmlTabs::panel("Toy Database",'panel-id-1');
 echo "<h2>Content of first panel goes here!</h2>";
 echo "<p>You can use JLayouHelper to render a layout if you want to</p>";
-echo JHtmlTabs::panel(JText::_('CUSTOM_PANEL_TITLE'),'panel-id-2'); //You can use any custom text
-echo "<h2>Content of second panel goes here!<h2>";
+echo JHtmlTabs::panel("Approve/View Requests",'panel-id-2');
+?>
+This is the approval panel.
+<?php
+echo JHtmlTabs::panel("Reports",'panel-id-3');
+?>
+This is the Reports panel.
+<?php
+echo JHtmlTabs::panel("Configuration",'panel-id-4'); //You can use any custom text
+echo "<h2>Content of configuration<h2>";
 echo JHtmlTabs::end();
 
 switch($act) {
