@@ -262,6 +262,131 @@ echo "<h2>Current Toy Database</h2>";
 
 switch($act) {
 	case "1":
+		// retrieve the specific record
+		$query = $db->getQuery(true);
+		$query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_equipment'))
+		->where($db->quoteName('id') . ' = '. $ddid);
+		$db->setQuery((string) $query);
+		$db->execute();
+		$row = $db->loadAssoc();
+		
+		// Now retrieve the category (ies)
+		$query_category = $db->getQuery(true);
+		$query_category
+		->select(array('a.*','b.category'))
+		->from($db->quoteName('#__toydatabase_categorylink','a'))
+		->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+		->where($db->quoteName('a.equipmentid') . ' = '. $ddid);
+		$db->setQuery((string) $query_category);
+		$db->execute();
+		$category_rows = $db->loadAssocList();
+		
+		// And retrieve the loan state _toydatabase_loanlink
+		// If its on loan it will return a row and its status will be 1
+		// when returned the status should be set to 0 or something other than 1 basically
+		$query_loanlink = $db->getQuery(true);
+		$query_loanlink
+		->select('*')
+		->from($db->quoteName('#__toydatabase_loanlink'))
+		->where($db->quoteName('equipmentid') . ' = '. $ddid, 'AND')
+		->where($db->quoteName('status') . ' = '. '1');
+		$db->setQuery((string) $query_loanlink);
+		$db->execute();
+		$loanlink_rows = $db->loadAssoc();
+		
+		?>
+		<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+		<tr>
+			<td><B>Toy Name :</B></td>
+			<td><?=$row["name"]?></td>
+		</tr>
+		<tr>
+			<td><B>Toy Image :</B></td>
+			<td><?=$row["picture"]?></td>
+		</tr>
+		<tr>
+			<td><B>Toy Description :</B></td>
+			<td><?=$row["description"]?></td>
+		</tr>
+		<tr>
+			<td><B>Toy Location :</B></td>
+			<td><?=$row["storagelocation"]?></td>
+		</tr>
+		<tr>
+			<td><B>Toy Status :</B></td>
+			<td><?php
+			switch($row["status"]) {
+				case "3":
+					echo "DAMAGED/NO LONGER AVAILABLE";
+					break;
+				case "2":
+					echo "AWAITING CLEANING/REPAIR";
+					break;
+				case "1":
+					echo "ON LOAN";
+					break;
+				case "0":
+					echo "AVAILABLE";
+					break;
+				default:
+					echo "UNKNOWN";
+					break;
+			};
+			?></td>
+		</tr>
+		<tr>
+			<td><B>Toy Category :</B></td>
+			<td><?php 
+				foreach ($category_rows as $cat_display) {
+					echo $cat_display["category"]."<BR>\n";
+				};
+			?>
+			</td>
+		</tr>
+		<tr>
+			<td><B>Toy Loan state :</B></td>
+			<td><?php
+				switch($loanlink_rows["status"]) {
+					case "2":
+						echo "AWAITING LOAN REQUEST";
+				 		break;
+					case "1":
+						echo "ON LOAN";
+						break;
+					default:
+						echo "AVAILABLE";
+						break;
+				};
+			?></td>
+		</tr>
+		<tr>
+			<td><B>Toy Due Return Date :</B></td>
+			<td><?php
+				if (!$loanlink_rows["returnbydate"] || $loanlink_rows["returnbydate"] == "0000-00-00 00:00:00") {
+					// No return date!
+					echo "Unknown";
+				} else {
+					$mysql_date=JFactory::getDate($loanlink_rows["returnbydate"]);
+					$mysql_date_url=JHtml::_('date', $loanlink_rows["returnbydate"], 'd-m-Y');
+					echo JHtml::_('date', $loanlink_rows["returnbydate"], 'j/M/Y');
+				};
+			?></td>
+		</tr>
+		<tr>
+			<td><B>Book toy :</B></td>
+			<td><?php
+			if ($user_toymembership) {
+				echo "<a href='".JURI::current()."?act=2&ddid=$ddid&stdate=$mysql_date_url'>Book this toy</a>\n";
+			} else {
+				echo "Sorry - You need to be a member and logged into book a toy out";
+			};
+			?>
+			</td>
+		</tr>
+		</table>
+		<?php
 		break;
 	default:
 		$query = $db->getQuery(true);
