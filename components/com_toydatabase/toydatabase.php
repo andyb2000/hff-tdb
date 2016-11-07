@@ -5,6 +5,7 @@
  *
  * @copyright   Copyright (C) 2016 Andy Brown
  */
+ $debug=0;
  
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -36,7 +37,7 @@ $query = $db->getQuery(true);
 //->where($db->quoteName('status') . ' = '. $db->quote('1'))
 //->order($db->quoteNAme('a.name') . ' DESC');
 $user = JFactory::getUser();
-
+if ($debug) {
 echo "Database prefix is : " . $db->getPrefix()."<BR>";
 echo "<BR>";
 echo 'Joomla current URI is ' . JURI::current() . "\n";
@@ -48,6 +49,7 @@ print_r($user->groups);
 echo "<BR>";
 echo "User block: ".$user->block."<BR>\n";
 echo "Guest status: ".$user->guest."<BR>\n";
+};
 
 // Groups for toydatabase are in db t94us_toydatabase_permissions so retrieve if this user is in the right group
 $query_toypermissions = $db->getQuery(true);
@@ -62,8 +64,6 @@ $toydatabase_permissions = $db->loadAssoc();
 
 if ($toydatabase_permissions_num_rows <1) {
 	echo "<BR><h2>WARNING: Installation not complete, administrator please set permissions</h2><BR><BR>";
-} else {
-	echo "DB permissions group: ".$toydatabase_permissions["groupname"]."<BR>";;
 };
 
 $user_toymembership=0;
