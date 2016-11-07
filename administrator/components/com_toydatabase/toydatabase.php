@@ -305,7 +305,7 @@ switch($act) {
 		if (!empty($row)) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
-				echo "<tr onclick='self.location=\"".JURI::current()."?act=1&ddid=$row_key\"'>";
+				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."?act=1&ddid=$row_key\"'>";
 				echo "<td>".$row_value["name"]."</td>\n";
 				echo "<td>";
 				// Now retrieve the category (ies)
