@@ -152,4 +152,39 @@ UE95aEd0a3lIblJvb0pYdEo5T01pYjVpZlBZUTRsM1FBaytHVjNwL3JidStFVEk1aHFaaVJGNndsb1dP
 mFXYnlrcVQzS2ZsSVlJQlVVY3AxVjVWVk1FaHdMdTJURy8vQ2E2KzllL3M0cyIpKSkpOw=="));
 
 ?>
-Test
+<BR><center><h2>Toy database system administration</h2></center><BR><BR>
+<?php
+$options = array(
+		'onActive' => 'function(title, description){
+        description.setStyle("display", "block");
+        title.addClass("open").removeClass("closed");
+    }',
+		'onBackground' => 'function(title, description){
+        description.setStyle("display", "none");
+        title.addClass("closed").removeClass("open");
+    }',
+		'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
+		'useCookie' => true, // this must not be a string. Don't use quotes.
+);
+
+//Note that the options argument is optional so JHtmlTabs::start() can be called without it
+
+echo JHtmlTabs::start('tabs_id',$options);
+echo JHtmlTabs::panel("Panel Title 1",'panel-id-1');
+echo "<h2>Content of first panel goes here!</h2>";
+echo "<p>You can use JLayouHelper to render a layout if you want to</p>";
+echo JHtmlTabs::panel(JText::_('CUSTOM_PANEL_TITLE'),'panel-id-2'); //You can use any custom text
+echo "<h2>Content of second panel goes here!<h2>";
+echo JHtmlTabs::end();
+
+switch($act) {
+	case "1":
+		break;
+	default:
+?>
+Current toy database is shown below:<BR>
+<?php
+		break;
+};
+
+?>
