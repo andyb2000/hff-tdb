@@ -165,6 +165,7 @@ background: none repeat scroll 0 0 #F9F9F9;
 border-bottom: 1px solid #F9F9F9;
 color: #000000;
 z-index: 100;
+font-size: 50%;
 }
 
 dl.tabs dt.open {
