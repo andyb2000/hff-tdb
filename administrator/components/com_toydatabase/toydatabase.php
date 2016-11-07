@@ -297,22 +297,23 @@ switch($act) {
 		$loanlink_rows = $db->loadAssoc();
 		
 		?>
+		<form method=post name='update_toy'>
 		<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr>
 			<td><B>Toy Name :</B></td>
-			<td><?=$row["name"]?></td>
+			<td><input type=text size=30 name='' value='<?=$row["name"]?>'></td>
 		</tr>
 		<tr>
 			<td><B>Toy Image :</B></td>
-			<td><?=$row["picture"]?></td>
+			<td><input type=text size=30 name='' value='<?=$row["picture"]?>'></td>
 		</tr>
 		<tr>
 			<td><B>Toy Description :</B></td>
-			<td><?=$row["description"]?></td>
+			<td><input type=text size=30 name='' value='<?=$row["description"]?>'></td>
 		</tr>
 		<tr>
 			<td><B>Toy Location :</B></td>
-			<td><?=$row["storagelocation"]?></td>
+			<td><input type=text size=30 name='' value='<?=$row["storagelocation"]?>'></td>
 		</tr>
 		<tr>
 			<td><B>Toy Status :</B></td>
@@ -374,18 +375,8 @@ switch($act) {
 				};
 			?></td>
 		</tr>
-		<tr>
-			<td><B>Book toy :</B></td>
-			<td><?php
-			if ($user_toymembership) {
-				echo "<a href='".JURI::current()."?act=2&ddid=$ddid&stdate=$mysql_date_url'>Book this toy</a>\n";
-			} else {
-				echo "Sorry - You need to be a member and logged into book a toy out";
-			};
-			?>
-			</td>
-		</tr>
 		</table>
+		</form>
 		<?php
 		break;
 	default:
