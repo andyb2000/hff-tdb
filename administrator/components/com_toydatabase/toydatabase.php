@@ -165,17 +165,18 @@ background: none repeat scroll 0 0 #F9F9F9;
 border-bottom: 1px solid #F9F9F9;
 color: #000000;
 z-index: 100;
-font-size: 50%;
 }
 
 dl.tabs dt.open {
 border-bottom: medium none !important;
 font-weight: bold;
+font-size: 50%;
 }
 dl.tabs dt {
 float: left;
 margin-left: 3px;
 padding: 4px 10px;
+font-size: 50%;
 }
 dl.tabs dt {
 background: -moz-linear-gradient(center top , #E4E2CC, #F5F1E6) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
