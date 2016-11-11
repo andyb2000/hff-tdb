@@ -508,7 +508,7 @@ $query_permissions
 $db->setQuery((string) $query_permissions);
 $db->execute();
 $permissions_rows = $db->loadAssocList();
-
+print_r($permissions_rows);
 $query_usergroups = $db->getQuery(true);
 $query_usergroups
 ->select("*")
