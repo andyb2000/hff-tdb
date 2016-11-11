@@ -261,6 +261,11 @@ echo JHtmlTabs::panel("Toy Database",'panel-id-1');
 echo "<h2>Current Toy Database</h2>";
 
 switch($act) {
+	case "2":
+		// submit changes or new entry
+		$act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
+		
+		break;
 	case "1":
 		// retrieve the specific record
 		$query = $db->getQuery(true);
@@ -298,51 +303,50 @@ switch($act) {
 		
 		?>
 		<form method=post name='update_toy'>
+		<input type=hidden name='act' value='2'>
+		<input type=hidden name='ddid' value='<?=$ddid?>'>
 		<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr>
 			<td><B>Toy Name :</B></td>
-			<td><input type=text size=30 name='' value='<?=$row["name"]?>'></td>
+			<td><input type=text size=30 name='in_toyname' value='<?=$row["name"]?>'></td>
 		</tr>
 		<tr>
 			<td><B>Toy Image :</B></td>
-			<td><input type=text size=30 name='' value='<?=$row["picture"]?>'></td>
+			<td><input type=text size=30 name='in_toyimage' value='<?=$row["picture"]?>'></td>
 		</tr>
 		<tr>
 			<td><B>Toy Description :</B></td>
-			<td><input type=text size=30 name='' value='<?=$row["description"]?>'></td>
+			<td><input type=text size=30 name='in_toydescription' value='<?=$row["description"]?>'></td>
 		</tr>
 		<tr>
 			<td><B>Toy Location :</B></td>
-			<td><input type=text size=30 name='' value='<?=$row["storagelocation"]?>'></td>
+			<td><input type=text size=30 name='in_toylocation' value='<?=$row["storagelocation"]?>'></td>
 		</tr>
 		<tr>
 			<td><B>Toy Status :</B></td>
-			<td><?php
-			switch($row["status"]) {
-				case "3":
-					echo "DAMAGED/NO LONGER AVAILABLE";
-					break;
-				case "2":
-					echo "AWAITING CLEANING/REPAIR";
-					break;
-				case "1":
-					echo "ON LOAN";
-					break;
-				case "0":
-					echo "AVAILABLE";
-					break;
-				default:
-					echo "UNKNOWN";
-					break;
-			};
-			?></td>
+			<td><select name='in_toystatus'>
+			<option value='3' <?php if($row["status"] == 3) {echo "selected";}; ?>>DAMAGED/NO LONGER AVAILABLE</option>
+			<option value='2' <?php if($row["status"] == 2) {echo "selected";}; ?>>AWAITING CLEANING/REPAIR</option>
+			<option value='1' <?php if($row["status"] == 1) {echo "selected";}; ?>>ON LOAN</option>
+			<option value='0' <?php if($row["status"] == 0) {echo "selected";}; ?>>AVAILABLE</option>
+			<option value='99' <?php if($row["status"] == 99) {echo "selected";}; ?>>UNKNOWN</option>
+			</select></td>
 		</tr>
 		<tr>
 			<td><B>Toy Category :</B></td>
 			<td><?php 
-				foreach ($category_rows as $cat_display) {
-					echo $cat_display["category"]."<BR>\n";
-				};
+			$query_toycategory = $db->getQuery(true);
+			$query_toycategory
+			->select("*")
+			->from($db->quoteName('#__toydatabase_equipment_category'));
+			$db->setQuery((string) $query_toycategory);
+			$db->execute();
+			$toycategory_rows = $db->loadAssocList();
+			foreach ($toycategory_rows as $toycategory_output) {
+				echo "<input type=checkbox name='".$toycategory_output["id"]." value='".$toycategory_output["category"]."' ";
+				if ($toycategory_output[0]["id"] == $cat_display["category"]) {echo "checked";};
+				echo "><BR>\n";
+			};
 			?>
 			</td>
 		</tr>
@@ -481,17 +485,20 @@ switch($act) {
 			// end of default: switch
 			break;
 }; // enc of switch selecting act
-echo JHtmlTabs::panel("Approve/View Requests",'panel-id-2');
+echo JHtmlTabs::panel("Toy Categories",'panel-id-2');
+echo "<h2>Current Toy Categories</h2>";
+
+echo JHtmlTabs::panel("Approve/View Requests",'panel-id-3');
 ?>
 <h2>Approve/View Toy Requests</h2>
 This is the approval panel.
 <?php
-echo JHtmlTabs::panel("Reports",'panel-id-3');
+echo JHtmlTabs::panel("Reports",'panel-id-4');
 ?>
 <h2>Reporting</h2>
 This is the Reports panel.
 <?php
-echo JHtmlTabs::panel("Configuration",'panel-id-4'); //You can use any custom text
+echo JHtmlTabs::panel("Configuration",'panel-id-5'); //You can use any custom text
 echo "<h2>Configuration<h2>";
 ?>
 <form method=post name='configuration'>
@@ -518,11 +525,14 @@ $db->execute();
 $usergroups_rows = $db->loadAssocList();
 foreach ($usergroups_rows as $usergroup_output) {
 	echo "<option value='".$usergroup_output["id"]."' ";
-	if ($permissions_rows["groupname"] == $usergroup_output["id"]) {echo "selected";};
+	if ($permissions_rows[0]["groupname"] == $usergroup_output["id"]) {echo "selected";};
 	echo ">".$usergroup_output["title"]."</option>\n";
 };
 ?>
-</select></td>
+</select></td></tr>
+<tr><td colspan=2>Note: You must have already created a usergroup. If not, click <a href='index.php?option=com_users&view=groups'>HERE</a> to set one up first.</td></tr>
+<tr><td colspan=2 align=center><hr width=99%></td></tr>
+<tr><td colspan=2 align=right><input type=submit name='Save changes'></td></tr>
 </table>
 </form>
 <?php
