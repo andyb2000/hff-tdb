@@ -344,7 +344,7 @@ switch($act) {
 			$toycategory_rows = $db->loadAssocList();
 			foreach ($toycategory_rows as $toycategory_output) {
 				echo "<input type=checkbox name='".$toycategory_output["id"]." value='".$toycategory_output["category"]."' ";
-				if ($toycategory_output[0]["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
+				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
 				echo ">".$toycategory_output["category"]."<BR>\n";
 			};
 			?>
