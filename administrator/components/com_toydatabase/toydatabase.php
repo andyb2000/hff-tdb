@@ -342,33 +342,29 @@ switch($act) {
 			$db->setQuery((string) $query_toycategory);
 			$db->execute();
 			$toycategory_rows = $db->loadAssocList();
+			$toycat_maxid=0;
 			foreach ($toycategory_rows as $toycategory_output) {
-				echo "<input type=checkbox name='".$toycategory_output["id"]." value='".$toycategory_output["category"]."' ";
+				echo "<input type=checkbox name='toycat_".$toycategory_output["id"]."' value='".$toycategory_output["category"]."' ";
 				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
+				$toycat_maxid=$toycategory_output["id"];
 				echo ">".$toycategory_output["category"]."<BR>\n";
 			};
+			echo "<input type=hidden name='toycat_maxid' value='".$toycat_maxid."'>\n";
 			?>
 			</td>
 		</tr>
 		<tr>
 			<td><B>Toy Loan state :</B></td>
-			<td><?php
-				switch($loanlink_rows["status"]) {
-					case "2":
-						echo "AWAITING LOAN REQUEST";
-				 		break;
-					case "1":
-						echo "ON LOAN";
-						break;
-					default:
-						echo "AVAILABLE";
-						break;
-				};
-			?></td>
+			<td><select name='in_toyloanstate'>
+			<option name='2' <?php if ($loanlink_rows["status"] == "2") {echo "selected";}; ?>>AWAITING LOAN REQUEST</option>
+			<option name='1' <?php if ($loanlink_rows["status"] == "1") {echo "selected";}; ?>>ON LOAN</option>
+			<option name='0' <?php if ($loanlink_rows["status"] == "0") {echo "selected";}; ?>>AVAILABLE</option>
+			</select>
+			</td>
 		</tr>
 		<tr>
 			<td><B>Toy Due Return Date :</B></td>
-			<td><?php
+			<td><input type=text name='in_toyreturndate' value='<?php
 				if (!$loanlink_rows["returnbydate"] || $loanlink_rows["returnbydate"] == "0000-00-00 00:00:00") {
 					// No return date!
 					echo "Unknown";
@@ -377,8 +373,9 @@ switch($act) {
 					$mysql_date_url=JHtml::_('date', $loanlink_rows["returnbydate"], 'd-m-Y');
 					echo JHtml::_('date', $loanlink_rows["returnbydate"], 'j/M/Y');
 				};
-			?></td>
+			?>'></td>
 		</tr>
+		<tr><td colspan=2><input type=submit name='Save changes'></td></tr>
 		</table>
 		</form>
 		<?php
