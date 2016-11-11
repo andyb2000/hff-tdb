@@ -308,30 +308,30 @@ switch($act) {
 		<input type=hidden name='ddid' value='<?=$ddid?>'>
 		<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr>
-			<td><B>Toy Name :</B></td>
+			<td valign=top><B>Toy Name :</B></td>
 			<td><input type=text size=30 name='in_toyname' value='<?=$row["name"]?>'></td>
 		</tr>
 		<tr>
-			<td><B>Toy URN :</B></td>
+			<td valign=top><B>Toy URN :</B></td>
 			<td><input type=text size=30 name='in_toyurn' value='<?=$row["urn"]?>'></td>
 		</tr>
 		<tr>
-			<td><B>Toy Image :</B></td>
+			<td valign=top><B>Toy Image :</B></td>
 			<td><input type=text size=30 name='in_toyimage' value='<?=$row["picture"]?>'></td>
 		</tr>
 		<tr>
-			<td><B>Toy Description :</B></td>
+			<td valign=top><B>Toy Description :</B></td>
 			<td><?php 
-			echo $editor->display('in_toydescription', $row["description"], '100%', '300px', '50', '4',true);			
+			echo $editor->display('in_toydescription', $row["description"], '100%', '100px', '20', '4',true);			
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td><B>Toy Location :</B></td>
+			<td valign=top><B>Toy Location :</B></td>
 			<td><input type=text size=30 name='in_toylocation' value='<?=$row["storagelocation"]?>'></td>
 		</tr>
 		<tr>
-			<td><B>Toy Status :</B></td>
+			<td valign=top><B>Toy Status :</B></td>
 			<td><select name='in_toystatus'>
 			<option value='3' <?php if($row["status"] == 3) {echo "selected";}; ?>>DAMAGED/NO LONGER AVAILABLE</option>
 			<option value='2' <?php if($row["status"] == 2) {echo "selected";}; ?>>AWAITING CLEANING/REPAIR</option>
@@ -341,7 +341,7 @@ switch($act) {
 			</select></td>
 		</tr>
 		<tr>
-			<td><B>Toy Category :</B></td>
+			<td valign=top><B>Toy Category :</B></td>
 			<td><?php 
 			$query_toycategory = $db->getQuery(true);
 			$query_toycategory
@@ -362,7 +362,7 @@ switch($act) {
 			</td>
 		</tr>
 		<tr>
-			<td><B>Toy Loan state :</B></td>
+			<td valign=top><B>Toy Loan state :</B></td>
 			<td><select name='in_toyloanstate'>
 			<option name='2' <?php if ($loanlink_rows["status"] == "2") {echo "selected";}; ?>>AWAITING LOAN REQUEST</option>
 			<option name='1' <?php if ($loanlink_rows["status"] == "1") {echo "selected";}; ?>>ON LOAN</option>
@@ -371,10 +371,10 @@ switch($act) {
 			</td>
 		</tr>
 		<tr>
-			<td><B>Toy Due Return Date :</B></td>
+			<td valign=top><B>Toy Due Return Date :</B></td>
 			<td><input type=text name='in_toyreturndate' value='<?=$loanlink_rows["returnbydate"]?>'></td>
 		</tr>
-		<tr><td colspan=2><input type=submit value='Save changes'></td></tr>
+		<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
 		</table>
 		</form>
 		<?php
