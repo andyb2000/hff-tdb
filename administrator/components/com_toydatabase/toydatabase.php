@@ -25,6 +25,7 @@ $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
 $ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $config = JFactory::getConfig();
+$editor = JFactory::getEditor();
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.calendar');
 
@@ -320,7 +321,10 @@ switch($act) {
 		</tr>
 		<tr>
 			<td><B>Toy Description :</B></td>
-			<td><input type=text size=30 name='in_toydescription' value='<?=$row["description"]?>'></td>
+			<td><?php 
+			echo $editor->display('in_toydescription', $row["description"], '100%', '400', '70', '15',true);			
+			?>
+			</td>
 		</tr>
 		<tr>
 			<td><B>Toy Location :</B></td>
