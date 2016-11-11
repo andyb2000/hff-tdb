@@ -347,6 +347,7 @@ switch($act) {
 				if ($toycategory_output[0]["id"] == $cat_display["category"]) {echo "checked";};
 				echo ">".$toycategory_output["category"]."<BR>\n";
 			};
+			print_r($category_rows);
 			?>
 			</td>
 		</tr>
