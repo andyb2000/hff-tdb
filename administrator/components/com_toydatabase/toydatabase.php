@@ -372,7 +372,7 @@ switch($act) {
 		</tr>
 		<tr>
 			<td valign=top><B>Toy Due Return Date :</B></td>
-			<td><input type=text name='in_toyreturndate' value='<?=$loanlink_rows["returnbydate"]?>'></td>
+			<td><?=JHTML::_('calendar', $loanlink_rows["returnbydate"], "in_toyreturndate" , "in_toyreturndate", '%Y-%m-%d'); ?></td>
 		</tr>
 		<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
 		</table>
