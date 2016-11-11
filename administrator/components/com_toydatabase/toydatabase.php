@@ -345,7 +345,7 @@ switch($act) {
 			foreach ($toycategory_rows as $toycategory_output) {
 				echo "<input type=checkbox name='".$toycategory_output["id"]." value='".$toycategory_output["category"]."' ";
 				if ($toycategory_output[0]["id"] == $cat_display["category"]) {echo "checked";};
-				echo "><BR>\n";
+				echo ">".$toycategory_output["category"]."<BR>\n";
 			};
 			?>
 			</td>
