@@ -311,6 +311,10 @@ switch($act) {
 			<td><input type=text size=30 name='in_toyname' value='<?=$row["name"]?>'></td>
 		</tr>
 		<tr>
+			<td><B>Toy URN :</B></td>
+			<td><input type=text size=30 name='in_toyurn' value='<?=$row["urn"]?>'></td>
+		</tr>
+		<tr>
 			<td><B>Toy Image :</B></td>
 			<td><input type=text size=30 name='in_toyimage' value='<?=$row["picture"]?>'></td>
 		</tr>
@@ -364,18 +368,9 @@ switch($act) {
 		</tr>
 		<tr>
 			<td><B>Toy Due Return Date :</B></td>
-			<td><input type=text name='in_toyreturndate' value='<?php
-				if (!$loanlink_rows["returnbydate"] || $loanlink_rows["returnbydate"] == "0000-00-00 00:00:00") {
-					// No return date!
-					echo "Unknown";
-				} else {
-					$mysql_date=JFactory::getDate($loanlink_rows["returnbydate"]);
-					$mysql_date_url=JHtml::_('date', $loanlink_rows["returnbydate"], 'd-m-Y');
-					echo JHtml::_('date', $loanlink_rows["returnbydate"], 'j/M/Y');
-				};
-			?>'></td>
+			<td><input type=text name='in_toyreturndate' value='<?=$loanlink_rows["returnbydate"]?>'></td>
 		</tr>
-		<tr><td colspan=2><input type=submit name='Save changes'></td></tr>
+		<tr><td colspan=2><input type=submit value='Save changes'></td></tr>
 		</table>
 		</form>
 		<?php
