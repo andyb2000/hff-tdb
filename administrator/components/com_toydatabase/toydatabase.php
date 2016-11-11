@@ -322,7 +322,7 @@ switch($act) {
 		<tr>
 			<td><B>Toy Description :</B></td>
 			<td><?php 
-			echo $editor->display('in_toydescription', $row["description"], '100%', '400', '70', '15',true);			
+			echo $editor->display('in_toydescription', $row["description"], '100%', '300', '50', '15',true);			
 			?>
 			</td>
 		</tr>
