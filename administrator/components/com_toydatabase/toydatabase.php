@@ -496,7 +496,33 @@ echo "<h2>Configuration<h2>";
 ?>
 <form method=post name='configuration'>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
-<tr><td><B></B>
+<tr><td><B>User group membership association:</B></td>
+<td><select name='groupmembership'>
+<option value=''></option>
+<?php 
+$query_permissions=$db->getQuery(true);
+$query_permissions
+->select("*")
+->from($db->quoteName('#__toydatabase_permissions'))
+->where($db->quoteName('function') . ' = "member"');
+$db->setQuery((string) $query_permissions);
+$db->execute();
+$permissions_rows = $db->loadAssocList();
+
+$query_usergroups = $db->getQuery(true);
+$query_usergroups
+->select("*")
+->from($db->quoteName('#__usergroups'));
+$db->setQuery((string) $query_usergroups);
+$db->execute();
+$usergroups_rows = $db->loadAssocList();
+foreach ($usergroups_rows as $usergroup_output) {
+	echo "<option value='".$usergroup_output["id"]."' ";
+	if ($permission_rows["groupname"] == $usergroup_output["id"]) {echo "selected";};
+	echo ">".$usergroup_output["title"]."</option>\n";
+};
+?>
+</select></td>
 </table>
 </form>
 <?php
