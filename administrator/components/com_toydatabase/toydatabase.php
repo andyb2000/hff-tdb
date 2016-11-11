@@ -518,7 +518,7 @@ $db->execute();
 $usergroups_rows = $db->loadAssocList();
 foreach ($usergroups_rows as $usergroup_output) {
 	echo "<option value='".$usergroup_output["id"]."' ";
-	if ($permission_rows["groupname"] == $usergroup_output["id"]) {echo "selected";};
+	if ($permissions_rows_rows["groupname"] == $usergroup_output["id"]) {echo "selected";};
 	echo ">".$usergroup_output["title"]."</option>\n";
 };
 ?>
