@@ -497,7 +497,7 @@ echo JHtmlTabs::panel("Reports",'panel-id-4');
 This is the Reports panel.
 <?php
 echo JHtmlTabs::panel("Configuration",'panel-id-5'); //You can use any custom text
-echo "<h2>Configuration<h2>";
+echo "<h2>Configuration</h2>";
 ?>
 <form method=post name='configuration'>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
