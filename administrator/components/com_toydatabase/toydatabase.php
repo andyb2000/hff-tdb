@@ -259,7 +259,7 @@ $options = array(
 
 echo JHtmlTabs::start('tabs_id',$options);
 echo JHtmlTabs::panel("Toy Database",'panel-id-1');
-echo "<h2>Current Toy Database</h2>";
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Database</h2></a>";
 
 switch($act) {
 	case "2":
