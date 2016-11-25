@@ -262,10 +262,109 @@ echo JHtmlTabs::panel("Toy Database",'panel-id-1');
 echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Database</h2></a>";
 
 switch($act) {
+	case "4":
+		// new toy
+?>
+                <form method=post name='update_toy'>
+                <input type=hidden name='act' value='2'>
+                <input type=hidden name='ddid' value='0'>
+                <table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+                <tr>
+                        <td valign=top><B>Toy Name :</B></td>
+                        <td><input type=text size=30 name='in_toyname' value=''></td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy URN :</B></td>
+                        <td><input type=text size=30 name='in_toyurn' value=''></td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Image :</B></td>
+                        <td><input type=text size=30 id='in_toyimage' name='in_toyimage' value=''>
+                        <a class="modal-button" rel="{handler: 'iframe', size: {x: 570, y: 400}}" href="index.php?option=com_media&view=images&tmpl=component&e_name=in_toyimage" title="Image">Image</a>
+                        </td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Description :</B></td>
+                        <td><?php 
+                        echo $editor->display('in_toydescription', '', '100%', '100px', '20', '4',true);
+                        ?>
+                        </td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Location :</B></td>
+                        <td><input type=text size=30 name='in_toylocation' value=''></td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Status :</B></td>
+                        <td><select name='in_toystatus'>
+                        <option value='3'>DAMAGED/NO LONGER AVAILABLE</option>
+                        <option value='2'>AWAITING CLEANING/REPAIR</option>
+                        <option value='1'>ON LOAN</option>
+                        <option value='0'>AVAILABLE</option>
+                        <option value='99'>UNKNOWN</option>
+                        </select></td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Category :</B></td>
+                        <td><?php 
+                        $query_toycategory = $db->getQuery(true);
+                        $query_toycategory
+                        ->select("*")
+                        ->from($db->quoteName('#__toydatabase_equipment_category'));
+                        $db->setQuery((string) $query_toycategory);
+                        $db->execute();
+                        $toycategory_rows = $db->loadAssocList();
+                        $toycat_maxid=0;
+                        foreach ($toycategory_rows as $toycategory_output) {
+                                echo "<input type=checkbox name='toycat_".$toycategory_output["id"]."' value='".$toycategory_output["category"]."' ";
+                                $toycat_maxid=$toycategory_output["id"];
+                                echo ">".$toycategory_output["category"]."<BR>\n";
+                        };
+                        echo "<input type=hidden name='toycat_maxid' value='".$toycat_maxid."'>\n";
+                        ?>
+                        </td>
+                </tr>
+                <tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+                </table>
+                </form>
+<?php
+		break;
+	case "3":
+		// search
+		break;
 	case "2":
 		// submit changes or new entry
-		$act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
-		
+		// if the ddid=0 then its a new entry, otherwise its an update to the existing ddid(rowid of the toy)
+		$frm_in_toyname = $jinput->get('in_toyname', '', 'RAW');
+		$frm_in_toyurn = $jinput->get('in_toyurn', '', 'RAW');
+		$frm_in_toyimage = $jinput->get('in_toyimage', '', 'RAW');
+		$frm_in_toydescription = $jinput->get('in_toydescription', '', 'RAW');
+		$frm_in_toylocation = $jinput->get('in_toylocation', '', 'RAW');
+		$frm_in_toystatus = $jinput->get('in_toystatus', '', 'RAW');
+		$frm_in_toycat_arr = $jinput->get('toycat_arr', array(), 'ARRAY');
+
+		if ($ddid == 0) {
+			// new toy entry
+			// add the request to the database
+				$ins_request = $db->getQuery(true);
+				$ins_columns = array('urn', 'name', 'picture', 'description', 'storagelocation','status','active','creationdate','adminuser');
+				$ins_values = array($db->quote($frm_in_toyurn),$db->quote($frm_in_toyimage),$db->quote($frm_in_toydescription),$db->quote($frm_in_toylocation),$db->quote($frm_in_toystatus),'1','NOW()',$user->id);
+                                        $ins_request
+                                        ->insert($db->quoteName('#__toydatabase_equipment'))
+                                        ->columns($db->quoteName($ins_columns))
+                                        ->values(implode(',', $ins_values));
+					try {
+	                                        $db->setQuery($ins_request);
+        	                                $db->execute();
+					}
+					catch (RuntimeException $e) {
+						JFactory::getApplication()->enqueueMessage($e->getMessage());
+						return false;
+					};
+
+		} else {
+			// existing toy update
+		}; // end of if ddid
 		break;
 	case "1":
 		// retrieve the specific record
@@ -354,9 +453,12 @@ switch($act) {
 			$toycategory_rows = $db->loadAssocList();
 			$toycat_maxid=0;
 			foreach ($toycategory_rows as $toycategory_output) {
-				echo "<input type=checkbox name='toycat_".$toycategory_output["id"]."' value='".$toycategory_output["category"]."' ";
+//				echo "<input type=checkbox name='toycat_".$toycategory_output["id"]."' value='".$toycategory_output["category"]."' ";
+//				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
+//				$toycat_maxid=$toycategory_output["id"];
+//				echo ">".$toycategory_output["category"]."<BR>\n";
+				echo "<input type=checkbox name='toycat_arr[]' value='".$toycategory_output["category"]."' ";
 				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
-				$toycat_maxid=$toycategory_output["id"];
 				echo ">".$toycategory_output["category"]."<BR>\n";
 			};
 			echo "<input type=hidden name='toycat_maxid' value='".$toycat_maxid."'>\n";
@@ -364,8 +466,8 @@ switch($act) {
 			</td>
 		</tr>
 		<tr>
-			<td valign=top><B>Toy Loan state :</B></td>
-			<td><select name='in_toyloanstate'>
+			<td valign=top><B>Toy Loan state :<BR>(Non-edit, go to Approve/View requests tab)</B></td>
+			<td><select name='in_toyloanstate' disabled>
 			<option name='2' <?php if ($loanlink_rows["status"] == "2") {echo "selected";}; ?>>AWAITING LOAN REQUEST</option>
 			<option name='1' <?php if ($loanlink_rows["status"] == "1") {echo "selected";}; ?>>ON LOAN</option>
 			<option name='0' <?php if ($loanlink_rows["status"] == "0") {echo "selected";}; ?>>AVAILABLE</option>
@@ -409,10 +511,19 @@ switch($act) {
 		<form method=post onsubmit="return false">
 		<input type=hidden name='act' value='3'>
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
-		<tr align=right><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
+		<tr align=right><td align=right>Search toy library:</td><td width=230><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
 		</table>
 		</form>
 		<!-- END Toy database search -->
+
+		<!-- New toy button -->
+                <form method=post onsubmit="return false">
+                <input type=hidden name='act' value='4'>
+                <table width=100% border=0 cellpadding=0 cellspacing=0>
+                <tr align=right><td align=right><input type=button name='newtoy' id='newtoy' value='Add a new toy' onclick='self.location="<?=JURI::getInstance()->toString() ?>&act=4"'></td></tr>
+                </table>
+                </form>
+		<!-- END new toy button -->
 		
 		<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr><td width=30%><B>Toy name</B></td>
