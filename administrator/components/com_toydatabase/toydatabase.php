@@ -629,7 +629,6 @@ switch($act) {
 				};
 				echo "</td>";
 				echo "<td>";
-				echo "DEBUG: ".JPATH_BASE."/../".$row_value["picture"]."<BR>\n";
 				// check the file exists to display the image
 				if (is_file(JPATH_BASE."/../".$row_value["picture"])) {
 					// dynamically resize image using php
