@@ -494,7 +494,24 @@ switch($act) {
 				};
 				echo "DEBUG: about to do category updates<BR>\n";
 			// category updates is trickyer
-			
+				if (is_array($frm_in_toycat_arr)) {
+					foreach ($frm_in_toycat_arr as $toycat_human_val) {
+						$check_cat_query = $db->getQuery(true);
+						$check_cat_query
+						->select('id')
+						->from($db->quoteName('#__toydatabase_categorylink'))
+						->where($db->quoteName('equipmentid') . ' = '. $ddid, 'AND')
+						->where($db->quoteName('categoryid') . ' = '. $toycat_human_val);
+						$db->setQuery((string) $query);
+						$db->execute();
+						$row_count_check= $db->getNumRows();
+						echo "DEBUG: found entry $row_count_check<BR>\n";
+						
+						
+						
+						
+					};
+				};
 			JFactory::getApplication()->enqueueMessage("Updated toy entry");
 			
 		}; // end of if ddid
