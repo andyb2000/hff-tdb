@@ -495,12 +495,12 @@ switch($act) {
 		->from($db->quoteName('#__toydatabase_categorylink','a'))
 		->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
 		->where($db->quoteName('a.equipmentid') . ' = '. $ddid);
-		echo "DEBUG CAT:<PRE>\n";
-		print_r($query_category);
-		echo "</PRE><BR>\n";
 		$db->setQuery((string) $query_category);
 		$db->execute();
 		$category_rows = $db->loadAssocList();
+		echo "DEBUG CAT:<PRE>\n";
+		print_r($category_rows);
+		echo "</PRE><BR>\n";
 		
 		// And retrieve the loan state _toydatabase_loanlink
 		// If its on loan it will return a row and its status will be 1
