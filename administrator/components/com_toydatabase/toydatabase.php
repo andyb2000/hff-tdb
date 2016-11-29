@@ -462,7 +462,7 @@ switch($act) {
 		</tr>
 		<tr>
 			<td valign=top><B>Toy Image :</B></td>
-			<td><input type=media size=30 id='in_toyimage' name='in_toyimage' value='<?=$row["picture"]?>'>
+			<td><input type=text size=30 id='in_toyimage' name='in_toyimage' value='<?=$row["picture"]?>'>
 <!-- 		<a class="modal-button" rel="{handler: 'iframe', size: {x: 570, y: 400}}" href="index.php?option=com_media&view=images&tmpl=component&e_name=in_toyimage" title="Image">Image</a> -->
 			<a href="#myImgModal" class="btn" data-toggle="modal">Click to select image</a>
 			<?php
