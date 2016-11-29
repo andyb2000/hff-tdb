@@ -49,9 +49,6 @@ function resize($newWidth, $originalFile) {
 	$tmp = imagecreatetruecolor($newWidth, $newHeight);
 	imagecopyresampled($tmp, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-	if (file_exists($targetFile)) {
-		unlink($targetFile);
-	}
 	$image_save_func($tmp);
 };
 ?>
