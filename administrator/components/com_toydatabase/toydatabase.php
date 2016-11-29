@@ -28,6 +28,7 @@ $config = JFactory::getConfig();
 $editor = JFactory::getEditor();
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.calendar');
+JHTML::_('behavior.modal');
 
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
@@ -287,6 +288,16 @@ padding: 0;
 			var ret_num=toy_daysBetween(new_date2,new_date1);
 			return ret_num;
          }
+         function jInsertFieldValue(value, id) {
+
+             var old_id = document.id(id).value;
+     	if (old_id != id) {
+     		var elem = document.id(id)
+     		elem.value = value;
+     		elem.fireEvent("change");
+     	}
+
+     }
       </script>
 <BR><center><h2>Toy database system administration</h2></center><BR><BR>
 <?php
