@@ -11,16 +11,26 @@ $load_image=getcwd()."/../../".$load_image;
 
 header('Content-type: image/jpeg');
 
-list($width, $height) = getimagesize("library_images/".$load_image);
+echo make_thumb($src, $desired_width);
+exit;
 
-$create = imagecreatetruecolor(150, 150);
-$img = imagecreatefromjpeg("library_images/".$load_image);
+function make_thumb($src, $desired_width) {
 
-$newwidth = 150;
-$newheight = 150;
+	/* read the source image */
+	$source_image = imagecreatefromjpeg($src);
+	$width = imagesx($source_image);
+	$height = imagesy($source_image);
 
-imagecopyresized($create, $img, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+	/* find the "desired height" of this thumbnail, relative to the desired width  */
+	$desired_height = floor($height * ($desired_width / $width));
 
-imagejpeg($create, null, 100);
+	/* create a new, "virtual" image */
+	$virtual_image = imagecreatetruecolor($desired_width, $desired_height);
 
+	/* copy source image at a resized size */
+	imagecopyresampled($virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height);
+
+	/* create the physical thumbnail image to its destination */
+	imagejpeg($virtual_image);
+}
 ?>
