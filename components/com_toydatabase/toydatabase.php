@@ -549,7 +549,7 @@ if (!empty($row)) {
 		echo "</td>";
 		echo "<td>";
 		// check the file exists to display the image
-		if (file_exists("library_images/".$row_value["picture"])) {
+		if (file_exists($row_value["picture"])) {
 			// dynamically resize image using php
 			echo "<img src='toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
 		} else {
