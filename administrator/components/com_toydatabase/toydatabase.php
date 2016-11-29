@@ -321,6 +321,24 @@ echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Datab
 switch($act) {
 	case "5":
 		// delete toy
+		// need to remove all links to this toy first
+		//   #__toydatabase_equipment
+		//   #__toydatabase_categorylink
+		
+		// hmm, should we delete really?
+		$del_query = $db->getQuery(true);
+		$del_query->delete($db->quoteName('#__toydatabase_categorylink'));
+		$del_query->where($db->quoteName('equipmentid') . ' = '. $ddid);
+		$db->setQuery($del_query);
+		echo $db->execute();
+		
+		$del2_query = $db->getQuery(true);
+		$del2_query->delete($db->quoteName('#__toydatabase_equipment'));
+		$del2_query->where($db->quoteName('id') . ' = '. $ddid);
+		$db->setQuery($del2_query);
+		echo $db->execute();
+		
+		
 		break;
 	case "4":
 		// new toy
@@ -582,7 +600,7 @@ switch($act) {
 			<td><?=JHTML::_('calendar', $loanlink_rows["returnbydate"], "in_toyreturndate" , "in_toyreturndate", '%Y-%m-%d'); ?></td>
 		</tr>
 		<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
-		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::current()?>?option=com_database&act=5&ddid=<?=$ddid?>';};"></td></tr>
+		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::current()?>?option=com_toydatabase&act=5&ddid=<?=$ddid?>';};"></td></tr>
 		</table>
 		</form>
 		<?php
