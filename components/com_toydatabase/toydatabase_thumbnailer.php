@@ -4,7 +4,7 @@
 $load_image=$_REQUEST["img"];
 if (!$load_image) {exit;};
 $load_image = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $load_image);
-$load_image = mb_ereg_replace("([\.]{2,})", '', $load_image);
+//$load_image = mb_ereg_replace("([\.]{2,})", '', $load_image);
 
 // set the file location properly
 $load_image=getcwd()."/../../".$load_image;
