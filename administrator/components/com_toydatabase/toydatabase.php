@@ -241,7 +241,53 @@ margin: 0;
 padding: 0;
 }
 </style>
+<script>
+         function showResult(str) {
+			
+            if (str.length == 0) {
+               document.getElementById("livesearch").innerHTML = "";
+               document.getElementById("livesearch").style.border = "0px";
+               return;
+            }
+            
+            if (window.XMLHttpRequest) {
+               xmlhttp = new XMLHttpRequest();
+            }else {
+               xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            xmlhttp.onreadystatechange = function() {
+				
+               if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                  document.getElementById("livesearch").innerHTML = xmlhttp.responseText;
+                  document.getElementById("livesearch").style.border = "1px solid #A5ACB2";
+               }
+            }
+            
+            xmlhttp.open("GET","<?=JURI::root()?>components/com_toydatabase/toydatabase_livesearch.php?pname=<?=JURI::current()?>&q="+str,true);
+            xmlhttp.send();
+         }
 
+         function toy_treatAsUTC(date) {
+        	    var result = new Date(date);
+        	    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+        	    return result;
+        	}
+        function toy_daysBetween(startDate, endDate) {
+        	    var millisecondsPerDay = 24 * 60 * 60 * 1000;
+        	    var retval= (toy_treatAsUTC(endDate) - toy_treatAsUTC(startDate)) / millisecondsPerDay;
+        	    return retval;
+        	}
+    	
+         function toy_calculateDate(str1, str2) {
+			var date1_split=str1.split("-");
+			var date2_split=str2.split("-");
+			var new_date1=date1_split[2]+"/"+date1_split[1]+"/"+date1_split[0];
+			var new_date2=date2_split[2]+"/"+date2_split[1]+"/"+date2_split[0];
+			var ret_num=toy_daysBetween(new_date2,new_date1);
+			return ret_num;
+         }
+      </script>
 <BR><center><h2>Toy database system administration</h2></center><BR><BR>
 <?php
 $options = array(
