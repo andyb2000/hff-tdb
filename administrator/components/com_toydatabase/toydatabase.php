@@ -492,7 +492,6 @@ switch($act) {
 					JFactory::getApplication()->enqueueMessage($e->getMessage());
 					return false;
 				};
-				echo "DEBUG: about to do category updates<BR>\n";
 			// category updates is trickyer
 				if (is_array($frm_in_toycat_arr)) {
 					foreach ($frm_in_toycat_arr as $toycat_human_val) {
@@ -505,7 +504,6 @@ switch($act) {
 						$db->setQuery((string) $check_cat_query);
 						$db->execute();
 						$row_count_check= $db->getNumRows();
-						echo "DEBUG: found entry $row_count_check<BR>\n";
 						if ($row_count_check == 0) {
 							//no exist, so add it
 							$ins_cat_request = $db->getQuery(true);
@@ -523,9 +521,6 @@ switch($act) {
 							};
 						
 							$ins_cat_values = array($ddid,$row['id']);
-							echo "Inserting: <PRE>\n";
-							print_r($ins_cat_values);
-							echo "</PRE><BR>\n";
 							$ins_cat_request
 							->insert($db->quoteName('#__toydatabase_categorylink'))
 							->columns($db->quoteName($ins_cat_columns))
@@ -539,9 +534,6 @@ switch($act) {
 								return false;
 							};
 						};
-						
-						
-						
 					};
 				};
 			JFactory::getApplication()->enqueueMessage("Updated toy entry");
