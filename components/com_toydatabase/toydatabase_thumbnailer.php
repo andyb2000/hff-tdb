@@ -11,10 +11,10 @@ $load_image=getcwd()."/../../".$load_image;
 
 header('Content-type: image/jpeg');
 
-echo make_thumb($src, $desired_width);
+echo make_thumb($src, 50);
 exit;
 
-function make_thumb($load_image, 50) {
+function make_thumb($load_image, $desired_width) {
 
 	/* read the source image */
 	$source_image = imagecreatefromjpeg($src);
