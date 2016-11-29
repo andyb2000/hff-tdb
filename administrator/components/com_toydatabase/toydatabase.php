@@ -492,7 +492,7 @@ switch($act) {
 					JFactory::getApplication()->enqueueMessage($e->getMessage());
 					return false;
 				};
-				
+				echo "DEBUG: about to do category updates<BR>\n";
 			// category updates is trickyer
 			if (is_array($frm_in_toycat_arr)) {
 			foreach ($frm_in_toycat_arr as $toycat_human_val) {
