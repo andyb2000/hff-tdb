@@ -516,7 +516,7 @@ receive email confirmation once it has been accepted.<BR>
 <form method=post onsubmit="return false">
 <input type=hidden name='act' value='3'>
 <table width=100% border=0 cellpadding=0 cellspacing=0>
-<tr align=right><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
+<tr align=right><td align=right>Search toy library:</td><td width=230><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
 </table>
 </form>
 <!-- END Toy database search -->
