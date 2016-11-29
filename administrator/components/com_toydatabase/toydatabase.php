@@ -424,7 +424,6 @@ switch($act) {
         	                                $db->execute();
         	                                // get the inserted ID
         	                                $newtoy_id = $db->insertid();
-        	                                echo "DEBUG: last insert ID $newtoy_id<BR>\n";
 					}
 					catch (RuntimeException $e) {
 						JFactory::getApplication()->enqueueMessage($e->getMessage());
@@ -434,6 +433,7 @@ switch($act) {
 						// set category query too
 						if (is_array($frm_in_toycat_arr)) {
 							foreach ($frm_in_toycat_arr as $toycat_human_val) {
+								echo "DEBUG loop: $toycat_human_val<BR>\n";
 								$ins_cat_request = $db->getQuery(true);
 								$ins_cat_columns = array('equipmentid','categoryid');
 								// convert toycat_human_val to the ID reference
