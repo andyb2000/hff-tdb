@@ -319,6 +319,9 @@ echo JHtmlTabs::panel("Toy Database",'panel-id-1');
 echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Database</h2></a>";
 
 switch($act) {
+	case "5":
+		// delete toy
+		break;
 	case "4":
 		// new toy
 ?>
@@ -562,7 +565,6 @@ switch($act) {
 				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
 				echo ">".$toycategory_output["category"]."<BR>\n";
 			};
-			echo "<input type=hidden name='toycat_maxid' value='".$toycat_maxid."'>\n";
 			?>
 			</td>
 		</tr>
@@ -580,6 +582,7 @@ switch($act) {
 			<td><?=JHTML::_('calendar', $loanlink_rows["returnbydate"], "in_toyreturndate" , "in_toyreturndate", '%Y-%m-%d'); ?></td>
 		</tr>
 		<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::getInstance()->toString() ?>&act=5&ddid=$ddid"';};"></td></tr>
 		</table>
 		</form>
 		<?php
