@@ -380,13 +380,10 @@ switch($act) {
                         $db->setQuery((string) $query_toycategory);
                         $db->execute();
                         $toycategory_rows = $db->loadAssocList();
-                        $toycat_maxid=0;
                         foreach ($toycategory_rows as $toycategory_output) {
-                                echo "<input type=checkbox name='toycat_".$toycategory_output["id"]."' value='".$toycategory_output["category"]."' ";
-                                $toycat_maxid=$toycategory_output["id"];
+                                echo "<input type=checkbox name='toycat_arr[]' value='".$toycategory_output["category"]."' ";
                                 echo ">".$toycategory_output["category"]."<BR>\n";
                         };
-                        echo "<input type=hidden name='toycat_maxid' value='".$toycat_maxid."'>\n";
                         ?>
                         </td>
                 </tr>
