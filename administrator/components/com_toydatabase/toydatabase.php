@@ -475,6 +475,26 @@ switch($act) {
 					echo "<BR>\n<a href='".JURI::current()."?option=com_toydatabase'>Return to toy list</a><BR>\n";
 		} else {
 			// existing toy update
+			$upd_request = $db->getQuery(true);
+			$upd_fields = array(
+					$db->quoteName('urn') . ' = ' . $db->quote($frm_in_toyurn),
+					$db->quoteName('name') . ' = ' . $db->quote($frm_in_toyname),
+					$db->quoteName('picture') . ' = ' . $db->quote($frm_in_toyimage),
+					$db->quoteName('description') . ' = ' . $db->quote($frm_in_toydescription),
+					$db->quoteName('storagelocation') . ' = ' . $db->quote($frm_in_toylocation),
+					$db->quoteName('status') . ' = ' . $db->quote($frm_in_toystatus)
+			);
+			$upd_request->update($db->quoteName('#__toydatabase_equipment'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
+			try {
+				$db->setQuery($upd_request);
+				$db->execute();
+				}
+				catch (RuntimeException $e) {
+					JFactory::getApplication()->enqueueMessage($e->getMessage());
+					return false;
+				};
+			JFactory::getApplication()->enqueueMessage("Updated toy entry");
+			
 		}; // end of if ddid
 		break;
 	case "1":
