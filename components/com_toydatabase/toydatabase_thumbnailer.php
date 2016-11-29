@@ -6,6 +6,10 @@ if (!$load_image) {exit;};
 $load_image = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $load_image);
 $load_image = mb_ereg_replace("([\.]{2,})", '', $load_image);
 
+// set the file location properly
+$load_image=getcwd().$load_image;
+echo "DEBUG: '".$load_image."'<BR>\n";
+
 header('Content-type: image/jpeg');
 
 list($width, $height) = getimagesize("library_images/".$load_image);
