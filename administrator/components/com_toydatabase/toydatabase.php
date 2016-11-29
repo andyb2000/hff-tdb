@@ -451,7 +451,6 @@ switch($act) {
 					if ($newtoy_id) {
 						// set category query too
 						if (is_array($frm_in_toycat_arr)) {
-							print_r($frm_in_toycat_arr);
 							foreach ($frm_in_toycat_arr as $toycat_human_val) {
 								$ins_cat_request = $db->getQuery(true);
 								$ins_cat_columns = array('equipmentid','categoryid');
@@ -493,6 +492,38 @@ switch($act) {
 					JFactory::getApplication()->enqueueMessage($e->getMessage());
 					return false;
 				};
+				
+			// category updates is trickyer
+			if (is_array($frm_in_toycat_arr)) {
+			foreach ($frm_in_toycat_arr as $toycat_human_val) {
+				$check_cat_query = $db->getQuery(true);
+				$check_cat_query
+				->select('id')
+				->from($db->quoteName('#__toydatabase_categorylink'))
+				->where($db->quoteName('equipmentid') . ' = '. $ddid, 'AND')
+				->where($db->quoteName('categoryid') . ' = '. $toycat_human_val);
+				$db->setQuery((string) $query);
+				$db->execute();
+				$row_count_check= $db->getNumRows();
+				if ($row_count_check == 0) {
+					//no exist, so add it
+					$ins_cat_request = $db->getQuery(true);
+					$ins_cat_columns = array('equipmentid','categoryid');
+					$query_catid = $db->getQuery(true);
+					$query_catid->select('*')->from($db->quoteName('#__toydatabase_equipment_category'))->where($db->quoteName('category') . ' = "'. $toycat_human_val.'"');
+					$db->setQuery((string) $query_catid);
+					$db->execute();
+					$row = $db->loadAssoc();
+					$ins_cat_values = array($ddid,$row['id']);
+					$ins_cat_request
+					->insert($db->quoteName('#__toydatabase_categorylink'))
+					->columns($db->quoteName($ins_cat_columns))
+					->values(implode(',', $ins_cat_values));
+					$db->setQuery((string) $ins_cat_request);
+					$db->execute();
+				};
+			};
+			};
 			JFactory::getApplication()->enqueueMessage("Updated toy entry");
 			
 		}; // end of if ddid
