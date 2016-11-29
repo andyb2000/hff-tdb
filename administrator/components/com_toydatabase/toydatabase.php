@@ -447,6 +447,9 @@ switch($act) {
 								->columns($db->quoteName($ins_cat_columns))
 								->values(implode(',', $ins_cat_values));
 								$db->setQuery((string) $ins_cat_request);
+								echo "DEBUG: <BR>\n";
+								print_r($ins_cat_request);
+								echo "<BR>\n";
 								$db->execute();
 							};
 						};
