@@ -424,6 +424,7 @@ switch($act) {
         	                                $db->execute();
         	                                // get the inserted ID
         	                                $newtoy_id = $db->insertid();
+        	                                echo "DEBUG: last insert ID $newtoy_id<BR>\n";
 					}
 					catch (RuntimeException $e) {
 						JFactory::getApplication()->enqueueMessage($e->getMessage());
