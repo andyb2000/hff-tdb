@@ -433,6 +433,7 @@ switch($act) {
 						// set category query too
 						if (is_array($frm_in_toycat_arr)) {
 							echo "DEBUG array found<BR>\n";
+							print_r($frm_in_toycat_arr);
 							foreach ($frm_in_toycat_arr as $toycat_human_val) {
 								echo "DEBUG loop: $toycat_human_val<BR>\n";
 								$ins_cat_request = $db->getQuery(true);
