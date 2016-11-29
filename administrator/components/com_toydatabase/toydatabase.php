@@ -498,7 +498,7 @@ switch($act) {
 			$del_conditions = array(
 						$db->quoteName('equipmentid') . ' = '.$ddid
 			);
-			$del_cat_query->delete($db->quoteName('#__toydatabase_equipment_category'));
+			$del_cat_query->delete($db->quoteName('#__toydatabase_categorylink'));
 			$del_cat_query->where($del_conditions);
 			$db->setQuery($del_cat_query);
 			$del_result = $db->execute();
