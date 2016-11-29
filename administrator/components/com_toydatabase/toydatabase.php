@@ -494,53 +494,7 @@ switch($act) {
 				};
 				echo "DEBUG: about to do category updates<BR>\n";
 			// category updates is trickyer
-			if (is_array($frm_in_toycat_arr)) {
-			foreach ($frm_in_toycat_arr as $toycat_human_val) {
-				$check_cat_query = $db->getQuery(true);
-				$check_cat_query
-				->select('id')
-				->from($db->quoteName('#__toydatabase_categorylink'))
-				->where($db->quoteName('equipmentid') . ' = '. $ddid, 'AND')
-				->where($db->quoteName('categoryid') . ' = '. $toycat_human_val);
-				$db->setQuery((string) $query);
-				$db->execute();
-				$row_count_check= $db->getNumRows();
-				echo "DEBUG: found entry $row_count_check<BR>\n";
-				if ($row_count_check == 0) {
-					//no exist, so add it
-					$ins_cat_request = $db->getQuery(true);
-					$ins_cat_columns = array('equipmentid','categoryid');
-					$query_catid = $db->getQuery(true);
-					$query_catid->select('*')->from($db->quoteName('#__toydatabase_equipment_category'))->where($db->quoteName('category') . ' = "'. $toycat_human_val.'"');
-					try {
-						$db->setQuery((string) $query_catid);
-						$db->execute();
-						$row = $db->loadAssoc();
-						}
-						catch (RuntimeException $e) {
-							JFactory::getApplication()->enqueueMessage("Error on equip_cat select ".$e->getMessage());
-							return false;
-						};
-					
-					$ins_cat_values = array($ddid,$row['id']);
-					echo "Inserting: <PRE>\n";
-					print_r($ins_cat_values);
-					echo "</PRE><BR>\n";
-					$ins_cat_request
-					->insert($db->quoteName('#__toydatabase_categorylink'))
-					->columns($db->quoteName($ins_cat_columns))
-					->values(implode(',', $ins_cat_values));
-					try {
-						$db->setQuery((string) $ins_cat_request);
-						$db->execute();
-						}
-						catch (RuntimeException $e) {
-							JFactory::getApplication()->enqueueMessage("Error on equip_cat insert ".$e->getMessage());
-							return false;
-						};
-				};
-			};
-			};
+			
 			JFactory::getApplication()->enqueueMessage("Updated toy entry");
 			
 		}; // end of if ddid
