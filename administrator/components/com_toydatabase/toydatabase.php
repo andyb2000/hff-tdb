@@ -330,14 +330,15 @@ switch($act) {
 		$del_query->delete($db->quoteName('#__toydatabase_categorylink'));
 		$del_query->where($db->quoteName('equipmentid') . ' = '. $ddid);
 		$db->setQuery($del_query);
-		echo $db->execute();
+		$db->execute();
 		
 		$del2_query = $db->getQuery(true);
 		$del2_query->delete($db->quoteName('#__toydatabase_equipment'));
 		$del2_query->where($db->quoteName('id') . ' = '. $ddid);
 		$db->setQuery($del2_query);
-		echo $db->execute();
+		$db->execute();
 		
+		JFactory::getApplication()->enqueueMessage("Toy entry has been deleted");
 		
 		break;
 	case "4":
