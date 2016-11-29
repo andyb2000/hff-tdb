@@ -505,6 +505,7 @@ switch($act) {
 				$db->setQuery((string) $query);
 				$db->execute();
 				$row_count_check= $db->getNumRows();
+				echo "DEBUG: found entry $row_count_check<BR>\n";
 				if ($row_count_check == 0) {
 					//no exist, so add it
 					$ins_cat_request = $db->getQuery(true);
@@ -515,6 +516,9 @@ switch($act) {
 					$db->execute();
 					$row = $db->loadAssoc();
 					$ins_cat_values = array($ddid,$row['id']);
+					echo "Inserting: <PRE>\n";
+					print_r($ins_cat_values);
+					echo "</PRE><BR>\n";
 					$ins_cat_request
 					->insert($db->quoteName('#__toydatabase_categorylink'))
 					->columns($db->quoteName($ins_cat_columns))
