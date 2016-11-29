@@ -14,7 +14,7 @@ header('Content-type: image/jpeg');
 echo make_thumb($src, $desired_width);
 exit;
 
-function make_thumb($src, $desired_width) {
+function make_thumb($load_image, 50) {
 
 	/* read the source image */
 	$source_image = imagecreatefromjpeg($src);
