@@ -11,26 +11,47 @@ $load_image=getcwd()."/../../".$load_image;
 
 header('Content-type: image/jpeg');
 
-echo make_thumb($load_image, 50);
+echo resize(50, $load_image);
 exit;
 
-function make_thumb($src, $desired_width) {
+function resize($newWidth, $originalFile) {
 
-	/* read the source image */
-	$source_image = imagecreatefromjpeg($src);
-	$width = imagesx($source_image);
-	$height = imagesy($source_image);
+	$info = getimagesize($originalFile);
+	$mime = $info['mime'];
 
-	/* find the "desired height" of this thumbnail, relative to the desired width  */
-	$desired_height = floor($height * ($desired_width / $width));
+	switch ($mime) {
+		case 'image/jpeg':
+			$image_create_func = 'imagecreatefromjpeg';
+			$image_save_func = 'imagejpeg';
+			$new_image_ext = 'jpg';
+			break;
 
-	/* create a new, "virtual" image */
-	$virtual_image = imagecreatetruecolor($desired_width, $desired_height);
+		case 'image/png':
+			$image_create_func = 'imagecreatefrompng';
+			$image_save_func = 'imagepng';
+			$new_image_ext = 'png';
+			break;
 
-	/* copy source image at a resized size */
-	imagecopyresampled($virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height);
+		case 'image/gif':
+			$image_create_func = 'imagecreatefromgif';
+			$image_save_func = 'imagegif';
+			$new_image_ext = 'gif';
+			break;
 
-	/* create the physical thumbnail image to its destination */
-	imagejpeg($virtual_image);
-}
+		default:
+			throw new Exception('Unknown image type.');
+	}
+
+	$img = $image_create_func($originalFile);
+	list($width, $height) = getimagesize($originalFile);
+
+	$newHeight = ($height / $width) * $newWidth;
+	$tmp = imagecreatetruecolor($newWidth, $newHeight);
+	imagecopyresampled($tmp, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+	if (file_exists($targetFile)) {
+		unlink($targetFile);
+	}
+	$image_save_func($tmp);
+};
 ?>
