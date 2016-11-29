@@ -414,7 +414,7 @@ switch($act) {
 			// add the request to the database
 				$ins_request = $db->getQuery(true);
 				$ins_columns = array('urn', 'name', 'picture', 'description', 'storagelocation','status','active','creationdate','adminuser');
-				$ins_values = array($db->quote($frm_in_toyurn),$db->quote($frm_in_toyimage),$db->quote($frm_in_toydescription),$db->quote($frm_in_toylocation),$db->quote($frm_in_toystatus),'1','NOW()',$user->id);
+				$ins_values = array($db->quote($frm_in_toyurn),$db->quote($frm_in_toyname),$db->quote($frm_in_toyimage),$db->quote($frm_in_toydescription),$db->quote($frm_in_toylocation),$db->quote($frm_in_toystatus),'1','NOW()',$user->id);
                                         $ins_request
                                         ->insert($db->quoteName('#__toydatabase_equipment'))
                                         ->columns($db->quoteName($ins_columns))
