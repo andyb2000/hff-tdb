@@ -422,10 +422,34 @@ switch($act) {
 					try {
 	                                        $db->setQuery($ins_request);
         	                                $db->execute();
+        	                                // get the inserted ID
+        	                                $newtoy_id = $db->insertid();
 					}
 					catch (RuntimeException $e) {
 						JFactory::getApplication()->enqueueMessage($e->getMessage());
 						return false;
+					};
+					if ($newtoy_id) {
+						// set category query too
+						if (is_array($frm_in_toycat_arr)) {
+							foreach ($frm_in_toycat_arr as $toycat_human_val) {
+								$ins_cat_request = $db->getQuery(true);
+								$ins_cat_columns = array('equipmentid','categoryid');
+								// convert toycat_human_val to the ID reference
+								$query_catid = $db->getQuery(true);
+								$query_catid->select('*')->from($db->quoteName('#__toydatabase_equipment_category'))->where($db->quoteName('category') . ' = "'. $toycat_human_val.'"');
+								$db->setQuery((string) $query_catid);
+								$db->execute();
+								$row = $db->loadAssoc();
+								$ins_cat_values = array($newtoy_id,$row[0]);
+								$ins_cat_request
+								->insert($db->quoteName('#__toydatabase_categorylink'))
+								->columns($db->quoteName($ins_cat_columns))
+								->values(implode(',', $ins_cat_values));
+								$db->setQuery((string) $ins_cat_request);
+								$db->execute();
+							};
+						};
 					};
 					JFactory::getApplication()->enqueueMessage("Toy (".$frm_in_toyname.") was saved correctly.");
 					echo "<BR>\n<a href='".JURI::current()."?option=com_toydatabase'>Return to toy list</a><BR>\n";
