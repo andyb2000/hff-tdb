@@ -427,7 +427,8 @@ switch($act) {
 						JFactory::getApplication()->enqueueMessage($e->getMessage());
 						return false;
 					};
-
+					JFactory::getApplication()->enqueueMessage("Toy (".$frm_in_toyname.") was saved correctly.");
+					echo "<BR>\n<a href='".JURI::current()."?option=com_toydatabase'>Return to toy list</a><BR>\n";
 		} else {
 			// existing toy update
 		}; // end of if ddid
