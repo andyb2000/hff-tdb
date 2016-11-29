@@ -471,7 +471,7 @@ switch($act) {
 			$img_modal_params['backdrop'] = "false";
 			$img_modal_params['height'] = "400px";
 			$img_modal_params['width'] = "570px";
-			$img_modal_params['url'] = "index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name=in_toyimage";
+			$img_modal_params['url'] = "index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name=in_toyimage&amp;fieldid=in_toyimage";
 			echo JHTML::_('bootstrap.renderModal', 'myImgModal', $img_modal_params);
 			?> 
 			</td>
