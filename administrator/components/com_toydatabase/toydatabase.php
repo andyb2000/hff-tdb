@@ -498,9 +498,6 @@ switch($act) {
 		$db->setQuery((string) $query_category);
 		$db->execute();
 		$category_rows = $db->loadAssocList();
-		echo "DEBUG CAT:<PRE>\n";
-		print_r($category_rows);
-		echo "</PRE><BR>\n";
 		
 		// And retrieve the loan state _toydatabase_loanlink
 		// If its on loan it will return a row and its status will be 1
@@ -581,9 +578,6 @@ switch($act) {
 //				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
 				if (array_search($toycategory_output["id"], array_column($category_rows, 'categoryid')) !== false) {echo "checked";};
 				echo ">".$toycategory_output["category"]."<BR>\n";
-				echo "DEBUG: ".$toycategory_output["id"]."<BR>\n<PRE>";
-				print_r($category_rows);
-				echo "</PRE><BR>\n";
 			};
 			?>
 			</td>
