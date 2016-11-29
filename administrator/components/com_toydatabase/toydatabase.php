@@ -579,7 +579,7 @@ switch($act) {
 			foreach ($toycategory_rows as $toycategory_output) {
 				echo "<input type=checkbox name='toycat_arr[]' value='".$toycategory_output["category"]."' ";
 //				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
-				if (array_search($toycategory_output["id"], array_column($category_rows, 'categoryid'))) {echo "checked";};
+				if (array_search($toycategory_output["id"], array_column($category_rows, 'categoryid')) !== false) {echo "checked";};
 				echo ">".$toycategory_output["category"]."<BR>\n";
 				echo "DEBUG: ".$toycategory_output["id"]."<BR>\n<PRE>";
 				print_r($category_rows);
