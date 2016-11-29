@@ -336,9 +336,18 @@ switch($act) {
                 </tr>
                 <tr>
                         <td valign=top><B>Toy Image :</B></td>
-                        <td><input type=text size=30 id='in_toyimage' name='in_toyimage' value=''>
-                        <a class="modal-button" rel="{handler: 'iframe', size: {x: 570, y: 400}}" href="index.php?option=com_media&view=images&tmpl=component&e_name=in_toyimage" title="Image">Image</a>
-                        </td>
+			<td><input type=text size=30 id='in_toyimage' name='in_toyimage' value=''>
+			<a href="#myImgModal" class="btn" data-toggle="modal">Click to select image</a>
+			<?php
+			$img_modal_params = array();
+			$img_modal_params['title'] = 'Image selection';
+			$img_modal_params['backdrop'] = "false";
+			$img_modal_params['height'] = "400px";
+			$img_modal_params['width'] = "570px";
+			$img_modal_params['url'] = "index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name=in_toyimage&amp;fieldid=in_toyimage";
+			echo JHTML::_('bootstrap.renderModal', 'myImgModal', $img_modal_params);
+			?>
+			</td>
                 </tr>
                 <tr>
                         <td valign=top><B>Toy Description :</B></td>
