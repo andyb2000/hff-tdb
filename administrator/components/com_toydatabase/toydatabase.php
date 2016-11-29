@@ -501,7 +501,7 @@ switch($act) {
 						->select('id')
 						->from($db->quoteName('#__toydatabase_categorylink'))
 						->where($db->quoteName('equipmentid') . ' = '. $ddid, 'AND')
-						->where($db->quoteName('categoryid') . ' = '. $toycat_human_val);
+						->where($db->quoteName('categoryid') . ' = "'. $toycat_human_val.'"');
 						$db->setQuery((string) $check_cat_query);
 						$db->execute();
 						$row_count_check= $db->getNumRows();
