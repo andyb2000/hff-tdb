@@ -451,10 +451,8 @@ switch($act) {
 					if ($newtoy_id) {
 						// set category query too
 						if (is_array($frm_in_toycat_arr)) {
-							echo "DEBUG array found<BR>\n";
 							print_r($frm_in_toycat_arr);
 							foreach ($frm_in_toycat_arr as $toycat_human_val) {
-								echo "DEBUG loop: $toycat_human_val<BR>\n";
 								$ins_cat_request = $db->getQuery(true);
 								$ins_cat_columns = array('equipmentid','categoryid');
 								// convert toycat_human_val to the ID reference
@@ -497,6 +495,9 @@ switch($act) {
 		->from($db->quoteName('#__toydatabase_categorylink','a'))
 		->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
 		->where($db->quoteName('a.equipmentid') . ' = '. $ddid);
+		echo "DEBUG CAT:<PRE>\n";
+		print_r($query_category);
+		echo "</PRE><BR>\n";
 		$db->setQuery((string) $query_category);
 		$db->execute();
 		$category_rows = $db->loadAssocList();
@@ -576,12 +577,9 @@ switch($act) {
 			$toycategory_rows = $db->loadAssocList();
 			$toycat_maxid=0;
 			foreach ($toycategory_rows as $toycategory_output) {
-//				echo "<input type=checkbox name='toycat_".$toycategory_output["id"]."' value='".$toycategory_output["category"]."' ";
-//				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
-//				$toycat_maxid=$toycategory_output["id"];
-//				echo ">".$toycategory_output["category"]."<BR>\n";
 				echo "<input type=checkbox name='toycat_arr[]' value='".$toycategory_output["category"]."' ";
-				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
+//				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
+				if (in_array($toycategory_output["id"], $category_rows)) {echo "checked";};
 				echo ">".$toycategory_output["category"]."<BR>\n";
 			};
 			?>
