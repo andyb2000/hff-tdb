@@ -512,9 +512,16 @@ switch($act) {
 					$ins_cat_columns = array('equipmentid','categoryid');
 					$query_catid = $db->getQuery(true);
 					$query_catid->select('*')->from($db->quoteName('#__toydatabase_equipment_category'))->where($db->quoteName('category') . ' = "'. $toycat_human_val.'"');
-					$db->setQuery((string) $query_catid);
-					$db->execute();
-					$row = $db->loadAssoc();
+					try {
+						$db->setQuery((string) $query_catid);
+						$db->execute();
+						$row = $db->loadAssoc();
+						}
+						catch (RuntimeException $e) {
+							JFactory::getApplication()->enqueueMessage("Error on equip_cat select ".$e->getMessage());
+							return false;
+						};
+					
 					$ins_cat_values = array($ddid,$row['id']);
 					echo "Inserting: <PRE>\n";
 					print_r($ins_cat_values);
@@ -523,8 +530,14 @@ switch($act) {
 					->insert($db->quoteName('#__toydatabase_categorylink'))
 					->columns($db->quoteName($ins_cat_columns))
 					->values(implode(',', $ins_cat_values));
-					$db->setQuery((string) $ins_cat_request);
-					$db->execute();
+					try {
+						$db->setQuery((string) $ins_cat_request);
+						$db->execute();
+						}
+						catch (RuntimeException $e) {
+							JFactory::getApplication()->enqueueMessage("Error on equip_cat insert ".$e->getMessage());
+							return false;
+						};
 				};
 			};
 			};
