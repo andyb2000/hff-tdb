@@ -444,7 +444,7 @@ switch($act) {
 								echo "DEBUG: <BR>\n";
 								print_r($row);
 								echo "DONE<BR>\n";
-								$ins_cat_values = array($newtoy_id,$row);
+								$ins_cat_values = array($newtoy_id,$row['id']);
 								$ins_cat_request
 								->insert($db->quoteName('#__toydatabase_categorylink'))
 								->columns($db->quoteName($ins_cat_columns))
