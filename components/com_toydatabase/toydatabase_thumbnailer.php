@@ -11,7 +11,7 @@ $load_image=getcwd()."/../../".$load_image;
 
 header('Content-type: image/jpeg');
 
-echo resize(50, $load_image);
+echo resize(150, $load_image);
 exit;
 
 function resize($newWidth, $originalFile) {
