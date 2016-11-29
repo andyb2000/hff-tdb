@@ -582,7 +582,7 @@ switch($act) {
 			<td><?=JHTML::_('calendar', $loanlink_rows["returnbydate"], "in_toyreturndate" , "in_toyreturndate", '%Y-%m-%d'); ?></td>
 		</tr>
 		<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
-		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::getInstance()->toString() ?>&act=5&ddid=$ddid"';};"></td></tr>
+		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::getInstance()->toString() ?>&act=5&ddid=$ddid';};"></td></tr>
 		</table>
 		</form>
 		<?php
