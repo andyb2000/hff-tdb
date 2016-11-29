@@ -404,7 +404,7 @@ receive email confirmation once it has been accepted.<BR>
 </tr>
 <tr>
 	<td><B>Toy Image :</B></td>
-	<td><?=$row["picture"]?></td>
+	<td><img src='<?php echo JURI::root().$row["picture"]; ?>' alt='Toy image' border=0></td>
 </tr>
 <tr>
 	<td><B>Toy Description :</B></td>
