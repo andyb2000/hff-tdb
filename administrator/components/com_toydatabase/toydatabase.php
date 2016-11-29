@@ -630,7 +630,7 @@ switch($act) {
 				echo "</td>";
 				echo "<td>";
 				// check the file exists to display the image
-				if (file_exists(JPATH_BASE.$row_value["picture"])) {
+				if (file_exists(JPATH_BASE."/".$row_value["picture"])) {
 					// dynamically resize image using php
 					echo "<img src='toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
 				} else {
