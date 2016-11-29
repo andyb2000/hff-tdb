@@ -493,6 +493,16 @@ switch($act) {
 					return false;
 				};
 			// category updates is trickyer
+			// delete all existing and then let it re-add them is simplest
+			$del_cat_query = $db->getQuery(true);
+			$del_conditions = array(
+						$db->quoteName('equipmentid') . ' = '.$ddid
+			);
+			$del_cat_query->delete($db->quoteName('#__toydatabase_equipment_category'));
+			$del_cat_query->where($del_conditions);
+			$db->setQuery($del_cat_query);
+			$del_result = $db->execute();
+
 				if (is_array($frm_in_toycat_arr)) {
 					foreach ($frm_in_toycat_arr as $toycat_human_val) {
 						$query_catid = $db->getQuery(true);
