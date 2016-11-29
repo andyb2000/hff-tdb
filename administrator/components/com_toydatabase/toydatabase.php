@@ -441,18 +441,12 @@ switch($act) {
 								$db->setQuery((string) $query_catid);
 								$db->execute();
 								$row = $db->loadAssoc();
-								echo "DEBUG: <BR>\n";
-								print_r($row);
-								echo "DONE<BR>\n";
 								$ins_cat_values = array($newtoy_id,$row['id']);
 								$ins_cat_request
 								->insert($db->quoteName('#__toydatabase_categorylink'))
 								->columns($db->quoteName($ins_cat_columns))
 								->values(implode(',', $ins_cat_values));
 								$db->setQuery((string) $ins_cat_request);
-								echo "DEBUG: <BR>\n";
-								print_r($ins_cat_request);
-								echo "<BR>\n";
 								$db->execute();
 							};
 						};
