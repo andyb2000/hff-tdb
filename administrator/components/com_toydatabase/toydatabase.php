@@ -952,7 +952,7 @@ switch($cat_act) {
 				</table><form name='limitdisplay'>
 <?php
 		echo $pager->getListFooter();
-		echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
+		echo "Number of categories to display per page: ".$pager->getLimitBox()."<BR>\n";
 		echo "</form>";
 		// end of default: switch
 		break;
