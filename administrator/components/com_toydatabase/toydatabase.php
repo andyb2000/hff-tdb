@@ -805,7 +805,7 @@ switch($cat_act) {
 		$query
 		->select('SQL_CALC_FOUND_ROWS *')
 		->from($db->quoteName('#__toydatabase_equipment_category'))
-		->order($db->quoteName('name') . ' ASC');
+		->order($db->quoteName('category') . ' ASC');
 		
 		$app = JFactory::getApplication();
 		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
