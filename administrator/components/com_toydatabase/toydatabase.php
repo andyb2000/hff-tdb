@@ -1060,7 +1060,7 @@ switch($loan_act) {
 						$entry_returnbydate_out=JHtml::_('date', $entry_returnbydate, 'd/m/Y');
 						
 						if ($row_value["returndate"] == "0000-00-00 00:00:00") {
-							$entry_returndate_out="(Not returned");
+							$entry_returndate_out="(Not returned)";
 						} else {
 							$entry_returndate=JFactory::getDate($row_value["returndate"]);
 							$entry_returndate_out=JHtml::_('date', $entry_returndate, 'd/m/Y');
