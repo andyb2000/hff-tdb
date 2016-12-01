@@ -1004,25 +1004,46 @@ switch($loan_act) {
 				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 				<tr><td width=10%><B>Loan status</B></td>
 				<td width=30%><B>Member name</B></td>
-				<td width=40%><B>Toy name</B></td>
+				<td width=30%><B>Toy name</B></td>
 				<td width=10%><B>Request loan date</B></td>
 				<td width=10%><B>Return date</B></td>
+				<td width=10%><B>Returned date</B></td>
 				</tr>
 				<?php
 				if (!empty($row)) {
 					// print_r($row);
 					foreach ($row as $row_key=>$row_value) {
+						// convert membershipid to their name
+						// convert equipmentid to the toy name
+						// requestdate to human date
+						// returnbydate to human date
+						// returndate to human date
+						
+						// members are complicated. They are joomla users
+						// but we also have separate additional info for them in the
+						// toydatabase library
+						
+						$check_member_query = $db->getQuery(true);
+						$check_member_query
+						->select('*')
+						->from($db->quoteName('#__toydatabase_membership'))
+						->where($db->quoteName('id') . ' = '. $row_value["membershipid"]);
+						$db->setQuery((string) $check_member_query);
+						$db->execute();
+						$membership_row = $db->loadAssoc();
+						
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$row_value["status"]."</td>";
-						echo "<td>".$row_value["membershipid"]."</td>";
+						echo "<td>".$membership_row["name"]."</td>";
 						echo "<td>".$row_value["equipmentid"]."</td>";
 						echo "<td>".$row_value["requestdate"]."</td>";
 						echo "<td>".$row_value["returnbydate"]."</td>";
+						echo "<td>".$row_value["returndate"]."</td>";
 						echo "</tr>\n";
 					};
 				} else {
 					// no rows or toys in database found
-					echo "<tr><td colspan=5 align=center><B>Sorry - No loan requests found</B></td></tr>\n";
+					echo "<tr><td colspan=6 align=center><B>Sorry - No loan requests found</B></td></tr>\n";
 				};
 ?>
 						</table><form name='limitdisplay'>
