@@ -1068,16 +1068,17 @@ switch($loan_act) {
 						
 						// date diff to see if theyre overdue
 						$curr_date=JFactory::getDate();
-						$overdue_days=date_diff($curr_date->toUnix(),$entry_returnbydate->toUnix());
+						$overdue_days=$curr_date->toUnix()-$entry_returnbydate->toUnix();
+						$overdue_days_output=date("d",$overdue_days);
 						echo "DEBUG1: ".$curr_date->toUnix()."<BR>\n";
-						echo "DEBUG1: ".$entry_returnbydate->toUnix()."<BR>\n";
+						echo "DEBUG2: ".$entry_returnbydate->toUnix()."<BR>\n";
 						
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$row_value["status"]."</td>";
 						echo "<td>".$membername_val."</td>";
 						echo "<td>".$toyequipment_val."</td>";
 						echo "<td>".$entry_requestdate_out."</td>";
-						echo "<td>".$entry_returnbydate_out." ($overdue_days)</td>";
+						echo "<td>".$entry_returnbydate_out." ($overdue_days_output)</td>";
 						echo "<td>".$entry_returndate_out."</td>";
 						echo "</tr>\n";
 					};
