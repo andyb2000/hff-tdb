@@ -1052,11 +1052,15 @@ switch($loan_act) {
 						} else {
 							$toyequipment_val="ERROR - Toy not in database (deleted?)";
 						};
+						
+						$entry_requestdate=JFactory::getDate($row_value["requestdate"]);
+						$entry_requestdate_out=JHtml::_('date', $entry_requestdate, 'Y-m-d 00:00:00');
+						
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$row_value["status"]."</td>";
 						echo "<td>".$membername_val."</td>";
 						echo "<td>".$toyequipment_val."</td>";
-						echo "<td>".$row_value["requestdate"]."</td>";
+						echo "<td>".$entry_requestdate_out."</td>";
 						echo "<td>".$row_value["returnbydate"]."</td>";
 						echo "<td>".$row_value["returndate"]."</td>";
 						echo "</tr>\n";
