@@ -1006,7 +1006,7 @@ switch($loan_act) {
 				<td width=30%><B>Member name</B></td>
 				<td width=30%><B>Toy name</B></td>
 				<td width=10%><B>Request loan date</B></td>
-				<td width=10%><B>Return date</B></td>
+				<td width=10%><B>Return due date</B></td>
 				<td width=10%><B>Returned date</B></td>
 				</tr>
 				<?php
