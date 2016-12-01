@@ -1068,7 +1068,7 @@ switch($loan_act) {
 						
 						// date diff to see if theyre overdue
 						$curr_date=JFactory::getDate();
-						$overdue_days=date_diff($curr_date->toUnix(),$row_value["returnbydate"]);
+						$overdue_days=date_diff($curr_date->toUnix(),$entry_returnbydate->toUnix());
 						
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$row_value["status"]."</td>";
