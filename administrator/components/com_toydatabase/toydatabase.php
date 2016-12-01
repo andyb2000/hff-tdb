@@ -1002,11 +1002,11 @@ switch($loan_act) {
 				<!-- END new loan button -->
 				
 				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
-				<tr><td width=30%><B>Loan status</B></td>
+				<tr><td width=10%><B>Loan status</B></td>
 				<td width=30%><B>Member name</B></td>
-				<td width=30%><B>Toy name</B></td>
-				<td width=30%><B>Request loan date</B></td>
-				<td width=30%><B>Return date</B></td>
+				<td width=40%><B>Toy name</B></td>
+				<td width=10%><B>Request loan date</B></td>
+				<td width=10%><B>Return date</B></td>
 				</tr>
 				<?php
 				if (!empty($row)) {
