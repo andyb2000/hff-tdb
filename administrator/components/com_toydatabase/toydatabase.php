@@ -1037,10 +1037,25 @@ switch($loan_act) {
 						} else {
 							$membername_val="ERROR - User not in toydatabase (Joomla only?)";
 						};
+						
+						$check_toy_query = $db->getQuery(true);
+						$check_toy_query
+						->select('*')
+						->from($db->quoteName('#__toydatabase_equipment'))
+						->where($db->quoteName('id') . ' = '. $row_value["equipmentid"]);
+						$db->setQuery((string) $check_toy_query);
+						$db->execute();
+						$toyentry_row = $db->loadAssoc();
+						$toyentry_count_check= $db->getNumRows();
+						if ($toyentry_count_check > 0) {
+							$toyequipment_val=$toyentry_row["name"];
+						} else {
+							$toyequipment_val="ERROR - Toy not in database (deleted?)";
+						};
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$row_value["status"]."</td>";
 						echo "<td>".$membername_val."</td>";
-						echo "<td>".$row_value["equipmentid"]."</td>";
+						echo "<td>".$toyequipment_val."</td>";
 						echo "<td>".$row_value["requestdate"]."</td>";
 						echo "<td>".$row_value["returnbydate"]."</td>";
 						echo "<td>".$row_value["returndate"]."</td>";
