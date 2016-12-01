@@ -1102,12 +1102,17 @@ switch($loan_act) {
 				// end of default: switch
 		break;
 };
-echo JHtmlTabs::panel("Reports",'panel-id-4');
+echo JHtmlTabs::panel("Members",'panel-id-4');
+?>
+<h2>Members</h2>
+This is the members panel.
+<?php
+echo JHtmlTabs::panel("Reports",'panel-id-5');
 ?>
 <h2>Reporting</h2>
 This is the Reports panel.
 <?php
-echo JHtmlTabs::panel("Configuration",'panel-id-5'); //You can use any custom text
+echo JHtmlTabs::panel("Configuration",'panel-id-6'); //You can use any custom text
 echo "<h2>Configuration</h2>";
 ?>
 <form method=post name='configuration'>
