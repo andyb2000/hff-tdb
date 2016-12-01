@@ -1145,9 +1145,9 @@ switch($member_act) {
 						
 						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 						<tr><td width=10%><B>Member joomla ID</B></td>
-						<td width=30%><B>Member URN</B></td>
-						<td width=30%><B>Member Name</B></td>
-						<td width=10%><B>Company</B></td>
+						<td width=10%><B>Member URN</B></td>
+						<td width=20%><B>Member Name</B></td>
+						<td width=20%><B>Company</B></td>
 						<td width=10%><B>Postcode</B></td>
 						<td width=10%><B>Member Category</B></td>
 						<td width=10%><B>Join Date</B></td>
