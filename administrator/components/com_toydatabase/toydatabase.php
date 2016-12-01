@@ -25,6 +25,7 @@ $tab = $jinput->get('tab', '', 'RAW'); // tab is a text RAW input
 $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
 $cat_act = $jinput->get('cat_act', '', 'INT'); // action is just an integer 1 2 or 3
 $loan_act = $jinput->get('loan_act', '', 'INT'); // action is just an integer 1 2 or 3
+$member_act = $jinput->get('member_act', '', 'INT'); // action is just an integer 1 2 or 3
 $ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $config = JFactory::getConfig();
@@ -1105,8 +1106,101 @@ switch($loan_act) {
 echo JHtmlTabs::panel("Members",'panel-id-4');
 ?>
 <h2>Members</h2>
-This is the members panel.
+Membership is a <i>suppliment</i> to the joomla user management. Users should have a joomla account FIRST, then you can add additional information here for their toy database membership details.<BR>
 <?php
+switch($member_act) {
+	case "1":
+		// display specific member
+		break;
+	default:
+		// display member list
+		$query = $db->getQuery(true);
+		$query
+		->select('SQL_CALC_FOUND_ROWS *')
+		->from($db->quoteName('#__toydatabase_membership'))
+		->order($db->quoteName('name') . ' DESC');
+		
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($query,$limitstart, $limit);
+		$row = $db->loadAssocList('id');
+		if(!empty($row)){
+			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
+			jimport('joomla.html.pagination');
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+		};
+		?>
+						<!-- New member button -->
+						<form method=post onsubmit="return false">
+						<input type=hidden name='member_act' value='4'>
+						<input type=hidden name='tab' value='member'>
+						<table width=100% border=0 cellpadding=0 cellspacing=0>
+						<tr align=right><td align=right><input type=button name='newmember' id='newmember' value='Add a new member link' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=member&loan_act=4"'></td></tr>
+						</table>
+						</form>
+						<!-- END new member button -->
+						
+						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+						<tr><td width=10%><B>Member joomla ID</B></td>
+						<td width=30%><B>Member URN</B></td>
+						<td width=30%><B>Member Name</B></td>
+						<td width=10%><B>Company</B></td>
+						<td width=10%><B>Postcode</B></td>
+						<td width=10%><B>Member Category</B></td>
+						<td width=10%><B>Join Date</B></td>
+						<td width=10%><B>Renewal Date</B></td>
+						</tr>
+						<?php
+						if (!empty($row)) {
+							// print_r($row);
+							foreach ($row as $row_key=>$row_value) {
+								// convert memb_category
+								// link to joomlaid
+								// joindate to human date
+								// renewaldate to human date
+								
+								$check_member_query = $db->getQuery(true);
+								$check_member_query
+								->select('*')
+								->from($db->quoteName('#__toydatabase_membershiplink'))
+								->where($db->quoteName('membershipid') . ' = '. $row_value["id"]);
+								$db->setQuery((string) $check_member_query);
+								$db->execute();
+								$membership_row = $db->loadAssoc();
+								
+								$entry_joindate=JFactory::getDate($row_value["joindate"]);
+								$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
+								
+								$entry_renewaldate=JFactory::getDate($row_value["renewaldate"]);
+								$entry_renewaldate_out=JHtml::_('date', $entry_renewaldate, 'd/m/Y');
+								
+								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&member_act=1&ddid=$row_key\"'>";
+								echo "<td>".$row_value["id"]."</td>";
+								echo "<td>".$row_value["urn"]."</td>";
+								echo "<td>".$row_value["name"]."</td>";
+								echo "<td>".$row_value["companyname"]."</td>";
+								echo "<td>".$row_value["postcode"]."</td>";
+								echo "<td>".$row_value["memb_category"]."</td>";
+								echo "<td>".$entry_joindate_out."</td>";
+								echo "<td>".$entry_renewaldate_out."</td>";
+								echo "</tr>\n";
+							};
+						} else {
+							// no rows or toys in database found
+							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
+						};
+?>
+								</table><form name='limitdisplay'>
+<?php
+						echo $pager->getListFooter();
+						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
+						echo "</form>";
+			// end of default: switch
+		break;
+};
 echo JHtmlTabs::panel("Reports",'panel-id-5');
 ?>
 <h2>Reporting</h2>
