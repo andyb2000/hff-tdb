@@ -1054,7 +1054,7 @@ switch($loan_act) {
 						};
 						
 						$entry_requestdate=JFactory::getDate($row_value["requestdate"]);
-						$entry_requestdate_out=JHtml::_('date', $entry_requestdate, 'Y-m-d 00:00:00');
+						$entry_requestdate_out=JHtml::_('date', $entry_requestdate, 'd-m-Y');
 						
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$row_value["status"]."</td>";
