@@ -21,7 +21,9 @@ defined('_JEXEC') or die('Restricted access');
 //$controller->redirect();
 
 $jinput = JFactory::getApplication()->input;
+$tab = $jinput->get('tab', '', 'RAW'); // tab is a text RAW input
 $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
+$cat_act = $jinput->get('cat_act', '', 'INT'); // action is just an integer 1 2 or 3
 $ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $config = JFactory::getConfig();
@@ -46,6 +48,7 @@ if ($debug) {
 	echo "<BR>";
 	echo "Act input is: ".$act."<BR>\n";
 	echo "DDID input is: ".$ddid."<BR>\n";
+	echo "TAB input is: ".$tab."<BR>\n";
 	echo "Your name is {$user->name}, your email is {$user->email}, and your username is {$user->username}<BR>";
 	print_r($user->groups);
 	echo "<BR>";
@@ -317,9 +320,10 @@ $options = array(
 echo JHtmlTabs::start('tabs_id',$options);
 echo JHtmlTabs::panel("Toy Database",'panel-id-1');
 echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Database</h2></a>";
-
+// tab=toys
 switch($act) {
 	case "5":
+		if($tab == "toys") {
 		// delete toy
 		// need to remove all links to this toy first
 		//   #__toydatabase_equipment
@@ -339,14 +343,16 @@ switch($act) {
 		$db->execute();
 		
 		JFactory::getApplication()->enqueueMessage("Toy entry has been deleted");
-		
+		}; // end if tab
 		break;
 	case "4":
 		// new toy
+		if($tab == "toys") {
 ?>
                 <form method=post name='update_toy'>
                 <input type=hidden name='act' value='2'>
                 <input type=hidden name='ddid' value='0'>
+                <input type=hidden name='tab' value='toys'>
                 <table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
                 <tr>
                         <td valign=top><B>Toy Name :</B></td>
@@ -413,11 +419,15 @@ switch($act) {
                 </table>
                 </form>
 <?php
+		}; // end if toys
 		break;
 	case "3":
 		// search
+		if($tab == "toys") {
+		}; // end if tab toys
 		break;
 	case "2":
+		if($tab == "toys") {
 		// submit changes or new entry
 		// if the ddid=0 then its a new entry, otherwise its an update to the existing ddid(rowid of the toy)
 		$frm_in_toyname = $jinput->get('in_toyname', '', 'RAW');
@@ -471,7 +481,7 @@ switch($act) {
 						};
 					};
 					JFactory::getApplication()->enqueueMessage("Toy (".$frm_in_toyname.") was saved correctly.");
-					echo "<BR>\n<a href='".JURI::current()."?option=com_toydatabase'>Return to toy list</a><BR>\n";
+					echo "<BR>\n<a href='".JURI::current()."?option=com_toydatabase&tab=toys'>Return to toy list</a><BR>\n";
 		} else {
 			// existing toy update
 			$upd_request = $db->getQuery(true);
@@ -543,9 +553,11 @@ switch($act) {
 			JFactory::getApplication()->enqueueMessage("Updated toy entry");
 			
 		}; // end of if ddid
+		}; // end of if tab toys
 		break;
 	case "1":
 		// retrieve the specific record
+		if($tab == "toys") {
 		$query = $db->getQuery(true);
 		$query
 		->select('*')
@@ -583,6 +595,7 @@ switch($act) {
 		<form method=post name='update_toy'>
 		<input type=hidden name='act' value='2'>
 		<input type=hidden name='ddid' value='<?=$ddid?>'>
+		<input type=hidden name='tab' value='toys'>
 		<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr>
 			<td valign=top><B>Toy Name :</B></td>
@@ -663,10 +676,11 @@ switch($act) {
 			<td><?=JHTML::_('calendar', $loanlink_rows["returnbydate"], "in_toyreturndate" , "in_toyreturndate", '%Y-%m-%d'); ?></td>
 		</tr>
 		<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
-		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::current()?>?option=com_toydatabase&act=5&ddid=<?=$ddid?>';};"></td></tr>
+		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::current()?>?option=com_toydatabase&tab=toys&act=5&ddid=<?=$ddid?>';};"></td></tr>
 		</table>
 		</form>
 		<?php
+		}; // end of if tab toys
 		break;
 	default:
 		$query = $db->getQuery(true);
@@ -695,6 +709,7 @@ switch($act) {
 		<!-- Toy database search -->
 		<form method=post onsubmit="return false">
 		<input type=hidden name='act' value='3'>
+		<input type=hidden name='tab' value='toys'>
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
 		<tr align=right><td align=right>Search toy library:</td><td width=230><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
 		</table>
@@ -705,7 +720,7 @@ switch($act) {
                 <form method=post onsubmit="return false">
                 <input type=hidden name='act' value='4'>
                 <table width=100% border=0 cellpadding=0 cellspacing=0>
-                <tr align=right><td align=right><input type=button name='newtoy' id='newtoy' value='Add a new toy' onclick='self.location="<?=JURI::getInstance()->toString() ?>&act=4"'></td></tr>
+                <tr align=right><td align=right><input type=button name='newtoy' id='newtoy' value='Add a new toy' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=toys&act=4"'></td></tr>
                 </table>
                 </form>
 		<!-- END new toy button -->
@@ -719,7 +734,7 @@ switch($act) {
 		if (!empty($row)) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
-				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&act=1&ddid=$row_key\"'>";
+				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=toys&act=1&ddid=$row_key\"'>";
 				echo "<td>".$row_value["name"]."</td>\n";
 				echo "<td>";
 				// Now retrieve the category (ies)
@@ -782,6 +797,61 @@ switch($act) {
 echo JHtmlTabs::panel("Toy Categories",'panel-id-2');
 echo "<h2>Current Toy Categories</h2>";
 
+switch($cat_act) {
+	case "1":
+		break;
+	default:
+		$query = $db->getQuery(true);
+		$query
+		->select('SQL_CALC_FOUND_ROWS *')
+		->from($db->quoteName('#__toydatabase_equipment_category'))
+		->order($db->quoteName('name') . ' ASC');
+		
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($query,$limitstart, $limit);
+		$row = $db->loadAssocList('id');
+		if(!empty($row)){
+			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
+			jimport('joomla.html.pagination');
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+		};
+?>
+		<!-- New category button -->
+		<form method=post onsubmit="return false">
+		<input type=hidden name='cat_act' value='4'>
+		<input type=hidden name='tab' value='category'>
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right><input type=button name='newcategory' id='newcategory' value='Add a new category' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=category&cat_act=4"'></td></tr>
+		</table>
+		</form>
+		<!-- END new category button -->
+		
+		<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+		<tr><td width=30%><B>Category name</B></td></tr>
+		<?php
+		if (!empty($row)) {
+			// print_r($row);
+			foreach ($row as $row_key=>$row_value) {
+				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=category&cat_act=1&ddid=$row_key\"'>";
+				echo "<td>".$row_value["category"]."</td></tr>\n";
+			};
+		} else {
+			// no rows or toys in database found
+			echo "<tr><td colspan=1 align=center><B>Sorry - No categories found</B></td></tr>\n";
+		};
+?>
+				</table><form name='limitdisplay'>
+<?php
+		echo $pager->getListFooter();
+		echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
+		echo "</form>";
+		// end of default: switch
+		break;
+};
 echo JHtmlTabs::panel("Approve/View Requests",'panel-id-3');
 ?>
 <h2>Approve/View Toy Requests</h2>
