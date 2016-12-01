@@ -801,6 +801,25 @@ switch($cat_act) {
 	case "5":
 		// delete record
 		break;
+	case "4":
+		// new category
+		if($tab == "category") {
+?>
+		                <form method=post name='update_category'>
+		                <input type=hidden name='cat_act' value='2'>
+		                <input type=hidden name='ddid' value='0'>
+		                <input type=hidden name='tab' value='category'>
+		                <table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+		                <tr>
+		                        <td valign=top><B>Category Name :</B></td>
+		                        <td><input type=text size=30 name='in_categoryname' value=''></td>
+		                </tr>
+		                <tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+		                </table>
+		                </form>
+<?php
+		}; // end if category
+		break;
 	case "2":
 		// update record
 		if($tab == "category") {
