@@ -1054,16 +1054,21 @@ switch($loan_act) {
 						};
 						
 						$entry_requestdate=JFactory::getDate($row_value["loandate"]);
-						$entry_requestdate_out=JHtml::_('date', $entry_requestdate, 'd-m-Y');
-						// $entry_requestdate_out = $entry_requestdate->toFormat( '%d-%m-%Y' );
+						$entry_requestdate_out=JHtml::_('date', $entry_requestdate, 'd/m/Y');
+						
+						$entry_returnbydate=JFactory::getDate($row_value["returnbydate"]);
+						$entry_returnbydate_out=JHtml::_('date', $entry_returnbydate, 'd/m/Y');
+						
+						$entry_returndate=JFactory::getDate($row_value["returndate"]);
+						$entry_returndate_out=JHtml::_('date', $entry_returndate, 'd/m/Y');
 						
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$row_value["status"]."</td>";
 						echo "<td>".$membername_val."</td>";
 						echo "<td>".$toyequipment_val."</td>";
 						echo "<td>".$entry_requestdate_out."</td>";
-						echo "<td>".$row_value["returnbydate"]."</td>";
-						echo "<td>".$row_value["returndate"]."</td>";
+						echo "<td>".$entry_returnbydate_out."</td>";
+						echo "<td>".$entry_returndate_out."</td>";
 						echo "</tr>\n";
 					};
 				} else {
