@@ -1053,7 +1053,7 @@ switch($loan_act) {
 							$toyequipment_val="ERROR - Toy not in database (deleted?)";
 						};
 						
-						$entry_requestdate=JFactory::getDate($row_value["requestdate"]);
+						$entry_requestdate=JFactory::getDate($row_value["loandate"]);
 						$entry_requestdate_out=JHtml::_('date', $entry_requestdate, 'd-m-Y');
 						// $entry_requestdate_out = $entry_requestdate->toFormat( '%d-%m-%Y' );
 						
