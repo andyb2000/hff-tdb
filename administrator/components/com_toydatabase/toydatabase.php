@@ -1031,10 +1031,15 @@ switch($loan_act) {
 						$db->setQuery((string) $check_member_query);
 						$db->execute();
 						$membership_row = $db->loadAssoc();
-						
+						$membership_count_check= $db->getNumRows();
+						if ($membership_count_check > 0) {
+							$membername_val=$membership_row["name"];
+						} else {
+							$membername_val="ERROR - User not in toydatabase (Joomla only?)";
+						};
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$row_value["status"]."</td>";
-						echo "<td>".$membership_row["name"]."</td>";
+						echo "<td>".$membername_val."</td>";
 						echo "<td>".$row_value["equipmentid"]."</td>";
 						echo "<td>".$row_value["requestdate"]."</td>";
 						echo "<td>".$row_value["returnbydate"]."</td>";
