@@ -795,11 +795,22 @@ switch($act) {
 			break;
 }; // enc of switch selecting act
 echo JHtmlTabs::panel("Toy Categories",'panel-id-2');
-echo "<h2>Current Toy Categories</h2>";
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Categories</h2></a>";
 
 switch($cat_act) {
 	case "5":
 		// delete record
+		if($tab == "category") {
+			// delete category
+			// hmm, should we delete really?
+			$del_query = $db->getQuery(true);
+			$del_query->delete($db->quoteName('#__toydatabase_equipment_category'));
+			$del_query->where($db->quoteName('id') . ' = '. $ddid);
+			$db->setQuery($del_query);
+			$db->execute();
+		
+			JFactory::getApplication()->enqueueMessage("Toy category has been deleted");
+		}; // end if tab
 		break;
 	case "4":
 		// new category
