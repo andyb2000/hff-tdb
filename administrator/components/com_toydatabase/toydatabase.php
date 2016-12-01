@@ -24,6 +24,7 @@ $jinput = JFactory::getApplication()->input;
 $tab = $jinput->get('tab', '', 'RAW'); // tab is a text RAW input
 $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
 $cat_act = $jinput->get('cat_act', '', 'INT'); // action is just an integer 1 2 or 3
+$loan_act = $jinput->get('loan_act', '', 'INT'); // action is just an integer 1 2 or 3
 $ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $config = JFactory::getConfig();
@@ -962,6 +963,76 @@ echo JHtmlTabs::panel("Approve/View Requests",'panel-id-3');
 <h2>Approve/View Toy Requests</h2>
 This is the approval panel.
 <?php
+// approval system, theory is:
+//  toydatabase_loanlink contains the loans in the system, historical and active
+//  show them all sorted by which ones are active (then into history)
+//  allow a manual addition for a member (or non-member)
+switch($loan_act) {
+	case "1":
+		break;
+	default:
+		// default, display current loan database entries
+		$query = $db->getQuery(true);
+		$query
+		->select('SQL_CALC_FOUND_ROWS *')
+		->from($db->quoteName('#__toydatabase_loanlink'))
+		->order($db->quoteName('returnbydate') . ' DESC');
+		
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($query,$limitstart, $limit);
+		$row = $db->loadAssocList('id');
+		if(!empty($row)){
+			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
+			jimport('joomla.html.pagination');
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+		};
+		?>
+				<!-- New loan button -->
+				<form method=post onsubmit="return false">
+				<input type=hidden name='loan_act' value='4'>
+				<input type=hidden name='tab' value='loan'>
+				<table width=100% border=0 cellpadding=0 cellspacing=0>
+				<tr align=right><td align=right><input type=button name='newloan' id='newloan' value='Add a new request manually' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=loan&loan_act=4"'></td></tr>
+				</table>
+				</form>
+				<!-- END new loan button -->
+				
+				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+				<tr><td width=30%><B>Loan status</B></td>
+				<td width=30%><B>Member name</B></td>
+				<td width=30%><B>Toy name</B></td>
+				<td width=30%><B>Request loan date</B></td>
+				<td width=30%><B>Return date</B></td>
+				</tr>
+				<?php
+				if (!empty($row)) {
+					// print_r($row);
+					foreach ($row as $row_key=>$row_value) {
+						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
+						echo "<td>".$row_value["status"]."</td>";
+						echo "<td>".$row_value["membershipid"]."</td>";
+						echo "<td>".$row_value["equipmentid"]."</td>";
+						echo "<td>".$row_value["requestdate"]."</td>";
+						echo "<td>".$row_value["returnbydate"]."</td>";
+						echo "</tr>\n";
+					};
+				} else {
+					// no rows or toys in database found
+					echo "<tr><td colspan=5 align=center><B>Sorry - No loan requests found</B></td></tr>\n";
+				};
+?>
+						</table><form name='limitdisplay'>
+<?php
+				echo $pager->getListFooter();
+				echo "Number of loan requests to display per page: ".$pager->getLimitBox()."<BR>\n";
+				echo "</form>";
+				// end of default: switch
+		break;
+};
 echo JHtmlTabs::panel("Reports",'panel-id-4');
 ?>
 <h2>Reporting</h2>
