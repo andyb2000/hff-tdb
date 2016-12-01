@@ -798,7 +798,82 @@ echo JHtmlTabs::panel("Toy Categories",'panel-id-2');
 echo "<h2>Current Toy Categories</h2>";
 
 switch($cat_act) {
+	case "5":
+		// delete record
+		break;
+	case "2":
+		// update record
+		if($tab == "category") {
+			// submit changes or new entry
+			// if the ddid=0 then its a new entry, otherwise its an update to the existing ddid(rowid of the toy)
+			$frm_in_category = $jinput->get('in_categoryname', '', 'RAW');
+	
+			if ($ddid == 0) {
+				// new category
+				// add the request to the database
+				$ins_request = $db->getQuery(true);
+				$ins_columns = array('category');
+				$ins_values = array($db->quote($frm_in_category));
+				$ins_request
+				->insert($db->quoteName('#__toydatabase_equipment_category'))
+				->columns($db->quoteName($ins_columns))
+				->values(implode(',', $ins_values));
+				try {
+					$db->setQuery($ins_request);
+					$db->execute();
+				}
+				catch (RuntimeException $e) {
+					JFactory::getApplication()->enqueueMessage($e->getMessage());
+					return false;
+				};
+				JFactory::getApplication()->enqueueMessage("Category (".$frm_in_category.") was saved correctly.");
+				echo "<BR>\n<a href='".JURI::current()."?option=com_toydatabase&tab=category'>Return to toy categories</a><BR>\n";
+			} else {
+				// existing toy update
+				$upd_request = $db->getQuery(true);
+				$upd_fields = array(
+						$db->quoteName('category') . ' = ' . $db->quote($frm_in_category)
+				);
+				$upd_request->update($db->quoteName('#__toydatabase_equipment_category'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
+				try {
+					$db->setQuery($upd_request);
+					$db->execute();
+				}
+				catch (RuntimeException $e) {
+					JFactory::getApplication()->enqueueMessage($e->getMessage());
+					return false;
+				};
+				JFactory::getApplication()->enqueueMessage("Updated category entry");
+			}; // end of if ddid
+		}; // end of if tab category
+		break;
 	case "1":
+		// retrieve the specific record
+		if($tab == "category") {
+			$query = $db->getQuery(true);
+			$query
+			->select('*')
+			->from($db->quoteName('#__toydatabase_equipment_category'))
+			->where($db->quoteName('id') . ' = '. $ddid);
+			$db->setQuery((string) $query);
+			$db->execute();
+			$row = $db->loadAssoc();
+?>
+			<form method=post name='update_category'>
+			<input type=hidden name='cat_act' value='2'>
+			<input type=hidden name='ddid' value='<?=$ddid?>'>
+			<input type=hidden name='tab' value='category'>
+			<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+			<tr>
+			<td valign=top><B>Category Name :</B></td>
+			<td><input type=text size=30 name='in_categoryname' value='<?=$row["category"]?>'></td>
+			</tr>
+			<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+			<tr><td colspan=2 align=right><input type=button value='Delete Category' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this category?')) {self.location='<?=JURI::current()?>?option=com_toydatabase&tab=category&cat_act=5&ddid=<?=$ddid?>';};"></td></tr>
+			</table>
+			</form>
+<?php
+		}; // end if tab category
 		break;
 	default:
 		$query = $db->getQuery(true);
