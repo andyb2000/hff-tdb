@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2016 Andy Brown
  */
-$debug=1;
+$debug=0;
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
