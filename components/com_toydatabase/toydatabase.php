@@ -516,7 +516,20 @@ receive email confirmation once it has been accepted.<BR>
 <form method=post onsubmit="return false">
 <input type=hidden name='act' value='3'>
 <table width=100% border=0 cellpadding=0 cellspacing=0>
-<tr align=right><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
+<tr align=right><td>Toy Category:</td><td><select name='toycategoryselect' onchange='self.submit();'>
+<?php 
+$get_all_category = $db->getQuery(true);
+$get_all_category
+->select('*')
+->from($db->quoteName('#__toydatabase_equipment_category'));
+$db->setQuery((string) $get_all_category);
+$db->execute();
+$category_all_rows = $db->loadAssocList();
+foreach ($category_all_rows as $cat_display) {
+	echo "<option value='".$cat_display["id"]."'>".$cat_display["category"]."</option>\n";
+};
+?>
+</select></td><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
 </table>
 </form>
 <!-- END Toy database search -->
