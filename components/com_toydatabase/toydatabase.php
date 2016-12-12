@@ -173,7 +173,7 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 	$user_toymembership=1;
 } else {
 	echo "Why not join our toydatabase membership system?<BR>\n";
-	echo "<a href='".JURI::current()."'>Join toy library database</a><BR>\n";
+	echo "<a href='".JURI::current()."&act=99'>Join toy library database</a><BR>\n";
 	$user_toymembership=0;
 };
 ?>
@@ -246,6 +246,49 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 <?php
 
 switch ($act) {
+	case "99":
+		// user registration form
+		switch($subact) {
+			case "1":
+				// submit of form
+				break;
+			default:
+				// display submit form
+?>
+<form name='toy_user_registration' class="form-validate" method=post>
+<input type=hidden name='act' value='99'>
+<input type=hidden name='subact' value='1'>
+Register to use the toy database library:<BR>
+<table width=95% border=1 cellpadding=0 cellspacing=0>
+<tr><td>Your Name:</td><td><input type=text name='user_name' class='required' size=35/></td></tr>
+<tr><td>Company Name (Optional):</td><td><input type=text name='user_companyname' size=35/></td></tr>
+<tr><td>Address line1:</td><td><input type="text" name='user_address1' class="required" size="35"/></td></tr>
+<tr><td>Address line2:</td><td><input type="text" name='user_address2' size="35"/></td></tr>
+<tr><td>Town:</td><td><input type="text" name='user_town' class="required" size="35"/></td></tr>
+<tr><td>Post Code:</td><td><input type="text" name='user_postcode' class="required" size="10"/></td></tr>
+<tr><td>Telephone:</td><td><input type="text" name='user_telephone' size="12"/></td></tr>
+<tr><td>Mobile Number:</td><td><input type="text" name='user_mobile' size="12"/></td></tr>
+<tr><td>Email Address:</td><td><input name="user_email" type="text" class="required validate-email" size="30"/></td></tr>
+<tr><td>Membership Category:</td><td><select name='user_membercategory'/>
+<option value='individual'>Individual / Family</option>
+<option value='organisation'>Voluntary Organisation</option>
+<option value='school'>Schools</option>
+<option value='childcare_settings'>Childcare settings</option>
+<option value='childminders'>Childminders</option>
+<option value='outside_hartlepool'>Organisations outside of Hartlepool</option>
+</select></td></tr>
+
+<tr><td>Requested loan date:</td><td><?=JHTML::_('calendar', $in_stdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
+<tr><td>Requested return date:</td><td><?=JHTML::_('calendar', $in_stdate, "requestedloanreturndate" , "requestedloanreturndate", '%d-%m-%Y'); ?></td></tr>
+<tr><td>Days on loan:</td><td><input type=text name='daysonloan' id='daysonloan' onclick='Javascript:self.daysonloan.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'></td></tr>
+<tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
+<tr><td colspan=2 align=right><input type=submit class="validate"></td></tr>
+</table>
+</form><BR>
+<?php
+				break;
+		}
+		break;
 	case "3":
 		// library search
 		break;
