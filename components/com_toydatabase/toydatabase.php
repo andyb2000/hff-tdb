@@ -173,6 +173,7 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 	$user_toymembership=1;
 } else {
 	echo "Why not join our toydatabase membership system?<BR>\n";
+	echo "<a href='".JURI::current()."'>Join toy library database</a><BR>\n";
 	$user_toymembership=0;
 };
 ?>
