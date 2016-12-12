@@ -543,9 +543,7 @@ receive email confirmation once it has been accepted.<BR>
 <table width=100% border=0 cellpadding=0 cellspacing=0>
 <tr align=right><td>Toy Category:</td><td><select name='toycategoryselect' onchange='this.form.submit();'>
 <?php 
-if (!$toycategoryselect) {
-	echo "<option value=''></option>\n";
-};
+echo "<option value=''></option>\n";
 $get_all_category = $db->getQuery(true);
 $get_all_category
 ->select('*')
