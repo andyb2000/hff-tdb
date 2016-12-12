@@ -462,6 +462,9 @@ receive email confirmation once it has been accepted.<BR>
 		};
 	?></td>
 </tr>
+<?php
+if ($loanlink_rows["returnbydate"]) {	
+?>
 <tr>
 	<td><B>Toy Due Return Date :</B></td>
 	<td><?php
@@ -475,11 +478,18 @@ receive email confirmation once it has been accepted.<BR>
 		};
 	?></td>
 </tr>
+<?php
+};
+?>
 <tr>
 	<td><B>Book toy :</B></td>
 	<td><?php
 	if ($user_toymembership) {
-		echo "<a href='".JURI::current()."?act=2&ddid=$ddid&stdate=$mysql_date_url'>Book this toy</a>\n";
+		if ($loanlink_rows["returnbydate"]) {
+			echo "<a href='".JURI::current()."?act=2&ddid=$ddid&stdate=$mysql_date_url'>Reserve this toy</a>\n";
+		} else {
+			echo "<a href='".JURI::current()."?act=2&ddid=$ddid&stdate=$mysql_date_url'>Book this toy</a>\n";
+		};
 	} else {
 		echo "Sorry - You need to be a member and logged into book a toy out";
 	};
