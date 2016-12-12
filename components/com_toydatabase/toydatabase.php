@@ -501,14 +501,26 @@ receive email confirmation once it has been accepted.<BR>
 			$db->setQuery((string) $get_search_category);
 			$db->execute();
 			$category_search_rows = $db->loadAssocList();
-print_r($category_search_rows);
+			$query
+			->select('SQL_CALC_FOUND_ROWS *')
+			->from($db->quoteName('#__toydatabase_equipment'));
+			$loop_num=0;
+			foreach ($category_search_rows as $cat_search_vals) {
+				if ($loop_num == 0) {
+					$query->where($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid']);
+				} else {
+					$query->OR($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid']);
+				};
+			};
+			$query->order($db->quoteName('name') . ' ASC');
+		} else {
+			$query
+			->select('SQL_CALC_FOUND_ROWS *')
+			->from($db->quoteName('#__toydatabase_equipment'))
+			//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+			//->where($db->quoteName('status') . ' = '. $db->quote('1'))
+			->order($db->quoteName('name') . ' ASC');
 		};
-		$query
-		->select('SQL_CALC_FOUND_ROWS *')
-		->from($db->quoteName('#__toydatabase_equipment'))
-		//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
-		//->where($db->quoteName('status') . ' = '. $db->quote('1'))
-		->order($db->quoteName('name') . ' ASC');
 		
 		$app = JFactory::getApplication();
 		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
