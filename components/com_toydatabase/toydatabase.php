@@ -507,9 +507,9 @@ receive email confirmation once it has been accepted.<BR>
 			$loop_num=0;
 			foreach ($category_search_rows as $cat_search_vals) {
 				if ($loop_num == 0) {
-					$query->where($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid']);
+					$query->where($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid'],'OR');
 				} else {
-					$query->OR($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid']);
+					$query->where($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid'],'OR');
 				};
 			};
 			$query->order($db->quoteName('name') . ' ASC');
