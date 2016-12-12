@@ -340,7 +340,7 @@ switch ($act) {
 				$db->execute();
 				$row = $db->loadAssoc();
 ?>
-<form name='toyloan' class="form-validate" method=post onkeyup='Javascript:self.daysonloan.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'>
+<form name='toyloan' class="form-validate" method=post onkeyup='Javascript:self.daysonloan.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)' onclick='Javascript:self.daysonloan.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'>
 <input type=hidden name='act' value='2'>
 <input type=hidden name='subact' value='1'>
 <input type=hidden name='ddid' value='<?=$ddid?>'>
