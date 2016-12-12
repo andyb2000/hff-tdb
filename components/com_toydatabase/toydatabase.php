@@ -24,6 +24,7 @@ $jinput = JFactory::getApplication()->input;
 $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
 $ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
+$toycategoryselect = $jinput->get('toycategoryselect', '', 'INT'); // toycategory select
 $config = JFactory::getConfig();
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.calendar');
@@ -490,6 +491,18 @@ receive email confirmation once it has been accepted.<BR>
 		break;
 	default:
 		// This displays the toy list
+		if ($toycategoryselect) {
+			// get list from #__toydatabase_categorylink
+			$get_search_category = $db->getQuery(true);
+			$get_search_category
+			->select('*')
+			->from($db->quoteName('#__toydatabase_categorylink'))
+			->where($db->quoteName('id') . ' = '. $toycategoryselect);					
+			$db->setQuery((string) $get_search_category);
+			$db->execute();
+			$category_search_rows = $db->loadAssocList();
+print_r($category_search_rows);
+		};
 		$query
 		->select('SQL_CALC_FOUND_ROWS *')
 		->from($db->quoteName('#__toydatabase_equipment'))
@@ -514,10 +527,13 @@ receive email confirmation once it has been accepted.<BR>
 
 <!-- Toy database search -->
 <form method=post onsubmit="return false">
-<input type=hidden name='act' value='3'>
+<input type=hidden name='act' value=''>
 <table width=100% border=0 cellpadding=0 cellspacing=0>
-<tr align=right><td>Toy Category:</td><td><select name='toycategoryselect' onchange='self.submit();'>
+<tr align=right><td>Toy Category:</td><td><select name='toycategoryselect' onchange='this.form.submit();'>
 <?php 
+if (!$toycategoryselect) {
+	echo "<option value=''></option>\n";
+};
 $get_all_category = $db->getQuery(true);
 $get_all_category
 ->select('*')
@@ -526,7 +542,9 @@ $db->setQuery((string) $get_all_category);
 $db->execute();
 $category_all_rows = $db->loadAssocList();
 foreach ($category_all_rows as $cat_display) {
-	echo "<option value='".$cat_display["id"]."'>".$cat_display["category"]."</option>\n";
+	echo "<option value='".$cat_display["id"]."' ";
+	if ($toycategoryselect == $cat_display["id"]) {echo "selected";};
+	echo ">".$cat_display["category"]."</option>\n";
 };
 ?>
 </select></td><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
