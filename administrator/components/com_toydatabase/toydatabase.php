@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2016 Andy Brown
  */
-$debug=1;
+$debug=0;
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -21,13 +21,18 @@ defined('_JEXEC') or die('Restricted access');
 //$controller->redirect();
 
 $jinput = JFactory::getApplication()->input;
+$tab = $jinput->get('tab', '', 'RAW'); // tab is a text RAW input
 $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
+$cat_act = $jinput->get('cat_act', '', 'INT'); // action is just an integer 1 2 or 3
+$loan_act = $jinput->get('loan_act', '', 'INT'); // action is just an integer 1 2 or 3
+$member_act = $jinput->get('member_act', '', 'INT'); // action is just an integer 1 2 or 3
 $ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
 $config = JFactory::getConfig();
 $editor = JFactory::getEditor();
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.calendar');
+JHTML::_('behavior.modal');
 
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
@@ -45,6 +50,7 @@ if ($debug) {
 	echo "<BR>";
 	echo "Act input is: ".$act."<BR>\n";
 	echo "DDID input is: ".$ddid."<BR>\n";
+	echo "TAB input is: ".$tab."<BR>\n";
 	echo "Your name is {$user->name}, your email is {$user->email}, and your username is {$user->username}<BR>";
 	print_r($user->groups);
 	echo "<BR>";
@@ -241,7 +247,63 @@ margin: 0;
 padding: 0;
 }
 </style>
+<script>
+         function showResult(str) {
+			
+            if (str.length == 0) {
+               document.getElementById("livesearch").innerHTML = "";
+               document.getElementById("livesearch").style.border = "0px";
+               return;
+            }
+            
+            if (window.XMLHttpRequest) {
+               xmlhttp = new XMLHttpRequest();
+            }else {
+               xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            xmlhttp.onreadystatechange = function() {
+				
+               if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                  document.getElementById("livesearch").innerHTML = xmlhttp.responseText;
+                  document.getElementById("livesearch").style.border = "1px solid #A5ACB2";
+               }
+            }
+            
+            xmlhttp.open("GET","<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_livesearch_admin.php?pname=<?=JURI::current()?>&q="+str,true);
+            xmlhttp.send();
+         }
 
+         function toy_treatAsUTC(date) {
+        	    var result = new Date(date);
+        	    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+        	    return result;
+        	}
+        function toy_daysBetween(startDate, endDate) {
+        	    var millisecondsPerDay = 24 * 60 * 60 * 1000;
+        	    var retval= (toy_treatAsUTC(endDate) - toy_treatAsUTC(startDate)) / millisecondsPerDay;
+        	    return retval;
+        	}
+    	
+         function toy_calculateDate(str1, str2) {
+			var date1_split=str1.split("-");
+			var date2_split=str2.split("-");
+			var new_date1=date1_split[2]+"/"+date1_split[1]+"/"+date1_split[0];
+			var new_date2=date2_split[2]+"/"+date2_split[1]+"/"+date2_split[0];
+			var ret_num=toy_daysBetween(new_date2,new_date1);
+			return ret_num;
+         }
+         function jInsertFieldValue(value, id) {
+
+             var old_id = document.id(id).value;
+     	if (old_id != id) {
+     		var elem = document.id(id)
+     		elem.value = value;
+     		elem.fireEvent("change");
+     	}
+
+     }
+      </script>
 <BR><center><h2>Toy database system administration</h2></center><BR><BR>
 <?php
 $options = array(
@@ -259,16 +321,245 @@ $options = array(
 
 echo JHtmlTabs::start('tabs_id',$options);
 echo JHtmlTabs::panel("Toy Database",'panel-id-1');
-echo "<h2>Current Toy Database</h2>";
-
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Database</h2></a>";
+// tab=toys
 switch($act) {
-	case "2":
-		// submit changes or new entry
-		$act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
+	case "5":
+		if($tab == "toys") {
+		// delete toy
+		// need to remove all links to this toy first
+		//   #__toydatabase_equipment
+		//   #__toydatabase_categorylink
 		
+		// hmm, should we delete really?
+		$del_query = $db->getQuery(true);
+		$del_query->delete($db->quoteName('#__toydatabase_categorylink'));
+		$del_query->where($db->quoteName('equipmentid') . ' = '. $ddid);
+		$db->setQuery($del_query);
+		$db->execute();
+		
+		$del2_query = $db->getQuery(true);
+		$del2_query->delete($db->quoteName('#__toydatabase_equipment'));
+		$del2_query->where($db->quoteName('id') . ' = '. $ddid);
+		$db->setQuery($del2_query);
+		$db->execute();
+		
+		JFactory::getApplication()->enqueueMessage("Toy entry has been deleted");
+		}; // end if tab
+		break;
+	case "4":
+		// new toy
+		if($tab == "toys") {
+?>
+                <form method=post name='update_toy'>
+                <input type=hidden name='act' value='2'>
+                <input type=hidden name='ddid' value='0'>
+                <input type=hidden name='tab' value='toys'>
+                <table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+                <tr>
+                        <td valign=top><B>Toy Name :</B></td>
+                        <td><input type=text size=30 name='in_toyname' value=''></td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy URN :</B></td>
+                        <td><input type=text size=30 name='in_toyurn' value=''></td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Image :</B></td>
+			<td><input type=text size=30 id='in_toyimage' name='in_toyimage' value=''>
+			<a href="#myImgModal" class="btn" data-toggle="modal">Click to select image</a>
+			<?php
+			$img_modal_params = array();
+			$img_modal_params['title'] = 'Image selection';
+			$img_modal_params['backdrop'] = "false";
+			$img_modal_params['height'] = "400px";
+			$img_modal_params['width'] = "570px";
+			$img_modal_params['url'] = "index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name=in_toyimage&amp;fieldid=in_toyimage";
+			echo JHTML::_('bootstrap.renderModal', 'myImgModal', $img_modal_params);
+			?>
+			</td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Description :</B></td>
+                        <td><?php 
+                        echo $editor->display('in_toydescription', '', '100%', '100px', '20', '4',true);
+                        ?>
+                        </td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Location :</B></td>
+                        <td><input type=text size=30 name='in_toylocation' value=''></td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Status :</B></td>
+                        <td><select name='in_toystatus'>
+                        <option value='3'>DAMAGED/NO LONGER AVAILABLE</option>
+                        <option value='2'>AWAITING CLEANING/REPAIR</option>
+                        <option value='1'>ON LOAN</option>
+                        <option value='0'>AVAILABLE</option>
+                        <option value='99'>UNKNOWN</option>
+                        </select></td>
+                </tr>
+                <tr>
+                        <td valign=top><B>Toy Category :</B></td>
+                        <td><?php 
+                        $query_toycategory = $db->getQuery(true);
+                        $query_toycategory
+                        ->select("*")
+                        ->from($db->quoteName('#__toydatabase_equipment_category'));
+                        $db->setQuery((string) $query_toycategory);
+                        $db->execute();
+                        $toycategory_rows = $db->loadAssocList();
+                        foreach ($toycategory_rows as $toycategory_output) {
+                                echo "<input type=checkbox name='toycat_arr[]' value='".$toycategory_output["category"]."' ";
+                                echo ">".$toycategory_output["category"]."<BR>\n";
+                        };
+                        ?>
+                        </td>
+                </tr>
+                <tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+                </table>
+                </form>
+<?php
+		}; // end if toys
+		break;
+	case "3":
+		// search
+		if($tab == "toys") {
+		}; // end if tab toys
+		break;
+	case "2":
+		if($tab == "toys") {
+		// submit changes or new entry
+		// if the ddid=0 then its a new entry, otherwise its an update to the existing ddid(rowid of the toy)
+		$frm_in_toyname = $jinput->get('in_toyname', '', 'RAW');
+		$frm_in_toyurn = $jinput->get('in_toyurn', '', 'RAW');
+		$frm_in_toyimage = $jinput->get('in_toyimage', '', 'RAW');
+		$frm_in_toydescription = $jinput->get('in_toydescription', '', 'RAW');
+		$frm_in_toylocation = $jinput->get('in_toylocation', '', 'RAW');
+		$frm_in_toystatus = $jinput->get('in_toystatus', '', 'RAW');
+		$frm_in_toycat_arr = $jinput->get('toycat_arr', array(), 'ARRAY');
+
+		if ($ddid == 0) {
+			// new toy entry
+			// add the request to the database
+				$ins_request = $db->getQuery(true);
+				$ins_columns = array('urn', 'name', 'picture', 'description', 'storagelocation','status','active','creationdate','adminuser');
+				$ins_values = array($db->quote($frm_in_toyurn),$db->quote($frm_in_toyname),$db->quote($frm_in_toyimage),$db->quote($frm_in_toydescription),$db->quote($frm_in_toylocation),$db->quote($frm_in_toystatus),'1','NOW()',$user->id);
+                                        $ins_request
+                                        ->insert($db->quoteName('#__toydatabase_equipment'))
+                                        ->columns($db->quoteName($ins_columns))
+                                        ->values(implode(',', $ins_values));
+					try {
+	                                        $db->setQuery($ins_request);
+        	                                $db->execute();
+        	                                // get the inserted ID
+        	                                $newtoy_id = $db->insertid();
+					}
+					catch (RuntimeException $e) {
+						JFactory::getApplication()->enqueueMessage($e->getMessage());
+						return false;
+					};
+					if ($newtoy_id) {
+						// set category query too
+						if (is_array($frm_in_toycat_arr)) {
+							foreach ($frm_in_toycat_arr as $toycat_human_val) {
+								$ins_cat_request = $db->getQuery(true);
+								$ins_cat_columns = array('equipmentid','categoryid');
+								// convert toycat_human_val to the ID reference
+								$query_catid = $db->getQuery(true);
+								$query_catid->select('*')->from($db->quoteName('#__toydatabase_equipment_category'))->where($db->quoteName('category') . ' = "'. $toycat_human_val.'"');
+								$db->setQuery((string) $query_catid);
+								$db->execute();
+								$row = $db->loadAssoc();
+								$ins_cat_values = array($newtoy_id,$row['id']);
+								$ins_cat_request
+								->insert($db->quoteName('#__toydatabase_categorylink'))
+								->columns($db->quoteName($ins_cat_columns))
+								->values(implode(',', $ins_cat_values));
+								$db->setQuery((string) $ins_cat_request);
+								$db->execute();
+							};
+						};
+					};
+					JFactory::getApplication()->enqueueMessage("Toy (".$frm_in_toyname.") was saved correctly.");
+					echo "<BR>\n<a href='".JURI::current()."?option=com_toydatabase&tab=toys'>Return to toy list</a><BR>\n";
+		} else {
+			// existing toy update
+			$upd_request = $db->getQuery(true);
+			$upd_fields = array(
+					$db->quoteName('urn') . ' = ' . $db->quote($frm_in_toyurn),
+					$db->quoteName('name') . ' = ' . $db->quote($frm_in_toyname),
+					$db->quoteName('picture') . ' = ' . $db->quote($frm_in_toyimage),
+					$db->quoteName('description') . ' = ' . $db->quote($frm_in_toydescription),
+					$db->quoteName('storagelocation') . ' = ' . $db->quote($frm_in_toylocation),
+					$db->quoteName('status') . ' = ' . $db->quote($frm_in_toystatus)
+			);
+			$upd_request->update($db->quoteName('#__toydatabase_equipment'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
+			try {
+				$db->setQuery($upd_request);
+				$db->execute();
+				}
+				catch (RuntimeException $e) {
+					JFactory::getApplication()->enqueueMessage($e->getMessage());
+					return false;
+				};
+			// category updates is trickyer
+			// delete all existing and then let it re-add them is simplest
+			$del_cat_query = $db->getQuery(true);
+			$del_conditions = array(
+						$db->quoteName('equipmentid') . ' = '.$ddid
+			);
+			$del_cat_query->delete($db->quoteName('#__toydatabase_categorylink'));
+			$del_cat_query->where($del_conditions);
+			$db->setQuery($del_cat_query);
+			$del_result = $db->execute();
+
+				if (is_array($frm_in_toycat_arr)) {
+					foreach ($frm_in_toycat_arr as $toycat_human_val) {
+						$query_catid = $db->getQuery(true);
+						$query_catid->select('*')->from($db->quoteName('#__toydatabase_equipment_category'))->where($db->quoteName('category') . ' = "'. $toycat_human_val.'"');
+						$db->setQuery((string) $query_catid);
+						$db->execute();
+						$row = $db->loadAssoc();
+						
+						$check_cat_query = $db->getQuery(true);
+						$check_cat_query
+						->select('id')
+						->from($db->quoteName('#__toydatabase_categorylink'))
+						->where($db->quoteName('equipmentid') . ' = '. $ddid, 'AND')
+						->where($db->quoteName('categoryid') . ' = "'. $row['id'] .'"');
+						$db->setQuery((string) $check_cat_query);
+						$db->execute();
+						$row_count_check= $db->getNumRows();
+						if ($row_count_check == 0) {
+							//no exist, so add it
+							$ins_cat_request = $db->getQuery(true);
+							$ins_cat_columns = array('equipmentid','categoryid');
+							$ins_cat_values = array($ddid,$row['id']);
+							$ins_cat_request
+							->insert($db->quoteName('#__toydatabase_categorylink'))
+							->columns($db->quoteName($ins_cat_columns))
+							->values(implode(',', $ins_cat_values));
+							try {
+								$db->setQuery((string) $ins_cat_request);
+								$db->execute();
+							}
+							catch (RuntimeException $e) {
+								JFactory::getApplication()->enqueueMessage("Error on equip_cat insert ".$e->getMessage());
+								return false;
+							};
+						};
+					};
+				};
+			JFactory::getApplication()->enqueueMessage("Updated toy entry");
+			
+		}; // end of if ddid
+		}; // end of if tab toys
 		break;
 	case "1":
 		// retrieve the specific record
+		if($tab == "toys") {
 		$query = $db->getQuery(true);
 		$query
 		->select('*')
@@ -306,6 +597,7 @@ switch($act) {
 		<form method=post name='update_toy'>
 		<input type=hidden name='act' value='2'>
 		<input type=hidden name='ddid' value='<?=$ddid?>'>
+		<input type=hidden name='tab' value='toys'>
 		<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr>
 			<td valign=top><B>Toy Name :</B></td>
@@ -318,7 +610,17 @@ switch($act) {
 		<tr>
 			<td valign=top><B>Toy Image :</B></td>
 			<td><input type=text size=30 id='in_toyimage' name='in_toyimage' value='<?=$row["picture"]?>'>
-			<a class="modal-button" rel="{handler: 'iframe', size: {x: 570, y: 400}}" href="index.php?option=com_media&view=images&tmpl=component&e_name=in_toyimage" title="Image">Image</a>
+<!-- 		<a class="modal-button" rel="{handler: 'iframe', size: {x: 570, y: 400}}" href="index.php?option=com_media&view=images&tmpl=component&e_name=in_toyimage" title="Image">Image</a> -->
+			<a href="#myImgModal" class="btn" data-toggle="modal">Click to select image</a>
+			<?php
+			$img_modal_params = array();
+			$img_modal_params['title'] = 'Image selection';
+			$img_modal_params['backdrop'] = "false";
+			$img_modal_params['height'] = "400px";
+			$img_modal_params['width'] = "570px";
+			$img_modal_params['url'] = "index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;e_name=in_toyimage&amp;fieldid=in_toyimage";
+			echo JHTML::_('bootstrap.renderModal', 'myImgModal', $img_modal_params);
+			?> 
 			</td>
 		</tr>
 		<tr>
@@ -354,21 +656,20 @@ switch($act) {
 			$toycategory_rows = $db->loadAssocList();
 			$toycat_maxid=0;
 			foreach ($toycategory_rows as $toycategory_output) {
-				echo "<input type=checkbox name='toycat_".$toycategory_output["id"]."' value='".$toycategory_output["category"]."' ";
-				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
-				$toycat_maxid=$toycategory_output["id"];
+				echo "<input type=checkbox name='toycat_arr[]' value='".$toycategory_output["category"]."' ";
+//				if ($toycategory_output["id"] == $category_rows[0]["categoryid"]) {echo "checked";};
+				if (array_search($toycategory_output["id"], array_column($category_rows, 'categoryid')) !== false) {echo "checked";};
 				echo ">".$toycategory_output["category"]."<BR>\n";
 			};
-			echo "<input type=hidden name='toycat_maxid' value='".$toycat_maxid."'>\n";
 			?>
 			</td>
 		</tr>
 		<tr>
-			<td valign=top><B>Toy Loan state :</B></td>
-			<td><select name='in_toyloanstate'>
+			<td valign=top><B>Toy Loan state :<BR>(Non-edit, go to Approve/View requests tab)</B></td>
+			<td><select name='in_toyloanstate' disabled>
+			<option name='0' <?php if ($loanlink_rows["status"] == "0") {echo "selected";}; ?>>AVAILABLE</option>
 			<option name='2' <?php if ($loanlink_rows["status"] == "2") {echo "selected";}; ?>>AWAITING LOAN REQUEST</option>
 			<option name='1' <?php if ($loanlink_rows["status"] == "1") {echo "selected";}; ?>>ON LOAN</option>
-			<option name='0' <?php if ($loanlink_rows["status"] == "0") {echo "selected";}; ?>>AVAILABLE</option>
 			</select>
 			</td>
 		</tr>
@@ -377,9 +678,11 @@ switch($act) {
 			<td><?=JHTML::_('calendar', $loanlink_rows["returnbydate"], "in_toyreturndate" , "in_toyreturndate", '%Y-%m-%d'); ?></td>
 		</tr>
 		<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::current()?>?option=com_toydatabase&tab=toys&act=5&ddid=<?=$ddid?>';};"></td></tr>
 		</table>
 		</form>
 		<?php
+		}; // end of if tab toys
 		break;
 	default:
 		$query = $db->getQuery(true);
@@ -408,11 +711,21 @@ switch($act) {
 		<!-- Toy database search -->
 		<form method=post onsubmit="return false">
 		<input type=hidden name='act' value='3'>
+		<input type=hidden name='tab' value='toys'>
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
-		<tr align=right><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
+		<tr align=right><td align=right>Search toy library:</td><td width=230><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
 		</table>
 		</form>
 		<!-- END Toy database search -->
+
+		<!-- New toy button -->
+                <form method=post onsubmit="return false">
+                <input type=hidden name='act' value='4'>
+                <table width=100% border=0 cellpadding=0 cellspacing=0>
+                <tr align=right><td align=right><input type=button name='newtoy' id='newtoy' value='Add a new toy' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=toys&act=4"'></td></tr>
+                </table>
+                </form>
+		<!-- END new toy button -->
 		
 		<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr><td width=30%><B>Toy name</B></td>
@@ -423,7 +736,7 @@ switch($act) {
 		if (!empty($row)) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
-				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&act=1&ddid=$row_key\"'>";
+				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=toys&act=1&ddid=$row_key\"'>";
 				echo "<td>".$row_value["name"]."</td>\n";
 				echo "<td>";
 				// Now retrieve the category (ies)
@@ -442,9 +755,9 @@ switch($act) {
 				echo "</td>";
 				echo "<td>";
 				// check the file exists to display the image
-				if (file_exists("library_images/".$row_value["picture"])) {
+				if (is_file(JPATH_BASE."/../".$row_value["picture"])) {
 					// dynamically resize image using php
-					echo "<img src='toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
+					echo "<img src='".JURI::root()."/components/com_toydatabase/toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
 				} else {
 					echo "Sorry no image exists";
 				};
@@ -484,20 +797,417 @@ switch($act) {
 			break;
 }; // enc of switch selecting act
 echo JHtmlTabs::panel("Toy Categories",'panel-id-2');
-echo "<h2>Current Toy Categories</h2>";
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Categories</h2></a>";
 
+switch($cat_act) {
+	case "5":
+		// delete record
+		if($tab == "category") {
+			// delete category
+			// hmm, should we delete really?
+			$del_query = $db->getQuery(true);
+			$del_query->delete($db->quoteName('#__toydatabase_equipment_category'));
+			$del_query->where($db->quoteName('id') . ' = '. $ddid);
+			$db->setQuery($del_query);
+			$db->execute();
+		
+			JFactory::getApplication()->enqueueMessage("Toy category has been deleted");
+		}; // end if tab
+		break;
+	case "4":
+		// new category
+		if($tab == "category") {
+?>
+		                <form method=post name='update_category'>
+		                <input type=hidden name='cat_act' value='2'>
+		                <input type=hidden name='ddid' value='0'>
+		                <input type=hidden name='tab' value='category'>
+		                <table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+		                <tr>
+		                        <td valign=top><B>Category Name :</B></td>
+		                        <td><input type=text size=30 name='in_categoryname' value=''></td>
+		                </tr>
+		                <tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+		                </table>
+		                </form>
+<?php
+		}; // end if category
+		break;
+	case "2":
+		// update record
+		if($tab == "category") {
+			// submit changes or new entry
+			// if the ddid=0 then its a new entry, otherwise its an update to the existing ddid(rowid of the toy)
+			$frm_in_category = $jinput->get('in_categoryname', '', 'RAW');
+	
+			if ($ddid == 0) {
+				// new category
+				// add the request to the database
+				$ins_request = $db->getQuery(true);
+				$ins_columns = array('category');
+				$ins_values = array($db->quote($frm_in_category));
+				$ins_request
+				->insert($db->quoteName('#__toydatabase_equipment_category'))
+				->columns($db->quoteName($ins_columns))
+				->values(implode(',', $ins_values));
+				try {
+					$db->setQuery($ins_request);
+					$db->execute();
+				}
+				catch (RuntimeException $e) {
+					JFactory::getApplication()->enqueueMessage($e->getMessage());
+					return false;
+				};
+				JFactory::getApplication()->enqueueMessage("Category (".$frm_in_category.") was saved correctly.");
+				echo "<BR>\n<a href='".JURI::current()."?option=com_toydatabase&tab=category'>Return to toy categories</a><BR>\n";
+			} else {
+				// existing toy update
+				$upd_request = $db->getQuery(true);
+				$upd_fields = array(
+						$db->quoteName('category') . ' = ' . $db->quote($frm_in_category)
+				);
+				$upd_request->update($db->quoteName('#__toydatabase_equipment_category'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
+				try {
+					$db->setQuery($upd_request);
+					$db->execute();
+				}
+				catch (RuntimeException $e) {
+					JFactory::getApplication()->enqueueMessage($e->getMessage());
+					return false;
+				};
+				JFactory::getApplication()->enqueueMessage("Updated category entry");
+			}; // end of if ddid
+		}; // end of if tab category
+		break;
+	case "1":
+		// retrieve the specific record
+		if($tab == "category") {
+			$query = $db->getQuery(true);
+			$query
+			->select('*')
+			->from($db->quoteName('#__toydatabase_equipment_category'))
+			->where($db->quoteName('id') . ' = '. $ddid);
+			$db->setQuery((string) $query);
+			$db->execute();
+			$row = $db->loadAssoc();
+?>
+			<form method=post name='update_category'>
+			<input type=hidden name='cat_act' value='2'>
+			<input type=hidden name='ddid' value='<?=$ddid?>'>
+			<input type=hidden name='tab' value='category'>
+			<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+			<tr>
+			<td valign=top><B>Category Name :</B></td>
+			<td><input type=text size=30 name='in_categoryname' value='<?=$row["category"]?>'></td>
+			</tr>
+			<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+			<tr><td colspan=2 align=right><input type=button value='Delete Category' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this category?')) {self.location='<?=JURI::current()?>?option=com_toydatabase&tab=category&cat_act=5&ddid=<?=$ddid?>';};"></td></tr>
+			</table>
+			</form>
+<?php
+		}; // end if tab category
+		break;
+	default:
+		$query = $db->getQuery(true);
+		$query
+		->select('SQL_CALC_FOUND_ROWS *')
+		->from($db->quoteName('#__toydatabase_equipment_category'))
+		->order($db->quoteName('category') . ' ASC');
+		
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($query,$limitstart, $limit);
+		$row = $db->loadAssocList('id');
+		if(!empty($row)){
+			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
+			jimport('joomla.html.pagination');
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+		};
+?>
+		<!-- New category button -->
+		<form method=post onsubmit="return false">
+		<input type=hidden name='cat_act' value='4'>
+		<input type=hidden name='tab' value='category'>
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right><input type=button name='newcategory' id='newcategory' value='Add a new category' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=category&cat_act=4"'></td></tr>
+		</table>
+		</form>
+		<!-- END new category button -->
+		
+		<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+		<tr><td width=30%><B>Category name</B></td></tr>
+		<?php
+		if (!empty($row)) {
+			// print_r($row);
+			foreach ($row as $row_key=>$row_value) {
+				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=category&cat_act=1&ddid=$row_key\"'>";
+				echo "<td>".$row_value["category"]."</td></tr>\n";
+			};
+		} else {
+			// no rows or toys in database found
+			echo "<tr><td colspan=1 align=center><B>Sorry - No categories found</B></td></tr>\n";
+		};
+?>
+				</table><form name='limitdisplay'>
+<?php
+		echo $pager->getListFooter();
+		echo "Number of categories to display per page: ".$pager->getLimitBox()."<BR>\n";
+		echo "</form>";
+		// end of default: switch
+		break;
+};
 echo JHtmlTabs::panel("Approve/View Requests",'panel-id-3');
 ?>
 <h2>Approve/View Toy Requests</h2>
 This is the approval panel.
 <?php
-echo JHtmlTabs::panel("Reports",'panel-id-4');
+// approval system, theory is:
+//  toydatabase_loanlink contains the loans in the system, historical and active
+//  show them all sorted by which ones are active (then into history)
+//  allow a manual addition for a member (or non-member)
+switch($loan_act) {
+	case "1":
+		break;
+	default:
+		// default, display current loan database entries
+		$query = $db->getQuery(true);
+		$query
+		->select('SQL_CALC_FOUND_ROWS *')
+		->from($db->quoteName('#__toydatabase_loanlink'))
+		->order($db->quoteName('returnbydate') . ' DESC');
+		
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($query,$limitstart, $limit);
+		$row = $db->loadAssocList('id');
+		if(!empty($row)){
+			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
+			jimport('joomla.html.pagination');
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+		};
+		?>
+				<!-- New loan button -->
+				<form method=post onsubmit="return false">
+				<input type=hidden name='loan_act' value='4'>
+				<input type=hidden name='tab' value='loan'>
+				<table width=100% border=0 cellpadding=0 cellspacing=0>
+				<tr align=right><td align=right><input type=button name='newloan' id='newloan' value='Add a new request manually' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=loan&loan_act=4"'></td></tr>
+				</table>
+				</form>
+				<!-- END new loan button -->
+				
+				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+				<tr><td width=10%><B>Loan status</B></td>
+				<td width=30%><B>Member name</B></td>
+				<td width=30%><B>Toy name</B></td>
+				<td width=10%><B>Request loan date</B></td>
+				<td width=10%><B>Return due date</B></td>
+				<td width=10%><B>Returned date</B></td>
+				</tr>
+				<?php
+				if (!empty($row)) {
+					// print_r($row);
+					foreach ($row as $row_key=>$row_value) {
+						// convert membershipid to their name
+						// convert equipmentid to the toy name
+						// requestdate to human date
+						// returnbydate to human date
+						// returndate to human date
+						
+						// members are complicated. They are joomla users
+						// but we also have separate additional info for them in the
+						// toydatabase library
+						
+						$check_member_query = $db->getQuery(true);
+						$check_member_query
+						->select('*')
+						->from($db->quoteName('#__toydatabase_membership'))
+						->where($db->quoteName('id') . ' = '. $row_value["membershipid"]);
+						$db->setQuery((string) $check_member_query);
+						$db->execute();
+						$membership_row = $db->loadAssoc();
+						$membership_count_check= $db->getNumRows();
+						if ($membership_count_check > 0) {
+							$membername_val=$membership_row["name"];
+						} else {
+							$membername_val="ERROR - User not in toydatabase (Joomla only?)";
+						};
+						
+						$check_toy_query = $db->getQuery(true);
+						$check_toy_query
+						->select('*')
+						->from($db->quoteName('#__toydatabase_equipment'))
+						->where($db->quoteName('id') . ' = '. $row_value["equipmentid"]);
+						$db->setQuery((string) $check_toy_query);
+						$db->execute();
+						$toyentry_row = $db->loadAssoc();
+						$toyentry_count_check= $db->getNumRows();
+						if ($toyentry_count_check > 0) {
+							$toyequipment_val=$toyentry_row["name"];
+						} else {
+							$toyequipment_val="ERROR - Toy not in database (deleted?)";
+						};
+						
+						$entry_requestdate=JFactory::getDate($row_value["loandate"]);
+						$entry_requestdate_out=JHtml::_('date', $entry_requestdate, 'd/m/Y');
+						
+						$entry_returnbydate=JFactory::getDate($row_value["returnbydate"]);
+						$entry_returnbydate_out=JHtml::_('date', $entry_returnbydate, 'd/m/Y');
+						
+						if ($row_value["returndate"] == "0000-00-00 00:00:00") {
+							$entry_returndate_out="(Not returned)";
+						} else {
+							$entry_returndate=JFactory::getDate($row_value["returndate"]);
+							$entry_returndate_out=JHtml::_('date', $entry_returndate, 'd/m/Y');
+						};
+						
+						// date diff to see if theyre overdue
+						$curr_date=JFactory::getDate();
+						$overdue_days=$curr_date->toUnix()-$entry_returnbydate->toUnix();
+						$overdue_days_output=date("d",$overdue_days);
+						if (($overdue_days_output > 1) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+							$overdue_html_text="(Overdue $overdue_days_output days)";
+							$overdue_row_highlighter=1;
+						} else {
+							$overdue_html_text="";
+							$overdue_row_highlighter=0;
+						};
+						
+						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
+						echo "<td>".$row_value["status"]."</td>";
+						echo "<td>".$membername_val."</td>";
+						echo "<td>".$toyequipment_val."</td>";
+						echo "<td>".$entry_requestdate_out."</td>";
+						echo "<td ";
+						if ($overdue_row_highlighter) {echo "bgcolor=red";};
+						echo ">".$entry_returnbydate_out." ".$overdue_html_text." </td>";
+						echo "<td>".$entry_returndate_out."</td>";
+						echo "</tr>\n";
+					};
+				} else {
+					// no rows or toys in database found
+					echo "<tr><td colspan=6 align=center><B>Sorry - No loan requests found</B></td></tr>\n";
+				};
+?>
+						</table><form name='limitdisplay'>
+<?php
+				echo $pager->getListFooter();
+				echo "Number of loan requests to display per page: ".$pager->getLimitBox()."<BR>\n";
+				echo "</form>";
+				// end of default: switch
+		break;
+};
+echo JHtmlTabs::panel("Members",'panel-id-4');
+?>
+<h2>Members</h2>
+Membership is a <i>suppliment</i> to the joomla user management. Users should have a joomla account FIRST, then you can add additional information here for their toy database membership details.<BR>
+<?php
+switch($member_act) {
+	case "1":
+		// display specific member
+		break;
+	default:
+		// display member list
+		$query = $db->getQuery(true);
+		$query
+		->select('SQL_CALC_FOUND_ROWS *')
+		->from($db->quoteName('#__toydatabase_membership'))
+		->order($db->quoteName('name') . ' DESC');
+		
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($query,$limitstart, $limit);
+		$row = $db->loadAssocList('id');
+		if(!empty($row)){
+			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
+			jimport('joomla.html.pagination');
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+		};
+		?>
+						<!-- New member button -->
+						<form method=post onsubmit="return false">
+						<input type=hidden name='member_act' value='4'>
+						<input type=hidden name='tab' value='member'>
+						<table width=100% border=0 cellpadding=0 cellspacing=0>
+						<tr align=right><td align=right><input type=button name='newmember' id='newmember' value='Add a new member link' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=member&loan_act=4"'></td></tr>
+						</table>
+						</form>
+						<!-- END new member button -->
+						
+						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+						<tr><td width=10%><B>Member joomla ID</B></td>
+						<td width=10%><B>Member URN</B></td>
+						<td width=20%><B>Member Name</B></td>
+						<td width=20%><B>Company</B></td>
+						<td width=10%><B>Postcode</B></td>
+						<td width=10%><B>Member Category</B></td>
+						<td width=10%><B>Join Date</B></td>
+						<td width=10%><B>Renewal Date</B></td>
+						</tr>
+						<?php
+						if (!empty($row)) {
+							// print_r($row);
+							foreach ($row as $row_key=>$row_value) {
+								// convert memb_category
+								// link to joomlaid
+								// joindate to human date
+								// renewaldate to human date
+								
+								$check_member_query = $db->getQuery(true);
+								$check_member_query
+								->select('*')
+								->from($db->quoteName('#__toydatabase_membershiplink'))
+								->where($db->quoteName('membershipid') . ' = '. $row_value["id"]);
+								$db->setQuery((string) $check_member_query);
+								$db->execute();
+								$membership_row = $db->loadAssoc();
+								
+								$entry_joindate=JFactory::getDate($row_value["joindate"]);
+								$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
+								
+								$entry_renewaldate=JFactory::getDate($row_value["renewaldate"]);
+								$entry_renewaldate_out=JHtml::_('date', $entry_renewaldate, 'd/m/Y');
+								
+								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&member_act=1&ddid=$row_key\"'>";
+								echo "<td>".$row_value["id"]."</td>";
+								echo "<td>".$row_value["urn"]."</td>";
+								echo "<td>".$row_value["name"]."</td>";
+								echo "<td>".$row_value["companyname"]."</td>";
+								echo "<td>".$row_value["postcode"]."</td>";
+								echo "<td>".$row_value["memb_category"]."</td>";
+								echo "<td>".$entry_joindate_out."</td>";
+								echo "<td>".$entry_renewaldate_out."</td>";
+								echo "</tr>\n";
+							};
+						} else {
+							// no rows or toys in database found
+							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
+						};
+?>
+								</table><form name='limitdisplay'>
+<?php
+						echo $pager->getListFooter();
+						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
+						echo "</form>";
+			// end of default: switch
+		break;
+};
+echo JHtmlTabs::panel("Reports",'panel-id-5');
 ?>
 <h2>Reporting</h2>
 This is the Reports panel.
 <?php
-echo JHtmlTabs::panel("Configuration",'panel-id-5'); //You can use any custom text
-echo "<h2>Configuration<h2>";
+echo JHtmlTabs::panel("Configuration",'panel-id-6'); //You can use any custom text
+echo "<h2>Configuration</h2>";
 ?>
 <form method=post name='configuration'>
 <table width=95% border=1 cellpadding=0 cellspacing=0>

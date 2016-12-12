@@ -404,7 +404,7 @@ receive email confirmation once it has been accepted.<BR>
 </tr>
 <tr>
 	<td><B>Toy Image :</B></td>
-	<td><?=$row["picture"]?></td>
+	<td><img src='<?php echo JURI::root().$row["picture"]; ?>' alt='Toy image' border=0></td>
 </tr>
 <tr>
 	<td><B>Toy Description :</B></td>
@@ -562,9 +562,9 @@ if (!empty($row)) {
 		echo "</td>";
 		echo "<td>";
 		// check the file exists to display the image
-		if (file_exists("library_images/".$row_value["picture"])) {
+		if (is_file(JPATH_BASE."/".$row_value["picture"])) {
 			// dynamically resize image using php
-			echo "<img src='toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
+			echo "<img src='".JURI::root()."/components/com_toydatabase/toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
 		} else {
 			echo "Sorry no image exists";
 		};
