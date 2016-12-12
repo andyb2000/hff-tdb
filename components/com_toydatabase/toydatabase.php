@@ -497,7 +497,7 @@ receive email confirmation once it has been accepted.<BR>
 			$get_search_category
 			->select('*')
 			->from($db->quoteName('#__toydatabase_categorylink'))
-			->where($db->quoteName('id') . ' = '. $toycategoryselect);					
+			->where($db->quoteName('categoryid') . ' = '. $toycategoryselect);					
 			$db->setQuery((string) $get_search_category);
 			$db->execute();
 			$category_search_rows = $db->loadAssocList();
