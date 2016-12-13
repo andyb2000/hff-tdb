@@ -251,6 +251,26 @@ switch ($act) {
 		switch($subact) {
 			case "1":
 				// submit of form
+				// do our validation for toy-library, if all ok then do a hidden submit to Joomla itself
+				jimport('joomla.user.helper');
+				$udata = array(
+						"name"=>$realname,
+						"username"=>$username,
+						"password"=>$password,
+						"password2"=>$password,
+						"email"=>$email,
+						"block"=>0,
+						"groups"=>array("1","2")
+				);
+				$user = new JUser;
+				//Write to database
+				if(!$user->bind($udata)) {
+					throw new Exception("Could not bind data. Error: " . $user->getError());
+				}
+				if (!$user->save()) {
+					throw new Exception("Could not save user. Error: " . $user->getError());
+				};
+				$new_user_id = $user->id;
 				break;
 			default:
 				// display submit form
@@ -277,12 +297,8 @@ Register to use the toy database library:<BR>
 <option value='childminders'>Childminders</option>
 <option value='outside_hartlepool'>Organisations outside of Hartlepool</option>
 </select></td></tr>
-
-<tr><td>Requested loan date:</td><td><?=JHTML::_('calendar', $in_stdate, "requestedloandate" , "requestedloandate", '%d-%m-%Y'); ?></td></tr>
-<tr><td>Requested return date:</td><td><?=JHTML::_('calendar', $in_stdate, "requestedloanreturndate" , "requestedloanreturndate", '%d-%m-%Y'); ?></td></tr>
-<tr><td>Days on loan:</td><td><input type=text name='daysonloan' id='daysonloan' onclick='Javascript:self.daysonloan.value=toy_calculateDate(self.requestedloanreturndate.value, self.requestedloandate.value)'></td></tr>
 <tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
-<tr><td colspan=2 align=right><input type=submit class="validate"></td></tr>
+<tr><td colspan=2 align=right><input type=submit class="validate" name='submit' value='Send request'></td></tr>
 </table>
 </form><BR>
 <?php
