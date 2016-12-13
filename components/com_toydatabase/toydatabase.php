@@ -290,10 +290,13 @@ switch ($act) {
 <script language=Javascript>
 jQuery(document).ready(function(){
     document.formvalidator.setHandler('passverify', function (value) {
-        alert('testing password');
-        alert(document.getElementById('user_password1').value);
-        alert(value);
-        return (jQuery('input[type=password]').value == value); // jim
+        if (document.getElementById('user_password1').value == value) {
+			return true;
+        } else {
+            alert('Error: Passwords do not match');
+            msg.push('Passwords do not match');
+            return false;
+        };
     });
 });
 </script>
