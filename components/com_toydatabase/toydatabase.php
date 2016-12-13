@@ -319,8 +319,8 @@ Register to use the toy database library:<BR>
 <option value='outside_hartlepool'>Organisations outside of Hartlepool</option>
 </select></td></tr>
 <tr><td>Desired UserName: *</td><td><input type=text name='user_username' class='required validate-username' size=15/></td></tr>
-<tr><td>Password: *</td><td><input type=password id='user_password1' name='user_password1' class='required' autocomplete="off" class="validate-password required" size="30" maxlength="45" required="required" aria-required="true"/></td></tr>
-<tr><td>Password (confirm): *</td><td><input type=password id='user_password2' name='user_password2' autocomplete="off" class="validate-passverify required" size="30" maxlength="45" required="required" aria-required="true"/></td></tr>
+<tr><td>Password: *</td><td><input type=password id='user_password1' name='user_password1' class='required' autocomplete="off" size="30" maxlength="45"/></td></tr>
+<tr><td>Password (confirm): *</td><td><input class="inputbox required validate-passverify" type="password" id="user_password2" name="user_password2" size="40" value="" /></td></tr>
 
 <tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
 <tr><td colspan=2 align=right><button type="submit" class="validate">Submit form</button></td></tr>
