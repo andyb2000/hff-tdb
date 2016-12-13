@@ -263,16 +263,19 @@ switch ($act) {
 				$frm_email = $jinput->get('user_email', '', 'RAW');
 				$frm_membercategory = $jinput->get('user_membercategory', '', 'RAW');
 				$frm_notes = $jinput->get('notes', '', 'RAW');
+				$frm_username = $jinput->get('user_username', '', 'RAW');
+				$frm_password1 = $jinput->get('user_password1', '', 'RAW');
+				$frm_password2 = $jinput->get('user_password2', '', 'RAW');
 				
 				jimport('joomla.user.helper');
 				$udata = array(
-						"name"=>$realname,
-						"username"=>$username,
-						"password"=>$password,
-						"password2"=>$password,
-						"email"=>$email,
+						"name"=>$frm_fullname,
+						"username"=>$frm_username,
+						"password"=>$frm_password1,
+						"password2"=>$frm_password2,
+						"email"=>$frm_email,
 						"block"=>0,
-						"groups"=>array("1","2")
+						"groups"=>array($toydatabase_permissions["groupname"])
 				);
 				$user = new JUser;
 				//Write to database
@@ -283,6 +286,7 @@ switch ($act) {
 					throw new Exception("Could not save user. Error: " . $user->getError());
 				};
 				$new_user_id = $user->id;
+				echo "Added user: $new_user_id<BR>\n";
 				break;
 			default:
 				// display submit form
