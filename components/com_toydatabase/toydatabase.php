@@ -287,6 +287,13 @@ switch ($act) {
 			default:
 				// display submit form
 ?>
+<script language=Javascript>
+jQuery(document).ready(function(){
+    document.formvalidator.setHandler('passverify', function (value) {
+        return (jQuery('input[type=password]').value == value); 
+    });
+});
+</script>
 <form name='toy_user_registration' id='toy_user_registration' method=post class="form-validate form-horizontal well" enctype="multipart/form-data">
 <input type=hidden name='act' value='99'>
 <input type=hidden name='subact' value='1'>
@@ -311,12 +318,12 @@ Register to use the toy database library:<BR>
 <option value='childminders'>Childminders</option>
 <option value='outside_hartlepool'>Organisations outside of Hartlepool</option>
 </select></td></tr>
-<tr><td>Desired UserName: *</td><td><input type=text name='user_username' class='required' size=15/></td></tr>
-<tr><td>Password: *</td><td><input type=text name='user_password1' class='required' autocomplete="off" class="validate-password required" size="30" maxlength="45" required="required" aria-required="true"/></td></tr>
-<tr><td>Password (confirm): *</td><td><input type=text name='user_password2' autocomplete="off" class="validate-password required" size="30" maxlength="45" required="required" aria-required="true"/></td></tr>
+<tr><td>Desired UserName: *</td><td><input type=text name='user_username' class='required validate-username' size=15/></td></tr>
+<tr><td>Password: *</td><td><input type=password id='user_password1' name='user_password1' class='required' autocomplete="off" class="validate-password required" size="30" maxlength="45" required="required" aria-required="true"/></td></tr>
+<tr><td>Password (confirm): *</td><td><input type=password id='user_password2' name='user_password2' autocomplete="off" class="validate-passverify required" size="30" maxlength="45" required="required" aria-required="true"/></td></tr>
 
 <tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
-<tr><td colspan=2 align=right><input type=submit class="validate" name='submit' value='Send request'></td></tr>
+<tr><td colspan=2 align=right><button type="submit" class="validate">Submit form</button></td></tr>
 </table>
 </form><BR>
 <?php
