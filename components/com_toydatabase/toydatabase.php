@@ -173,7 +173,7 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 	$user_toymembership=1;
 } else {
 	echo "Why not join our toydatabase membership system?<BR>\n";
-	echo "<a href='".JURI::current()."&act=99'>Join toy library database</a><BR>\n";
+	echo "<a href='".JURI::current()."?act=99'>Join toy library database</a><BR>\n";
 	$user_toymembership=0;
 };
 ?>
@@ -252,6 +252,18 @@ switch ($act) {
 			case "1":
 				// submit of form
 				// do our validation for toy-library, if all ok then do a hidden submit to Joomla itself
+				$frm_fullname = $jinput->get('user_name', '', 'RAW');
+				$frm_companyname = $jinput->get('user_companyname', '', 'RAW');
+				$frm_address1 = $jinput->get('user_address1', '', 'RAW');
+				$frm_address2 = $jinput->get('user_address2', '', 'RAW');
+				$frm_town = $jinput->get('user_town', '', 'RAW');
+				$frm_postcode = $jinput->get('user_postcode', '', 'RAW');
+				$frm_telephone = $jinput->get('user_telephone', '', 'RAW');
+				$frm_mobile = $jinput->get('user_mobile', '', 'RAW');
+				$frm_email = $jinput->get('user_email', '', 'RAW');
+				$frm_membercategory = $jinput->get('user_membercategory', '', 'RAW');
+				$frm_notes = $jinput->get('notes', '', 'RAW');
+				
 				jimport('joomla.user.helper');
 				$udata = array(
 						"name"=>$realname,
@@ -275,21 +287,23 @@ switch ($act) {
 			default:
 				// display submit form
 ?>
-<form name='toy_user_registration' class="form-validate" method=post>
+<form name='toy_user_registration' id='toy_user_registration' method=post class="form-validate form-horizontal well" enctype="multipart/form-data">
 <input type=hidden name='act' value='99'>
 <input type=hidden name='subact' value='1'>
 Register to use the toy database library:<BR>
+(* indicates a required field to be filled in)<BR>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
-<tr><td>Your Name:</td><td><input type=text name='user_name' class='required' size=35/></td></tr>
+<tr><td>Your Name: *</td><td><input type=text name='user_name' class='required' size=35/></td></tr>
 <tr><td>Company Name (Optional):</td><td><input type=text name='user_companyname' size=35/></td></tr>
-<tr><td>Address line1:</td><td><input type="text" name='user_address1' class="required" size="35"/></td></tr>
+<tr><td>Address line1: *</td><td><input type="text" name='user_address1' class="required" size="35"/></td></tr>
 <tr><td>Address line2:</td><td><input type="text" name='user_address2' size="35"/></td></tr>
-<tr><td>Town:</td><td><input type="text" name='user_town' class="required" size="35"/></td></tr>
-<tr><td>Post Code:</td><td><input type="text" name='user_postcode' class="required" size="10"/></td></tr>
+<tr><td>Town: *</td><td><input type="text" name='user_town' class="required" size="35"/></td></tr>
+<tr><td>Post Code: *</td><td><input type="text" name='user_postcode' class="required" size="10"/></td></tr>
 <tr><td>Telephone:</td><td><input type="text" name='user_telephone' size="12"/></td></tr>
 <tr><td>Mobile Number:</td><td><input type="text" name='user_mobile' size="12"/></td></tr>
-<tr><td>Email Address:</td><td><input name="user_email" type="text" class="required validate-email" size="30"/></td></tr>
-<tr><td>Membership Category:</td><td><select name='user_membercategory'/>
+<tr><td>Email Address: *</td><td><input name="user_email" type="text" class="required validate-email" size="30"/></td></tr>
+<tr><td>Membership Category: *</td><td><select name='user_membercategory' class="required"/>
+<option value=''></option>
 <option value='individual'>Individual / Family</option>
 <option value='organisation'>Voluntary Organisation</option>
 <option value='school'>Schools</option>
@@ -297,6 +311,10 @@ Register to use the toy database library:<BR>
 <option value='childminders'>Childminders</option>
 <option value='outside_hartlepool'>Organisations outside of Hartlepool</option>
 </select></td></tr>
+<tr><td>Desired UserName: *</td><td><input type=text name='user_username' class='required' size=15/></td></tr>
+<tr><td>Password: *</td><td><input type=text name='user_password1' class='required' autocomplete="off" class="validate-password required" size="30" maxlength="45" required="required" aria-required="true"/></td></tr>
+<tr><td>Password (confirm): *</td><td><input type=text name='user_password2' autocomplete="off" class="validate-password required" size="30" maxlength="45" required="required" aria-required="true"/></td></tr>
+
 <tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
 <tr><td colspan=2 align=right><input type=submit class="validate" name='submit' value='Send request'></td></tr>
 </table>
