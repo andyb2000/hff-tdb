@@ -291,6 +291,7 @@ switch ($act) {
 jQuery(document).ready(function(){
     document.formvalidator.setHandler('passverify', function (value) {
         alert('testing password');
+        alert(document.getElementById('user_password1').value);
         alert(value);
         return (jQuery('input[type=password]').value == value); // jim
     });
