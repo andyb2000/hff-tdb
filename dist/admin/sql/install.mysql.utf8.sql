@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS `#__toydatabase`;
  
 CREATE TABLE `#__toydatabase_membership` (
 	`id`       INT(11)     NOT NULL AUTO_INCREMENT,
+	`joomla_userid`       INT(11)     NOT NULL,
 	`type` smallint(1) NOT NULL,
 	`urn` varchar(255) NOT NULL,
 	`name` varchar(255) NOT NULL,
