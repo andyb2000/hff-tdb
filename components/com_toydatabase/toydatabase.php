@@ -295,8 +295,15 @@ switch ($act) {
 					->insert($db->quoteName('#__toydatabase_membership'))
 					->columns($db->quoteName($ins_columns))
 					->values(implode(',', $ins_values));
-					$db->setQuery($ins_request);
-					$db->execute();
+					try {
+						$db->setQuery($ins_request);
+						$db->execute();
+					}
+					catch (RuntimeException $e) {
+						echo "Error with mysql ".$e->getMessage()."<BR><BR>\n";
+						JFactory::getApplication()->enqueueMessage($e->getMessage());
+						return false;
+					};
 					echo "<h2>User registration completed</h2><BR>";
 					echo "Your account will now be validated by the Toy Library admin and you will receive an email once your membership has started<BR>\n";
 					echo "<BR>Thank you for joining!<BR>\n";
