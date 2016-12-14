@@ -290,7 +290,7 @@ switch ($act) {
 				if ($new_user_id) {
 					// add user to toy database
 					$ins_columns = array('joomla_userid','type', 'name', 'companyname', 'address1', 'address2', 'town', 'postcode', 'telephone', 'mobile', 'email', 'memb_category', 'joindate', 'disabilities', 'children', 'active', 'creationdate');
-					$ins_values = array($new_user_id, $db->quote($frm_membertype), $db->quote($frm_fullname), $db->quote($frm_companyname), $db->quote($frm_address1), $db->quote($frm_address2), $db->quote($frm_town), $db->quote($frm_postcode), $db->quote($frm_telephone), $db->quote($frm_mobile), $db->quote($frm_email), $db->quote($frm_membercategory), 'NOW()', '', '', '0', 'NOW()');
+					$ins_values = array($new_user_id, '$frm_membertype', $db->quote($frm_fullname), $db->quote($frm_companyname), $db->quote($frm_address1), $db->quote($frm_address2), $db->quote($frm_town), $db->quote($frm_postcode), $db->quote($frm_telephone), $db->quote($frm_mobile), $db->quote($frm_email), '$frm_membercategory', 'NOW()', '', '', '0', 'NOW()');
 					$ins_request = $db->getQuery(true);
 					$ins_request
 					->insert($db->quoteName('#__toydatabase_membership'))
@@ -390,17 +390,17 @@ Register to use the toy database library:<BR>
 <tr><td>Email Address: *</td><td><input name="user_email" type="text" class="required validate-email" size="30"/></td></tr>
 <tr><td>Membership Type: *</td><td><select name='user_membertype' class="required"/>
 <option value=''></option>
-<option value='individual'>Individual</option>
-<option value='organisation'>Organisation</option>
+<option value='1'>Individual</option>
+<option value='2'>Organisation</option>
 </select></td></tr>
 <tr><td>Membership Category: *</td><td><select name='user_membercategory' class="required"/>
 <option value=''></option>
-<option value='individual'>Individual / Family</option>
-<option value='organisation'>Voluntary Organisation</option>
-<option value='school'>Schools</option>
-<option value='childcare_settings'>Childcare settings</option>
-<option value='childminders'>Childminders</option>
-<option value='outside_hartlepool'>Organisations outside of Hartlepool</option>
+<option value='1'>Individual / Family</option>
+<option value='2'>Voluntary Organisation</option>
+<option value='3'>Schools</option>
+<option value='4'>Childcare settings</option>
+<option value='5'>Childminders</option>
+<option value='6'>Organisations outside of Hartlepool</option>
 </select></td></tr>
 <tr><td>Desired UserName: *</td><td><input type=text name='user_username' class='required validate-username' size=15/></td></tr>
 <tr><td>Password: *</td><td><input class="inputbox required" type="password" id="user_password1" name="user_password1" size="40" value="" /></td></tr>
