@@ -1158,7 +1158,7 @@ $db->execute();
 $membershiptypes_rows= $db->loadAssocList();
 foreach ($membershiptypes_rows as $membershiptypes_output) {
 	echo "<option value='".$membershiptypes_output["id"]."' ";
-	if ($memb_typerow["membershiptypeid"] == $membershiptypes_output["id"]) {echo "checked";};
+	if ($memb_typerow["membershiptypeid"] == $membershiptypes_output["id"]) {echo "selected";};
 	echo ">".$membershiptypes_output["type"]."</option>\n";
 };
 ?>
