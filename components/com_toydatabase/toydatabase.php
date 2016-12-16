@@ -299,11 +299,24 @@ switch ($act) {
 					try {
 						$db->setQuery($ins_request);
 						$db->execute();
+						$newuser_id = $db->insertid();
 					}
 					catch (RuntimeException $e) {
 						echo "Error with mysql ".$e->getMessage()."<BR><BR>\n";
 						JFactory::getApplication()->enqueueMessage($e->getMessage());
 						return false;
+					};
+					// create the membershiplink connection
+					if ($newuser_id) {
+						$ins_columns = array('id','membershipid','membershiptypeid');
+						$ins_values = array($db->quote(""),$newuser_id,$frm_membertype);
+						$ins_membershiplink_request = $db->getQuery(true);
+						$ins_membershiplink_request
+						->insert($db->quoteName('#__toydatabase_membershiptypes'))
+						->columns($db->quoteName($ins_columns))
+						->values(implode(',', $ins_values));
+						$db->setQuery($ins_membershiplink_request);
+						$db->execute();
 					};
 					echo "<h2>User registration completed</h2><BR>";
 					echo "Your account will now be validated by the Toy Library admin and you will receive an email once your membership has started<BR>\n";
