@@ -1202,8 +1202,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					</tr>
 					<tr>
 					<td valign=top><B>Membership Category :</B></td>
-					<td><input type=text size=10 name='in_memb_category' value='<?=$row["memb_category"]?>'>
-					<select name='in_memb_category'/>
+					<td><select name='in_memb_category'/>
 <option value=''></option>
 <option value='1' <?php if ($row["memb_category"] == "1") {echo "selected";}; ?>>Individual / Family</option>
 <option value='2' <?php if ($row["memb_category"] == "2") {echo "selected";}; ?>>Voluntary Organisation</option>
