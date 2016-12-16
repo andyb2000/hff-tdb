@@ -1178,7 +1178,7 @@ switch($member_act) {
 								$entry_renewaldate_out=JHtml::_('date', $entry_renewaldate, 'd/m/Y');
 								
 								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&member_act=1&ddid=$row_key\"'>";
-								echo "<td>".$row_value["id"]."</td>";
+								echo "<td>".$row_value["joomla_userid"]."</td>";
 								echo "<td>".$row_value["urn"]."</td>";
 								echo "<td>".$row_value["name"]."</td>";
 								echo "<td>".$row_value["companyname"]."</td>";
