@@ -290,7 +290,7 @@ switch ($act) {
 				if ($new_user_id) {
 					// add user to toy database
 					$ins_columns = array('joomla_userid','type', 'name', 'companyname', 'address1', 'address2', 'town', 'postcode', 'telephone', 'mobile', 'email', 'memb_category', 'joindate', 'disabilities', 'children', 'active', 'creationdate');
-					$ins_values = array($new_user_id, "$frm_membertype", $db->quote($frm_fullname), $db->quote($frm_companyname), $db->quote($frm_address1), $db->quote($frm_address2), $db->quote($frm_town), $db->quote($frm_postcode), $db->quote($frm_telephone), $db->quote($frm_mobile), $db->quote($frm_email), "$frm_membercategory", 'NOW()', "", "", '0', 'NOW()');
+					$ins_values = array($new_user_id, "$frm_membertype", $db->quote($frm_fullname), $db->quote($frm_companyname), $db->quote($frm_address1), $db->quote($frm_address2), $db->quote($frm_town), $db->quote($frm_postcode), $db->quote($frm_telephone), $db->quote($frm_mobile), $db->quote($frm_email), "$frm_membercategory", 'NOW()', $db->quote(""), $db->quote(""), '0', 'NOW()');
 					$ins_request = $db->getQuery(true);
 					$ins_request
 					->insert($db->quoteName('#__toydatabase_membership'))
