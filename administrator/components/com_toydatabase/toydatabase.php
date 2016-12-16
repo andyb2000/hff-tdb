@@ -1174,8 +1174,12 @@ switch($member_act) {
 								$entry_joindate=JFactory::getDate($row_value["joindate"]);
 								$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
 								
-								$entry_renewaldate=JFactory::getDate($row_value["renewaldate"]);
-								$entry_renewaldate_out=JHtml::_('date', $entry_renewaldate, 'd/m/Y');
+								if ($row_value["renewaldate"] != "0000-00-00 00:00:00") {
+									$entry_renewaldate=JFactory::getDate($row_value["renewaldate"]);
+									$entry_renewaldate_out=JHtml::_('date', $entry_renewaldate, 'd/m/Y');
+								} else {
+									$entry_renewaldate_out="N/A";
+								};
 								
 								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&member_act=1&ddid=$row_key\"'>";
 								echo "<td>".$row_value["joomla_userid"]."</td>";
