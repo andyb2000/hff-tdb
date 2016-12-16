@@ -1201,12 +1201,12 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					<td><input type=text size=10 name='in_memb_category' value='<?=$row["memb_category"]?>'>
 					<select name='in_memb_category'/>
 <option value=''></option>
-<option value='1' <?php if ($row["memb_category"] == "1") {echo "checked";}; ?>>Individual / Family</option>
-<option value='2' <?php if ($row["memb_category"] == "2") {echo "checked";}; ?>>Voluntary Organisation</option>
-<option value='3' <?php if ($row["memb_category"] == "3") {echo "checked";}; ?>>Schools</option>
-<option value='4' <?php if ($row["memb_category"] == "4") {echo "checked";}; ?>>Childcare settings</option>
-<option value='5' <?php if ($row["memb_category"] == "5") {echo "checked";}; ?>>Childminders</option>
-<option value='6' <?php if ($row["memb_category"] == "6") {echo "checked";}; ?>>Organisations outside of Hartlepool</option>
+<option value='1' <?php if ($row["memb_category"] == "1") {echo "selected";}; ?>>Individual / Family</option>
+<option value='2' <?php if ($row["memb_category"] == "2") {echo "selected";}; ?>>Voluntary Organisation</option>
+<option value='3' <?php if ($row["memb_category"] == "3") {echo "selected";}; ?>>Schools</option>
+<option value='4' <?php if ($row["memb_category"] == "4") {echo "selected";}; ?>>Childcare settings</option>
+<option value='5' <?php if ($row["memb_category"] == "5") {echo "selected";}; ?>>Childminders</option>
+<option value='6' <?php if ($row["memb_category"] == "6") {echo "selected";}; ?>>Organisations outside of Hartlepool</option>
 </select>
 					</td>
 					</tr>
@@ -1233,10 +1233,10 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					<tr>
 					<td valign=top><B>Status :</B></td>
 					<td><select name='active'>
-					<option value='0' <?php if ($row["active"] == "0") {echo "checked";}; ?>>Pending approval</option>
-					<option value='1' <?php if ($row["active"] == "1") {echo "checked";}; ?>>Active</option>
-					<option value='10' <?php if ($row["active"] == "10") {echo "checked";}; ?>>Suspended</option>
-					<option value='99' <?php if ($row["active"] == "99") {echo "checked";}; ?>>Deleted</option>
+					<option value='0' <?php if ($row["active"] == "0") {echo "selected";}; ?>>Pending approval</option>
+					<option value='1' <?php if ($row["active"] == "1") {echo "selected";}; ?>>Active</option>
+					<option value='10' <?php if ($row["active"] == "10") {echo "selected";}; ?>>Suspended</option>
+					<option value='99' <?php if ($row["active"] == "99") {echo "selected";}; ?>>Deleted</option>
 					</select></td>
 					</tr>
 					<tr>
