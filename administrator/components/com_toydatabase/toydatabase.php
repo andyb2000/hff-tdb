@@ -1120,6 +1120,16 @@ switch($member_act) {
 			$db->setQuery((string) $query);
 			$db->execute();
 			$row = $db->loadAssoc();
+			
+			// get member type lookup
+			$query_membtype = $db->getQuery(true);
+			$query_membtype
+			->select('*')
+			->from($db->quoteName('#__toydatabase_membershiplink'))
+			->where($db->quoteName('membershipid') . ' = '. $ddid);
+			$db->setQuery((string) $query_membtype);
+			$db->execute();
+			$memb_typerow = $db->loadAssoc();
 			?>
 					<form method=post name='update_member'>
 					<input type=hidden name='member_act' value='2'>
@@ -1136,7 +1146,23 @@ switch($member_act) {
 					</tr>
 					<tr>
 					<td valign=top><B>Type :</B></td>
-					<td><input type=text size=5 name='in_type' value='<?=$row["type"]?>'></td>
+					<td><select name='in_type'>
+<?php 
+// get membershiptypes
+$query_membtypes = $db->getQuery(true);
+$query_membtypes
+->select("*")
+->from($db->quoteName('#__toydatabase_membershiptypes'));
+$db->setQuery((string) $query_membtypes);
+$db->execute();
+$membershiptypes_rows= $db->loadAssocList();
+foreach ($membershiptypes_rows as $membershiptypes_output) {
+	echo "<option value='".$membershiptypes_output["id"]."' ";
+	if ($memb_typerow["membershiptypeid"] == $membershiptypes_output["id"]) {echo "checked";};
+	echo ">".$membershiptypes_output["type"]."</option>\n";
+};
+?>
+					</select></td>
 					</tr>
 					<tr>
 					<td valign=top><B>Company NAme :</B></td>
