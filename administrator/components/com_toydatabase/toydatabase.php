@@ -1130,6 +1130,10 @@ switch($member_act) {
 			$db->setQuery((string) $query_membtype);
 			$db->execute();
 			$memb_typerow = $db->loadAssoc();
+			if ($row["renewaldate"] != "0000-00-00 00:00:00") {
+				$entry_renewaldate=JFactory::getDate($row["renewaldate"]);
+				$in_renewaldate=JHtml::_('date', $entry_requestdate, 'd/m/Y');
+			};
 			?>
 					<form method=post name='update_member'>
 					<input type=hidden name='member_act' value='2'>
@@ -1215,7 +1219,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					</tr>
 					<tr>
 					<td valign=top><B>Renewal Date :</B></td>
-					<td><input type=text size=50 name='in_renewaldate' value='<?=$row["renewaldate"]?>'></td>
+					<td><?=JHTML::_('calendar', $in_renewaldate, "in_renewaldate" , "in_renewaldate", '%d-%m-%Y'); ?></td>
 					</tr>
 					<tr>
 					<td valign=top><B>Join Date (locked) :</B></td>
