@@ -1165,7 +1165,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					</select></td>
 					</tr>
 					<tr>
-					<td valign=top><B>Company NAme :</B></td>
+					<td valign=top><B>Company Name :</B></td>
 					<td><input type=text size=30 name='in_companyname' value='<?=$row["companyname"]?>'></td>
 					</tr>
 					<tr>
@@ -1198,7 +1198,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					</tr>
 					<tr>
 					<td valign=top><B>Membership Category :</B></td>
-					<td><input type=text size=10 name='in_memb_category' value='<?=$row["memb_catgory"]?>'></td>
+					<td><input type=text size=10 name='in_memb_category' value='<?=$row["memb_category"]?>'></td>
 					</tr>
 					<tr>
 					<td valign=top><B>Renewal Date :</B></td>
