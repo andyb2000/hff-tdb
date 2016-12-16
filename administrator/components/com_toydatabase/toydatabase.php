@@ -1137,6 +1137,10 @@ switch($member_act) {
 					<input type=hidden name='tab' value='member'>
 					<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 					<tr>
+					<td valign=top><B>Joomla Userid link (locked) :</B></td>
+					<td><input type=text size=10 name='in_joomla_userid' value='<?=$row["joomla_userid"]?>'>&nbsp;<a href="<?=JURI::root()?>/administrator/index.php?option=com_users&task=user.edit&id=<?=$row["joomla_userid"]?>">Joomla user editor</a></td>
+					</tr>
+					<tr>
 					<td valign=top><B>Member Name :</B></td>
 					<td><input type=text size=30 name='in_membername' value='<?=$row["name"]?>'></td>
 					</tr>
