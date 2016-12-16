@@ -1111,6 +1111,107 @@ Membership is a <i>suppliment</i> to the joomla user management. Users should ha
 switch($member_act) {
 	case "1":
 		// display specific member
+		if($tab == "member") {
+			$query = $db->getQuery(true);
+			$query
+			->select('*')
+			->from($db->quoteName('#__toydatabase_membership'))
+			->where($db->quoteName('id') . ' = '. $ddid);
+			$db->setQuery((string) $query);
+			$db->execute();
+			$row = $db->loadAssoc();
+			?>
+					<form method=post name='update_member'>
+					<input type=hidden name='member_act' value='2'>
+					<input type=hidden name='ddid' value='<?=$ddid?>'>
+					<input type=hidden name='tab' value='member'>
+					<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+					<tr>
+					<td valign=top><B>Member Name :</B></td>
+					<td><input type=text size=30 name='in_membername' value='<?=$row["name"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>URN :</B></td>
+					<td><input type=text size=20 name='in_urn' value='<?=$row["urn"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Type :</B></td>
+					<td><input type=text size=5 name='in_type' value='<?=$row["type"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Company NAme :</B></td>
+					<td><input type=text size=30 name='in_companyname' value='<?=$row["companyname"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Address1 :</B></td>
+					<td><input type=text size=50 name='in_address1' value='<?=$row["address1"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Address2 :</B></td>
+					<td><input type=text size=50 name='in_address2' value='<?=$row["address2"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Town :</B></td>
+					<td><input type=text size=50 name='in_town' value='<?=$row["town"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Postcode :</B></td>
+					<td><input type=text size=15 name='in_postcode' value='<?=$row["postcode"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Telephone :</B></td>
+					<td><input type=text size=50 name='in_telephone' value='<?=$row["telephone"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Mobile :</B></td>
+					<td><input type=text size=50 name='in_mobile' value='<?=$row["mobile"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Email :</B></td>
+					<td><input type=text size=60 name='in_email' value='<?=$row["email"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Membership Category :</B></td>
+					<td><input type=text size=10 name='in_memb_category' value='<?=$row["memb_catgory"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Renewal Date :</B></td>
+					<td><input type=text size=50 name='in_renewaldate' value='<?=$row["renewaldate"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Join Date (locked) :</B></td>
+					<td><input type=text size=50 name='in_joindate' disabled value='<?=$row["joindate"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Creation Date (locked) :</B></td>
+					<td><input type=text size=50 name='in_creationdate' disabled value='<?=$row["creationdate"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Disabilities :</B></td>
+					<td><textarea rows="3" cols="4" name='in_disabilities'><?=$row["disabilities"]?></textarea></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Children :</B></td>
+					<td><input type=text size=5 name='in_children' value='<?=$row["children"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Status :</B></td>
+					<td><select name='active'>
+					<option value='0' <?php if ($row["active"] == "0") {echo "checked";}; ?>>Pending approval</option>
+					<option value='1' <?php if ($row["active"] == "1") {echo "checked";}; ?>>Active</option>
+					<option value='10' <?php if ($row["active"] == "10") {echo "checked";}; ?>>Suspended</option>
+					<option value='99' <?php if ($row["active"] == "99") {echo "checked";}; ?>>Deleted</option>
+					</select></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Created/Approved by (locked) :</B></td>
+					<td><input type=text size=50 name='in_adminuser' disabled value='<?=$row["adminuser"]?>'></td>
+					</tr>
+					<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+					</table>
+					</form>
+		<?php
+		};
 		break;
 	default:
 		// display member list
