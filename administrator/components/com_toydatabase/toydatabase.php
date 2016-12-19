@@ -1710,8 +1710,10 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 echo JHtmlTabs::panel("Reports",'panel-id-5');
 echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Reporting</h2></a>";
 ?>
-This is the Reports panel.
 <?php
+// try it via includes?
+include_once("toydatabase_reports.php");
+
 echo JHtmlTabs::panel("Configuration",'panel-id-6'); //You can use any custom text
 echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Configuration</h2></a>";
 ?>
