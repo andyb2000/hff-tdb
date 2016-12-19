@@ -987,8 +987,12 @@ switch($loan_act) {
 			$frm_returnbydate_out=JHtml::_('date', $frm_returnbydate, 'Y-m-d 00:00:00');
 				
 			$frm_in_returndate = $jinput->get('in_returndate', '', 'RAW');
-			$frm_returndate=JFactory::getDate($frm_in_returndate);
-			$frm_returndate_out=JHtml::_('date', $frm_returndate, 'Y-m-d 00:00:00');
+			if ($frm_in_returndate) {
+				$frm_returndate=JFactory::getDate($frm_in_returndate);
+				$frm_returndate_out=JHtml::_('date', $frm_returndate, 'Y-m-d 00:00:00');
+			} else {
+				$frm_returndate_out="";
+			};
 				
 			$frm_in_status = $jinput->get('in_status', '', 'RAW');
 			
