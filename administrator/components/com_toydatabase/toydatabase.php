@@ -960,8 +960,8 @@ switch($cat_act) {
 		break;
 };
 echo JHtmlTabs::panel("Approve/View Requests",'panel-id-3');
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Approve/View Toy Requests</h2></a>";
 ?>
-<h2>Approve/View Toy Requests</h2>
 This is the approval panel.
 <?php
 // approval system, theory is:
@@ -1104,8 +1104,8 @@ switch($loan_act) {
 		break;
 };
 echo JHtmlTabs::panel("Members",'panel-id-4');
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Members</h2></a>";
 ?>
-<h2>Members</h2>
 Membership is a <i>suppliment</i> to the joomla user management. Users should have a joomla account FIRST, then you can add additional information here for their toy database membership details.<BR>
 <?php
 switch($member_act) {
@@ -1409,12 +1409,12 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 		break;
 };
 echo JHtmlTabs::panel("Reports",'panel-id-5');
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Reporting</h2></a>";
 ?>
-<h2>Reporting</h2>
 This is the Reports panel.
 <?php
 echo JHtmlTabs::panel("Configuration",'panel-id-6'); //You can use any custom text
-echo "<h2>Configuration</h2>";
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Configuration</h2></a>";
 ?>
 <form method=post name='configuration'>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
