@@ -1158,6 +1158,21 @@ switch($loan_act) {
 						};
 						
 						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
+						echo "<td>";
+						switch($row_value["status"]) {
+							case "3":
+								echo "Rejected";
+							case "2":
+								echo "Pending";
+								break;
+							case "1":
+								echo "Approved";
+								break;
+							default:
+								echo "Unknown";
+								break;
+						};
+						echo "</td>";
 						echo "<td>".$row_value["status"]."</td>";
 						echo "<td>".$membername_val."</td>";
 						echo "<td>".$toyequipment_val."</td>";
