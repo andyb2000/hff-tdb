@@ -972,6 +972,18 @@ switch($loan_act) {
 	case "4":
 		// add a manual loan request
 		break;
+	case "2":
+		// save changes to loan request
+		if($tab == "loan") {
+			$frm_in_equipmentid = $jinput->get('in_equipmentid', '', 'RAW');
+			$frm_in_membershipid = $jinput->get('in_membershipid', '', 'RAW');
+			$frm_in_requestdate = $jinput->get('in_requestdate', '', 'RAW');
+			$frm_in_loandate = $jinput->get('in_loandate', '', 'RAW');
+			$frm_in_returnbydate = $jinput->get('in_returnbydate', '', 'RAW');
+			$frm_in_returndate = $jinput->get('in_returndate', '', 'RAW');
+			$frm_in_status = $jinput->get('in_status', '', 'RAW');
+		};
+		break;
 	case "1":
 		// edit/view this entry
 		if($tab == "loan") {
@@ -1002,12 +1014,14 @@ switch($loan_act) {
 							<tr>
 							<td valign=top><B>Toy id :</B></td>
 							<td><input type=text size=5 name='in_equipmentid' value='<?=$row["equipmentid"]?>'>&nbsp;
-							<a href="<?=JURI::root()?>/administrator/index.php?option=com_users&task=user.edit&id=<?=$row["joomla_userid"]?>">Joomla user editor</a>
+							<a href="<?=JURI::root()?>/administrator/index.php?option=com_users&task=user.edit&id=<?=$row["joomla_userid"]?>">Toy selector</a>
 							</td>
 							</tr>
 							<tr>
 							<td valign=top><B>Member id :</B></td>
-							<td><input type=text size=5 name='in_membershipid' value='<?=$row["membershipid"]?>'></td>
+							<td><input type=text size=5 name='in_membershipid' value='<?=$row["membershipid"]?>'>&nbsp;
+							<a href="<?=JURI::root()?>/administrator/index.php?option=com_users&task=user.edit&id=<?=$row["joomla_userid"]?>">Member selector</a>
+							</td>
 							</tr>
 							<tr>
 							<td valign=top><B>Request Date :</B></td>
