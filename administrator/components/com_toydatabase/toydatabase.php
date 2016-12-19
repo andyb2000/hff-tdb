@@ -1031,6 +1031,7 @@ switch($loan_act) {
 			$userid_mailer->setSender($sender);
 			$userid_mailer->addRecipient($membership_row["email"]);
 			$userid_mailer->setSubject($config->get('sitename').'::Toy Database - Toy request updated');
+			echo "DEBUG: email ".$membership_row["email"]."<BR>\n";
 			$userid_mail="Hi,
 		The administrator for the Toy Library system ".$config->get('sitename')."
 		Has updated your request for the following loan:
