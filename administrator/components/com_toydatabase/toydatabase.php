@@ -1095,8 +1095,8 @@ switch($loan_act) {
 						->where($db->quoteName('joomla_userid') . ' = '. $row_value["membershipid"]);
 						$db->setQuery((string) $check_member_query);
 						$db->execute();
-						$membership_row = $db->loadAssoc();
 						$membership_count_check= $db->getNumRows();
+						$membership_row = $db->loadAssoc();						
 						echo "DEBUG: joomla_userid = $membership_count_check<BR>";
 						print_r($membership_row);
 						if ($membership_count_check > 0) {
