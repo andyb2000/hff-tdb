@@ -1503,7 +1503,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 						<!-- END new member button -->
 						
 						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
-						<tr><td width=10%><B>Member joomla ID</B></td>
+						<tr><td width=5%><B>Member joomla ID</B></td>
 						<td width=10%><B>Member URN</B></td>
 						<td width=20%><B>Member Name</B></td>
 						<td width=20%><B>Company</B></td>
@@ -1511,6 +1511,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 						<td width=10%><B>Member Category</B></td>
 						<td width=10%><B>Join Date</B></td>
 						<td width=10%><B>Renewal Date</B></td>
+						<td width=5%><B>Status</B></td>
 						</tr>
 						<?php
 						if (!empty($row)) {
@@ -1539,6 +1540,10 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 								} else {
 									$entry_renewaldate_out="N/A";
 								};
+								if ($row_value["active"] == "1") {$entry_active="Active";};
+								if ($row_value["active"] == "0") {$entry_active="Pending";};
+								if ($row_value["active"] == "10") {$entry_active="Suspended";};
+								if ($row_value["active"] == "99") {$entry_active="Deleted";};
 								
 								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&member_act=1&ddid=$row_key\"'>";
 								echo "<td>".$row_value["joomla_userid"]."</td>";
@@ -1549,6 +1554,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 								echo "<td>".$row_value["memb_category"]."</td>";
 								echo "<td>".$entry_joindate_out."</td>";
 								echo "<td>".$entry_renewaldate_out."</td>";
+								echo "<td>".$entry_active."</td>";
 								echo "</tr>\n";
 							};
 						} else {
