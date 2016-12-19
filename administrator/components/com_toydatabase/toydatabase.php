@@ -1013,13 +1013,23 @@ switch($loan_act) {
 			$db->execute();
 			$equip_lookup = $db->loadAssoc();
 			
+			$check_member_query = $db->getQuery(true);
+			$check_member_query
+			->select('*')
+			->from($db->quoteName('#__toydatabase_membership'))
+			->where($db->quoteName('id') . ' = '. $frm_in_membershipid);
+			$db->setQuery((string) $check_member_query);
+			$db->execute();
+			$membership_count_check= $db->getNumRows();
+			$membership_row = $db->loadAssoc();
+			
 			$userid_mailer = JFactory::getMailer();
 			$sender = array(
 					$config->get( 'mailfrom' ),
 					$config->get( 'fromname' )
 			);
 			$userid_mailer->setSender($sender);
-			$userid_mailer->addRecipient($frm_email);
+			$userid_mailer->addRecipient($membership_row["email"]);
 			$userid_mailer->setSubject($config->get('sitename').'::Toy Database - Toy request updated');
 			$userid_mail="Hi,
 		The administrator for the Toy Library system ".$config->get('sitename')."
