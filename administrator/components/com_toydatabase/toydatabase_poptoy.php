@@ -345,7 +345,11 @@ padding: 0;
 		if (!empty($row)) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
-				echo "<tr onclick='Javascript:alert($row_key)'>";
+				if ($row_value["id"] == $curr_toy) {
+					echo "<tr style='background-color:red' onclick='Javascript:alert($row_key);self.close();'>";
+				} else {
+					echo "<tr onclick='Javascript:alert($row_key);self.close();'>";
+				};
 				echo "<td>".$row_value["name"]."</td>\n";
 				echo "<td>";
 				// Now retrieve the category (ies)

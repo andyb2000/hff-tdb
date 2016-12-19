@@ -1014,7 +1014,7 @@ switch($loan_act) {
 							<tr>
 							<td valign=top><B>Toy id :</B></td>
 							<td><input type=text size=5 name='in_equipmentid' value='<?=$row["equipmentid"]?>'>&nbsp;
-							<a href="<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_poptoy.php?curr_toy=<?=$row["equipmentid"]?>" class="modal" rel="{handler: 'iframe', size: {x: 500, y: 400}}">Toy selector</a>
+							<a href="<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_poptoy.php?curr_toy=<?=$row["equipmentid"]?>" class="modal" id='toyselector' name='toyselector' rel="{handler: 'iframe', size: {x: 500, y: 400}}">Toy selector</a>
 							</td>
 							</tr>
 							<tr>
