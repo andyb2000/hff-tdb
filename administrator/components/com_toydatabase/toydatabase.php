@@ -1109,6 +1109,57 @@ echo JHtmlTabs::panel("Members",'panel-id-4');
 Membership is a <i>suppliment</i> to the joomla user management. Users should have a joomla account FIRST, then you can add additional information here for their toy database membership details.<BR>
 <?php
 switch($member_act) {
+	case "2":
+		// make changes to selected user
+		if ($tab == "member") {
+			$frm_in_membername = $jinput->get('in_membername', '', 'RAW');
+			$frm_in_urn = $jinput->get('in_urn', '', 'RAW');
+			$frm_in_type = $jinput->get('in_type', '', 'RAW');
+			$frm_in_companyname = $jinput->get('in_companyname', '', 'RAW');
+			$frm_in_address1 = $jinput->get('in_address1', '', 'RAW');
+			$frm_in_address2 = $jinput->get('in_address2', '', 'RAW');
+			$frm_in_town = $jinput->get('in_town', '', 'RAW');
+			$frm_in_postcode = $jinput->get('in_postcode', '', 'RAW');
+			$frm_in_telephone = $jinput->get('in_telephone', '', 'RAW');
+			$frm_in_mobile = $jinput->get('in_mobile', '', 'RAW');
+			$frm_in_email = $jinput->get('in_email', '', 'RAW');
+			$frm_in_memb_category = $jinput->get('in_memb_category', '', 'RAW');
+			$frm_in_renewaldate = $jinput->get('in_renewaldate', '', 'RAW');
+			$frm_in_disabilities = $jinput->get('in_disabilities', '', 'RAW');
+			$frm_in_children = $jinput->get('in_children', '', 'RAW');
+			$frm_in_active = $jinput->get('active', '', 'RAW');
+
+			$upd_request = $db->getQuery(true);
+			$upd_fields = array(
+					$db->quoteName('type') . ' = ' . $db->quote($frm_in_type),
+					$db->quoteName('urn') . ' = ' . $db->quote($frm_in_urn),
+					$db->quoteName('name') . ' = ' . $db->quote($frm_in_membername),
+					$db->quoteName('companyname') . ' = ' . $db->quote($frm_in_companyname),
+					$db->quoteName('address1') . ' = ' . $db->quote($frm_in_address1),
+					$db->quoteName('address2') . ' = ' . $db->quote($frm_in_address2),
+					$db->quoteName('town') . ' = ' . $db->quote($frm_in_town),
+					$db->quoteName('postcode') . ' = ' . $db->quote($frm_in_postcode),
+					$db->quoteName('telephone') . ' = ' . $db->quote($frm_in_telephone),
+					$db->quoteName('mobile') . ' = ' . $db->quote($frm_in_mobile),
+					$db->quoteName('email') . ' = ' . $db->quote($frm_in_email),
+					$db->quoteName('memb_category') . ' = ' . $db->quote($frm_in_memb_category),
+					$db->quoteName('renewaldate') . ' = ' . $db->quote($frm_in_renewaldate),
+					$db->quoteName('disabilities') . ' = ' . $db->quote($frm_in_disabilities),
+					$db->quoteName('children') . ' = ' . $db->quote($frm_in_children),
+					$db->quoteName('active') . ' = ' . $db->quote($frm_in_active)
+			);
+			$upd_request->update($db->quoteName('#__toydatabase_membership'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
+			try {
+				$db->setQuery($upd_request);
+				$db->execute();
+			}
+			catch (RuntimeException $e) {
+				JFactory::getApplication()->enqueueMessage($e->getMessage());
+				return false;
+			};
+				
+		}; // if tab == member
+		break;
 	case "1":
 		// display specific member
 		if($tab == "member") {
