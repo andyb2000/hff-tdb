@@ -1046,6 +1046,7 @@ switch($loan_act) {
 							<option value='1' <?php if ($row["status"] == "1") {echo "selected";}; ?>>Approved</option>
 							<option value='2' <?php if ($row["status"] == "2") {echo "selected";}; ?>>Pending</option>
 							<option value='3' <?php if ($row["status"] == "3") {echo "selected";}; ?>>Rejected</option>
+							<option value='3' <?php if ($row["status"] == "4") {echo "selected";}; ?>>Returned</option>
 							</select>
 							</td>
 							</tr>
@@ -1163,6 +1164,9 @@ switch($loan_act) {
 							$overdue_row_highlighter=0;
 						};
 						switch($row_value["status"]) {
+							case "4":
+								$loan_status="Returned";
+								$row_lighting="";
 							case "3":
 								$loan_status="Rejected";
 								$row_lighting="blue";
