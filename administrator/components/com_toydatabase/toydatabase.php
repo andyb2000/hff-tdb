@@ -1125,6 +1125,9 @@ switch($member_act) {
 			$frm_in_email = $jinput->get('in_email', '', 'RAW');
 			$frm_in_memb_category = $jinput->get('in_memb_category', '', 'RAW');
 			$frm_in_renewaldate = $jinput->get('in_renewaldate', '', 'RAW');
+			// renewaldate is d/m/Y so convert to mysql format
+			$frm_renewaldate=JFactory::getDate($frm_in_renewaldate);
+			$frm_renewaldate_out=JHtml::_('date', $frm_renewaldate, 'Y-m-d 00:00:00');
 			$frm_in_disabilities = $jinput->get('in_disabilities', '', 'RAW');
 			$frm_in_children = $jinput->get('in_children', '', 'RAW');
 			$frm_in_active = $jinput->get('active', '', 'RAW');
@@ -1143,10 +1146,11 @@ switch($member_act) {
 					$db->quoteName('mobile') . ' = ' . $db->quote($frm_in_mobile),
 					$db->quoteName('email') . ' = ' . $db->quote($frm_in_email),
 					$db->quoteName('memb_category') . ' = ' . $db->quote($frm_in_memb_category),
-					$db->quoteName('renewaldate') . ' = ' . $db->quote($frm_in_renewaldate),
+					$db->quoteName('renewaldate') . ' = ' . $db->quote($frm_renewaldate_out),
 					$db->quoteName('disabilities') . ' = ' . $db->quote($frm_in_disabilities),
 					$db->quoteName('children') . ' = ' . $db->quote($frm_in_children),
-					$db->quoteName('active') . ' = ' . $db->quote($frm_in_active)
+					$db->quoteName('active') . ' = ' . $db->quote($frm_in_active),
+					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
 			$upd_request->update($db->quoteName('#__toydatabase_membership'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
 			try {
