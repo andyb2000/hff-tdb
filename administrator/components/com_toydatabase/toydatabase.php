@@ -1149,7 +1149,6 @@ switch($loan_act) {
 						$curr_date=JFactory::getDate();
 						$overdue_days=($entry_returnbydate->toUnix())-($curr_date->toUnix());
 						$overdue_days_output=date("d",$overdue_days);
-						echo "Days overdue: $overdue_days";
 						if (($overdue_days_output < 0) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
 							$overdue_html_text="(Overdue $overdue_days_output days)";
 							$overdue_row_highlighter=1;
@@ -1157,23 +1156,25 @@ switch($loan_act) {
 							$overdue_html_text="";
 							$overdue_row_highlighter=0;
 						};
-						
-						echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
-						echo "<td>";
 						switch($row_value["status"]) {
 							case "3":
-								echo "Rejected";
+								$loan_status="Rejected";
+								$row_lighting="blue";
 							case "2":
-								echo "Pending";
+								$loan_status="Pending";
+								$row_lighting="yellow";
 								break;
 							case "1":
-								echo "Approved";
+								$loan_status="Approved";
+								$row_lighting="green";
 								break;
 							default:
-								echo "Unknown";
+								$loan_status="Unknown";
+								$row_lighting="light blue";
 								break;
 						};
-						echo "</td>";
+						echo "<tr bgcolor='$row_lighting' onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
+						echo "<td>".$loan_status."</td>";
 						echo "<td>".$membername_val."</td>";
 						echo "<td>".$toyequipment_val."</td>";
 						echo "<td>".$entry_requestdate_out."</td>";
