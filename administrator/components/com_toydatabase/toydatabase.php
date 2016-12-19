@@ -982,6 +982,26 @@ switch($loan_act) {
 			$frm_in_returnbydate = $jinput->get('in_returnbydate', '', 'RAW');
 			$frm_in_returndate = $jinput->get('in_returndate', '', 'RAW');
 			$frm_in_status = $jinput->get('in_status', '', 'RAW');
+			
+			$upd_request = $db->getQuery(true);
+			$upd_fields = array(
+					$db->quoteName('equipmentid') . ' = ' . $db->quote($frm_in_equipmentid),
+					$db->quoteName('membershipid') . ' = ' . $db->quote($frm_in_membershipid),
+					$db->quoteName('loandate') . ' = ' . $db->quote($frm_in_loandate),
+					$db->quoteName('returnbydate') . ' = ' . $db->quote($frm_in_returnbydate),
+					$db->quoteName('returndate') . ' = ' . $db->quote($frm_in_returndate),
+					$db->quoteName('status') . ' = ' . $db->quote($frm_in_status)
+			);
+			$upd_request->update($db->quoteName('#__toydatabase_loanlink'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
+			try {
+				$db->setQuery($upd_request);
+				$db->execute();
+			}
+			catch (RuntimeException $e) {
+				JFactory::getApplication()->enqueueMessage($e->getMessage());
+				return false;
+			};
+			echo "<h2>Complete</h2> - Request has been updated<BR>\n";				
 		};
 		break;
 	case "1":
