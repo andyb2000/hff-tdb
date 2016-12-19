@@ -1033,7 +1033,7 @@ switch($loan_act) {
 							</tr>
 							<tr>
 							<td valign=top><B>Return By Date :</B></td>
-							<td><?=JHTML::_('calendar', $row["returnbydate"], "in_returndate" , "in_returndate", '%d-%m-%Y'); ?></td>
+							<td><?=JHTML::_('calendar', $row["returnbydate"], "in_returnbydate" , "in_returnbydate", '%d-%m-%Y'); ?></td>
 							</tr>
 							<tr>
 							<td valign=top><B>Returned Date :</B></td>
