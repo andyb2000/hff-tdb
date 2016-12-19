@@ -1233,7 +1233,7 @@ switch($member_act) {
 				->where($db->quoteName('group_id') . ' = '. $joomlagroup_registered);
 				$db->setQuery((string) $get_curruser_joomla);
 				$db->execute();
-				if ($db->num_rows() == 0) {
+				if ($db->getNumRows() == 0) {
 					// add as they arent in the registered column
 					$ins_request = $db->getQuery(true);
 					$ins_columns = array('user_id','group_id');
@@ -1262,7 +1262,7 @@ switch($member_act) {
 				->where($db->quoteName('group_id') . ' = '. $joomlagroup_registered);
 				$db->setQuery((string) $get_curruser_joomla);
 				$db->execute();
-				if ($db->num_rows() > 0) {
+				if ($db->getNumRows() > 0) {
 					// delete as they are here
 					$del_query = $db->getQuery(true);
 					$del_query->delete($db->quoteName('#__user_usergroup_map'));
@@ -1282,7 +1282,7 @@ switch($member_act) {
 				->where($db->quoteName('group_id') . ' = '. $joomlagroup_registered);
 				$db->setQuery((string) $get_curruser_joomla);
 				$db->execute();
-				if ($db->num_rows() > 0) {
+				if ($db->getNumRows() > 0) {
 					// delete as they are here
 					$del_query = $db->getQuery(true);
 					$del_query->delete($db->quoteName('#__user_usergroup_map'));
