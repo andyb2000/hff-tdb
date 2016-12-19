@@ -364,7 +364,12 @@ padding: 0;
 								if ($row_value["active"] == "10") {$entry_active="Suspended";};
 								if ($row_value["active"] == "99") {$entry_active="Deleted";};
 								
-								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&member_act=1&ddid=$row_key\"'>";
+								if ($row_value["id"] == $curr_member) {
+									echo "<tr style='background-color:red' onclick='Javascript:window.parent.document.getElementById(\"in_membershipid\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
+								} else {
+									echo "<tr onclick='Javascript:window.parent.document.getElementById(\"in_membershipid\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
+								};
+								
 								echo "<td>".$row_value["joomla_userid"]."</td>";
 								echo "<td>".$row_value["urn"]."</td>";
 								echo "<td>".$row_value["name"]."</td>";

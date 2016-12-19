@@ -341,7 +341,7 @@ padding: 0;
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
 				if ($row_value["id"] == $curr_toy) {
-					echo "<tr style='background-color:red' onclick='Javascript:window.parent.document.getElementById(\"loanrequest\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
+					echo "<tr style='background-color:red' onclick='Javascript:window.parent.document.getElementById(\"in_equipmentid\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
 				} else {
 					echo "<tr onclick='Javascript:window.parent.document.getElementById(\"in_equipmentid\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
 				};
