@@ -312,7 +312,7 @@ switch ($act) {
 						$ins_values = array($db->quote(""),$newuser_id,$frm_membertype);
 						$ins_membershiplink_request = $db->getQuery(true);
 						$ins_membershiplink_request
-						->insert($db->quoteName('#__toydatabase_membershiptypes'))
+						->insert($db->quoteName('#__toydatabase_membershiplink'))
 						->columns($db->quoteName($ins_columns))
 						->values(implode(',', $ins_values));
 						$db->setQuery($ins_membershiplink_request);
