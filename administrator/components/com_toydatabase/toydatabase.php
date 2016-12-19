@@ -1019,8 +1019,8 @@ switch($loan_act) {
 							</tr>
 							<tr>
 							<td valign=top><B>Member id :</B></td>
-							<td><input type=text size=5 name='in_membershipid' value='<?=$row["membershipid"]?>'>&nbsp;
-							<a href="<?=JURI::root()?>/administrator/index.php?option=com_users&task=user.edit&id=<?=$row["joomla_userid"]?>">Member selector</a>
+							<td><input type=text size=5 name='in_membershipid' id='in_membershipid' value='<?=$row["membershipid"]?>'>&nbsp;
+							<a href="<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_popmember.php?curr_member=<?=$row["membershipid"]?>" class="modal" id='memberselector' name='memberselector' rel="{handler: 'iframe', size: {x: 500, y: 400}}">Member selector</a>
 							</td>
 							</tr>
 							<tr>
