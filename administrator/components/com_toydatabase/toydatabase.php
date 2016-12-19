@@ -979,17 +979,26 @@ switch($loan_act) {
 			$frm_in_membershipid = $jinput->get('in_membershipid', '', 'RAW');
 			$frm_in_requestdate = $jinput->get('in_requestdate', '', 'RAW');
 			$frm_in_loandate = $jinput->get('in_loandate', '', 'RAW');
+			$frm_loandate=JFactory::getDate($frm_in_loandate);
+			$frm_loandate_out=JHtml::_('date', $frm_loandate, 'Y-m-d 00:00:00');
+				
 			$frm_in_returnbydate = $jinput->get('in_returnbydate', '', 'RAW');
+			$frm_returnbydate=JFactory::getDate($frm_in_returnbydate);
+			$frm_returnbydate_out=JHtml::_('date', $frm_returnbydate, 'Y-m-d 00:00:00');
+				
 			$frm_in_returndate = $jinput->get('in_returndate', '', 'RAW');
+			$frm_returndate=JFactory::getDate($frm_in_returndate);
+			$frm_returndate_out=JHtml::_('date', $frm_returndate, 'Y-m-d 00:00:00');
+				
 			$frm_in_status = $jinput->get('in_status', '', 'RAW');
 			
 			$upd_request = $db->getQuery(true);
 			$upd_fields = array(
 					$db->quoteName('equipmentid') . ' = ' . $db->quote($frm_in_equipmentid),
 					$db->quoteName('membershipid') . ' = ' . $db->quote($frm_in_membershipid),
-					$db->quoteName('loandate') . ' = ' . $db->quote($frm_in_loandate),
-					$db->quoteName('returnbydate') . ' = ' . $db->quote($frm_in_returnbydate),
-					$db->quoteName('returndate') . ' = ' . $db->quote($frm_in_returndate),
+					$db->quoteName('loandate') . ' = ' . $db->quote($frm_loandate_out),
+					$db->quoteName('returnbydate') . ' = ' . $db->quote($frm_returnbydate_out),
+					$db->quoteName('returndate') . ' = ' . $db->quote($frm_returndate_out),
 					$db->quoteName('status') . ' = ' . $db->quote($frm_in_status)
 			);
 			$upd_request->update($db->quoteName('#__toydatabase_loanlink'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
