@@ -365,9 +365,9 @@ padding: 0;
 								if ($row_value["active"] == "99") {$entry_active="Deleted";};
 								
 								if ($row_value["id"] == $curr_member) {
-									echo "<tr style='background-color:red' onclick='Javascript:window.parent.document.getElementById(\"in_membershipid\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
+									echo "<tr style='background-color:red' onclick='Javascript:window.parent.document.getElementById(\"in_membershipid\").value=\"".$row_value["joomla_userid"]."\";window.parent.SqueezeBox.close();'>";
 								} else {
-									echo "<tr onclick='Javascript:window.parent.document.getElementById(\"in_membershipid\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
+									echo "<tr onclick='Javascript:window.parent.document.getElementById(\"in_membershipid\").value=\"".$row_value["joomla_userid"]."\";window.parent.SqueezeBox.close();'>";
 								};
 								
 								echo "<td>".$row_value["joomla_userid"]."</td>";
