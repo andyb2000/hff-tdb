@@ -19,13 +19,8 @@ $app->initialise();
 $db = JFactory::getDBO();// Joomla database object
 
 $jinput = JFactory::getApplication()->input;
-$tab = $jinput->get('tab', '', 'RAW'); // tab is a text RAW input
-$act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
-$cat_act = $jinput->get('cat_act', '', 'INT'); // action is just an integer 1 2 or 3
-$loan_act = $jinput->get('loan_act', '', 'INT'); // action is just an integer 1 2 or 3
-$member_act = $jinput->get('member_act', '', 'INT'); // action is just an integer 1 2 or 3
-$ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
-$subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
+$curr_toy = $jinput->get('curr_toy', '', 'RAW'); // tab is a text RAW input
+
 $config = JFactory::getConfig();
 $editor = JFactory::getEditor();
 JHtml::_('behavior.formvalidator');
@@ -346,9 +341,9 @@ padding: 0;
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
 				if ($row_value["id"] == $curr_toy) {
-					echo "<tr style='background-color:red' onclick='Javascript:alert($row_key);window.parent.document.getElementById(\"loanrequest\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
+					echo "<tr style='background-color:red' onclick='Javascript:window.parent.document.getElementById(\"loanrequest\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
 				} else {
-					echo "<tr onclick='Javascript:alert($row_key);window.parent.document.getElementById(\"in_equipmentid\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
+					echo "<tr onclick='Javascript:window.parent.document.getElementById(\"in_equipmentid\").value=\"$row_key\";window.parent.SqueezeBox.close();'>";
 				};
 				echo "<td>".$row_value["name"]."</td>\n";
 				echo "<td>";
