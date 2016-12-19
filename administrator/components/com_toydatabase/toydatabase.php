@@ -1097,6 +1097,8 @@ switch($loan_act) {
 						$db->execute();
 						$membership_row = $db->loadAssoc();
 						$membership_count_check= $db->getNumRows();
+						echo "DEBUG: $membership_count_check<BR>";
+						print_r($check_member_query);
 						if ($membership_count_check > 0) {
 							$membername_val=$membership_row["name"];
 						} else {
