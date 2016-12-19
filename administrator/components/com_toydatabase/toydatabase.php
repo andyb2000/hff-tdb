@@ -973,6 +973,67 @@ switch($loan_act) {
 		// add a manual loan request
 		break;
 	case "1":
+		// edit/view this entry
+		if($tab == "loan") {
+			$query = $db->getQuery(true);
+			$query
+			->select('*')
+			->from($db->quoteName('#__toydatabase_loanlink'))
+			->where($db->quoteName('id') . ' = '. $ddid);
+			$db->setQuery((string) $query);
+			$db->execute();
+			$row = $db->loadAssoc();
+				
+			// get member type lookup
+			$query_equiplookup = $db->getQuery(true);
+			$query_equiplookup
+			->select('*')
+			->from($db->quoteName('#__toydatabase_equipment'))
+			->where($db->quoteName('id') . ' = '. $row["equipmentid"]);
+			$db->setQuery((string) $query_equiplookup);
+			$db->execute();
+			$equip_lookup = $db->loadAssoc();
+			?>
+							<form method=post name='loanrequest'>
+							<input type=hidden name='loan_act' value='2'>
+							<input type=hidden name='ddid' value='<?=$ddid?>'>
+							<input type=hidden name='tab' value='loan'>
+							<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+							<tr>
+							<td valign=top><B>Toy id :</B></td>
+							<td><input type=text size=5 name='in_equipmentid' value='<?=$row["equipmentid"]?>'>&nbsp;
+							<a href="<?=JURI::root()?>/administrator/index.php?option=com_users&task=user.edit&id=<?=$row["joomla_userid"]?>">Joomla user editor</a>
+							</td>
+							</tr>
+							<tr>
+							<td valign=top><B>Member id :</B></td>
+							<td><input type=text size=5 name='in_membershipid' value='<?=$row["membershipid"]?>'></td>
+							</tr>
+							<tr>
+							<td valign=top><B>Request Date :</B></td>
+							<td><input type=text size=15 name='in_requestdate' value='<?=$row["requestdate"]?>'></td>
+							</tr>
+							<tr>
+							<td valign=top><B>Loan Date :</B></td>
+							<td><input type=text size=15 name='in_loandate' value='<?=$row["loandate"]?>'></td>
+							</tr>
+							<tr>
+							<td valign=top><B>Return By Date :</B></td>
+							<td><input type=text size=15 name='in_returnbydate' value='<?=$row["returnbydate"]?>'></td>
+							</tr>
+							<tr>
+							<td valign=top><B>Return Date :</B></td>
+							<td><input type=text size=15 name='in_returndate' value='<?=$row["returndate"]?>'></td>
+							</tr>
+							<tr>
+							<td valign=top><B>Status :</B></td>
+							<td><input type=text size=5 name='in_status' value='<?=$row["status"]?>'></td>
+							</tr>
+							<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
+							</table>
+							</form>
+				<?php
+				};				
 		break;
 	default:
 		// default, display current loan database entries
