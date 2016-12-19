@@ -1031,7 +1031,6 @@ switch($loan_act) {
 			$userid_mailer->setSender($sender);
 			$userid_mailer->addRecipient($membership_row["email"]);
 			$userid_mailer->setSubject($config->get('sitename').'::Toy Database - Toy request updated');
-			echo "DEBUG: email ".$membership_row["email"]."<BR>\n";
 			$userid_mail="Hi,
 		The administrator for the Toy Library system ".$config->get('sitename')."
 		Has updated your request for the following loan:
@@ -1063,7 +1062,9 @@ switch($loan_act) {
 			$userid_mailer->setBody($userid_mail);
 			$user_send = $userid_mailer->Send();
 			if ( $user_send !== true ) {
-				echo 'Error sending email to your email address. Please check your email address is correct.' . $user_send->__toString(). '<BR><BR>';
+				echo "Error sending email to email address (".$membership_row["email"].") Please check " . $user_send->__toString(). "<BR><BR>";
+			} else {
+				echo "Email has been sent to ".$membership_row["email"]." to update them on their request<BR>\n";
 			};
 		};
 		break;
