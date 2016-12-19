@@ -1266,7 +1266,7 @@ switch($member_act) {
 					// delete as they are here
 					$del_query = $db->getQuery(true);
 					$del_query->delete($db->quoteName('#__user_usergroup_map'));
-					$del_query->where($db->quoteName('userid') . ' = '. $joomla_userid, 'AND')
+					$del_query->where($db->quoteName('user_id') . ' = '. $joomla_userid, 'AND')
 					->where($db->quoteName('group_ip') . ' = '. $joomlagroup_registered);
 					$db->setQuery($del_query);
 					$db->execute();
@@ -1286,7 +1286,7 @@ switch($member_act) {
 					// delete as they are here
 					$del_query = $db->getQuery(true);
 					$del_query->delete($db->quoteName('#__user_usergroup_map'));
-					$del_query->where($db->quoteName('userid') . ' = '. $joomla_userid, 'AND')
+					$del_query->where($db->quoteName('user_id') . ' = '. $joomla_userid, 'AND')
 					->where($db->quoteName('group_ip') . ' = '. $joomlagroup_registered);
 					$db->setQuery($del_query);
 					$db->execute();
