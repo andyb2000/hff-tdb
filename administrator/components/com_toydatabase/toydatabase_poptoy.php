@@ -340,7 +340,6 @@ padding: 0;
 		<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr><td width=30%><B>Toy name</B></td>
 		<td width=30%><B>Toy category</B></td>
-		<td width=30%><B>Toy Photo (small)</B></td>
 		<td width=10%><B>Status</B></td></tr>
 		<?php 
 		if (!empty($row)) {
@@ -363,15 +362,6 @@ padding: 0;
 					echo $cat_display["category"]."<BR>\n";
 				};
 				echo "</td>";
-				echo "<td>";
-				// check the file exists to display the image
-				if (is_file(JPATH_BASE."/../".$row_value["picture"])) {
-					// dynamically resize image using php
-					echo "<img src='".JURI::root()."/components/com_toydatabase/toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
-				} else {
-					echo "Sorry no image exists";
-				};
-				echo "</td>\n";
 				echo "<td>";
 				switch($row_value["status"]) {
 					case "3":
