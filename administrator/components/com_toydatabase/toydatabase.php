@@ -1125,9 +1125,13 @@ switch($member_act) {
 			$frm_in_email = $jinput->get('in_email', '', 'RAW');
 			$frm_in_memb_category = $jinput->get('in_memb_category', '', 'RAW');
 			$frm_in_renewaldate = $jinput->get('in_renewaldate', '', 'RAW');
-			// renewaldate is d/m/Y so convert to mysql format
-			$frm_renewaldate=JFactory::getDate($frm_in_renewaldate);
-			$frm_renewaldate_out=JHtml::_('date', $frm_renewaldate, 'Y-m-d 00:00:00');
+			if ($frm_in_renewaldate) {
+				// renewaldate is d/m/Y so convert to mysql format
+				$frm_renewaldate=JFactory::getDate($frm_in_renewaldate);
+				$frm_renewaldate_out=JHtml::_('date', $frm_renewaldate, 'Y-m-d 00:00:00');
+			} else {
+				$frm_renewaldate_out="";
+			};
 			$frm_in_disabilities = $jinput->get('in_disabilities', '', 'RAW');
 			$frm_in_children = $jinput->get('in_children', '', 'RAW');
 			$frm_in_active = $jinput->get('active', '', 'RAW');
