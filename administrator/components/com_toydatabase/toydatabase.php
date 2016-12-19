@@ -1199,7 +1199,99 @@ switch($member_act) {
 			$frm_in_disabilities = $jinput->get('in_disabilities', '', 'RAW');
 			$frm_in_children = $jinput->get('in_children', '', 'RAW');
 			$frm_in_active = $jinput->get('active', '', 'RAW');
-
+			
+			// get the registered userid from joomla for activating and deactivating users
+			$get_usergroup_joomla = $db->getQuery(true);
+			$get_usergroup_joomla
+			->select('*')
+			->from($db->quoteName('#__usergroups'))
+			->where($db->quoteName('title') . ' = "Registered"');
+			$db->setQuery((string) $get_usergroup_joomla);
+			$db->execute();
+			$joomlagroup_row = $db->loadAssoc();
+			$joomlagroup_registered = $joomlagroup_row["id"];
+			
+			// get the joomlauserid from the membership database
+			$get_memb_joomlaid = $db->getQuery(true);
+			$get_memb_joomlaid
+			->select('*')
+			->from($db->quoteName('#__toydatabase_membership'))
+			->where($db->quoteName('id') . ' = ' . $ddid);
+			$db->setQuery((string) $get_memb_joomlaid);
+			$db->execute();
+			$memb_joomlaid = $db->loadAssoc();
+			$joomla_userid = $memb_joomlaid["joomla_userid"];
+			
+			// if activated then set the user to registered in joomla too
+			if ($frm_in_active == "1") {
+				// active
+				$get_curruser_joomla = $db->getQuery(true);
+				$get_curruser_joomla
+				->select('*')
+				->from($db->quoteName('#__user_usergroup_map'))
+				->where($db->quoteName('user_id') . ' = '. $joomla_userid, 'AND')
+				->where($db->quoteName('group_id') . ' = '. $joomlagroup_registered);
+				$db->setQuery((string) $get_curruser_joomla);
+				$db->execute();
+				if ($db->num_rows() == 0) {
+					// add as they arent in the registered column
+					$ins_request = $db->getQuery(true);
+					$ins_columns = array('user_id','group_id');
+					$ins_values = array($db->quote($joomla_userid),$db->quote($joomlagroup_registered));
+					$ins_request
+					->insert($db->quoteName('#__user_usergroup_map'))
+					->columns($db->quoteName($ins_columns))
+					->values(implode(',', $ins_values));
+					try {
+						$db->setQuery($ins_request);
+						$db->execute();
+					}
+					catch (RuntimeException $e) {
+						JFactory::getApplication()->enqueueMessage($e->getMessage());
+						return false;
+					};					
+				};
+			};
+			if ($frm_in_active == "10") {
+				// suspended so delete the registered state for this user
+				$get_curruser_joomla = $db->getQuery(true);
+				$get_curruser_joomla
+				->select('*')
+				->from($db->quoteName('#__user_usergroup_map'))
+				->where($db->quoteName('user_id') . ' = '. $joomla_userid, 'AND')
+				->where($db->quoteName('group_id') . ' = '. $joomlagroup_registered);
+				$db->setQuery((string) $get_curruser_joomla);
+				$db->execute();
+				if ($db->num_rows() > 0) {
+					// delete as they are here
+					$del_query = $db->getQuery(true);
+					$del_query->delete($db->quoteName('#__user_usergroup_map'));
+					$del_query->where($db->quoteName('userid') . ' = '. $joomla_userid, 'AND')
+					->where($db->quoteName('group_ip') . ' = '. $joomlagroup_registered);
+					$db->setQuery($del_query);
+					$db->execute();
+				};
+			};
+			if ($frm_in_active == "10") {
+				// deleted so do the same as suspended
+				$get_curruser_joomla = $db->getQuery(true);
+				$get_curruser_joomla
+				->select('*')
+				->from($db->quoteName('#__user_usergroup_map'))
+				->where($db->quoteName('user_id') . ' = '. $joomla_userid, 'AND')
+				->where($db->quoteName('group_id') . ' = '. $joomlagroup_registered);
+				$db->setQuery((string) $get_curruser_joomla);
+				$db->execute();
+				if ($db->num_rows() > 0) {
+					// delete as they are here
+					$del_query = $db->getQuery(true);
+					$del_query->delete($db->quoteName('#__user_usergroup_map'));
+					$del_query->where($db->quoteName('userid') . ' = '. $joomla_userid, 'AND')
+					->where($db->quoteName('group_ip') . ' = '. $joomlagroup_registered);
+					$db->setQuery($del_query);
+					$db->execute();
+				};
+			};	
 			$upd_request = $db->getQuery(true);
 			$upd_fields = array(
 					$db->quoteName('type') . ' = ' . $db->quote($frm_in_type),
