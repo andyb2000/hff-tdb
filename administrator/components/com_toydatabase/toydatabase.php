@@ -1024,24 +1024,30 @@ switch($loan_act) {
 							</td>
 							</tr>
 							<tr>
-							<td valign=top><B>Request Date :</B></td>
-							<td><input type=text size=15 name='in_requestdate' value='<?=$row["requestdate"]?>'></td>
+							<td valign=top><B>Request made Date :</B></td>
+							<td><input type=text size=15 disabled name='in_requestdate' value='<?=$row["requestdate"]?>'></td>
 							</tr>
 							<tr>
-							<td valign=top><B>Loan Date :</B></td>
-							<td><input type=text size=15 name='in_loandate' value='<?=$row["loandate"]?>'></td>
+							<td valign=top><B>Loan Requested Date :</B></td>
+							<td><?=JHTML::_('calendar', $row["loandate"], "in_loandate" , "in_loandate", '%d-%m-%Y'); ?></td>
 							</tr>
 							<tr>
 							<td valign=top><B>Return By Date :</B></td>
-							<td><input type=text size=15 name='in_returnbydate' value='<?=$row["returnbydate"]?>'></td>
+							<td><?=JHTML::_('calendar', $row["returnbydate"], "in_returndate" , "in_returndate", '%d-%m-%Y'); ?></td>
 							</tr>
 							<tr>
-							<td valign=top><B>Return Date :</B></td>
-							<td><input type=text size=15 name='in_returndate' value='<?=$row["returndate"]?>'></td>
+							<td valign=top><B>Returned Date :</B></td>
+							<td><?=JHTML::_('calendar', $row["returndate"], "in_returndate" , "in_returndate", '%d-%m-%Y'); ?></td>
 							</tr>
 							<tr>
 							<td valign=top><B>Status :</B></td>
-							<td><input type=text size=5 name='in_status' value='<?=$row["status"]?>'></td>
+							<td><select name='in_status'>
+							<option value=''></option>
+							<option value='1' <?php if ($row["status"] == "1") {echo "selected";}; ?>>Approved</option>
+							<option value='2' <?php if ($row["status"] == "2") {echo "selected";}; ?>>Pending</option>
+							<option value='3' <?php if ($row["status"] == "3") {echo "selected";}; ?>>Rejected</option>
+							</select>
+							</td>
 							</tr>
 							<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
 							</table>
