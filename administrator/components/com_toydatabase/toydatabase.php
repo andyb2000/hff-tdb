@@ -969,6 +969,9 @@ This is the approval panel.
 //  show them all sorted by which ones are active (then into history)
 //  allow a manual addition for a member (or non-member)
 switch($loan_act) {
+	case "4":
+		// add a manual loan request
+		break;
 	case "1":
 		break;
 	default:
