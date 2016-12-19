@@ -1157,7 +1157,7 @@ switch($member_act) {
 				JFactory::getApplication()->enqueueMessage($e->getMessage());
 				return false;
 			};
-				
+			echo "<h2>Complete</h2> - Member has been updated<BR>\n";
 		}; // if tab == member
 		break;
 	case "1":
