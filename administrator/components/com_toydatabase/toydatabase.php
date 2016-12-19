@@ -1006,14 +1006,14 @@ switch($loan_act) {
 			$db->execute();
 			$equip_lookup = $db->loadAssoc();
 			?>
-							<form method=post name='loanrequest'>
+							<form method=post name='loanrequest' id='loanrequest'>
 							<input type=hidden name='loan_act' value='2'>
 							<input type=hidden name='ddid' value='<?=$ddid?>'>
 							<input type=hidden name='tab' value='loan'>
 							<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 							<tr>
 							<td valign=top><B>Toy id :</B></td>
-							<td><input type=text size=5 name='in_equipmentid' value='<?=$row["equipmentid"]?>'>&nbsp;
+							<td><input type=text size=5 name='in_equipmentid' id='in_equipmentid' value='<?=$row["equipmentid"]?>'>&nbsp;
 							<a href="<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_poptoy.php?curr_toy=<?=$row["equipmentid"]?>" class="modal" id='toyselector' name='toyselector' rel="{handler: 'iframe', size: {x: 500, y: 400}}">Toy selector</a>
 							</td>
 							</tr>
