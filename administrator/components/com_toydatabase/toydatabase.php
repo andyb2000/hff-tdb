@@ -1097,8 +1097,6 @@ switch($loan_act) {
 						$db->execute();
 						$membership_count_check= $db->getNumRows();
 						$membership_row = $db->loadAssoc();						
-						echo "DEBUG: joomla_userid = $membership_count_check<BR>";
-						print_r($membership_row);
 						if ($membership_count_check > 0) {
 							$membername_val=$membership_row["name"];
 						} else {
@@ -1112,8 +1110,8 @@ switch($loan_act) {
 						->where($db->quoteName('id') . ' = '. $row_value["equipmentid"]);
 						$db->setQuery((string) $check_toy_query);
 						$db->execute();
-						$toyentry_row = $db->loadAssoc();
 						$toyentry_count_check= $db->getNumRows();
+						$toyentry_row = $db->loadAssoc();
 						if ($toyentry_count_check > 0) {
 							$toyequipment_val=$toyentry_row["name"];
 						} else {
