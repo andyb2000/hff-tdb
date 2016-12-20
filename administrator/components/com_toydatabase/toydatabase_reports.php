@@ -138,12 +138,37 @@ XbllwSHA1YUwwNFZRWHhSV1BVUjIyWSs4NWZxeVV0RXQ5eGlWN3BqazZFNnJTYmlXMzJsYU8rQ0JFMld
 UE95aEd0a3lIblJvb0pYdEo5T01pYjVpZlBZUTRsM1FBaytHVjNwL3JidStFVEk1aHFaaVJGNndsb1dPS
 mFXYnlrcVQzS2ZsSVlJQlVVY3AxVjVWVk1FaHdMdTJURy8vQ2E2KzllL3M0cyIpKSkpOw=="));
 
-echo "Report php code";
+echo "<a href='".JURI::current()."?option=com_toydatabase'><h2>Current Toy Database</h2></a>";
+
 ?>
-Number of hires between these dates: 
+Select a report:&nbsp;
+<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=hires'>Number of hires</a>
+&nbsp;|&nbsp;
+<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=members'>Active Membership</a>
+&nbsp;|&nbsp;
+<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=expiring'>Expiring Members</a>
+<BR><BR>
+<?php 
+$report_selector = $jinput->get('report', '', 'RAW');
+
+switch($report_selector) {
+	case "hires":
+?>
+<BR>Number of hires between these dates:<BR> 
 Start date: <?=JHTML::_('calendar', "", "in_hire_startdate" , "in_hire_startdate", '%d-%m-%Y'); ?><BR>
 End date: <?=JHTML::_('calendar', "", "in_hire_enddate" , "in_hire_enddate", '%d-%m-%Y'); ?><BR>
+<?php
+		break;
+	case "members":
+		break;
+	case "expiring":
+		break;
+	default:
+		echo "Please select a report type to continue<BR>";
+		break;
+};
 ?>
+<BR>
 Active members:
 
 Members Expiring in next X days:
