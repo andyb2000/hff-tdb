@@ -146,7 +146,8 @@ Select a report:&nbsp;
 &nbsp;|&nbsp;
 <a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=expiring'>Expiring Members</a>
 <BR><BR>
-<form name='reports' id='reports'>
+<form name='reports' id='reports' method=post>
+<input type=hidden name='tab' value='report'>
 <?php 
 $report_selector = $jinput->get('report', '', 'RAW');
 
