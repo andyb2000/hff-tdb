@@ -162,11 +162,17 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 <?php
 		if ($in_hire_startdate && $in_hire_enddate) {
 			// t94us_toydatabase_loanlink
+			
+			$startdate_code=JFactory::getDate($in_hire_startdate);
+			$in_hire_startdate_out=JHtml::_('date', $startdate_code, 'Y-m-d 00:00:00');
+			$enddate_code=JFactory::getDate($in_hire_enddate);
+			$in_hire_enddate_out=JHtml::_('date', $enddate_code, 'Y-m-d 00:00:00');
+			
 			$report_query = $db->getQuery(true);
 			$report_query
 			->select('id')
 			->from($db->quoteName('#__toydatabase_loanlink'))
-			->where("(".$db->quoteName('loandate') . " BETWEEN " . $db->quoteName($in_hire_startdate) . " AND " . $db->quoteName($in_hire_enddate).")");
+			->where("(".$db->quoteName('loandate') . " BETWEEN " . $db->quoteName($in_hire_startdate_out) . " AND " . $db->quoteName($in_hire_enddate_out).")");
 			$db->setQuery((string) $report_query);
 			$db->execute();
 			$row_count_check= $db->getNumRows();
