@@ -176,7 +176,8 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 			$db->setQuery((string) $report_query);
 			$db->execute();
 			$row_count_check= $db->getNumRows();
-			echo "Found $row_count_check rows<BR>";
+			echo "Found $row_count_check hire entries<BR>";
+			
 		};
 		break;
 	case "members":
