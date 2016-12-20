@@ -205,7 +205,7 @@ Members Expiring in next <input type=text name='report_expiring_days' id='report
 		->select('*')
 		->from($db->quoteName('#__toydatabase_membership'))
 		->where($db->quoteName('active') . ' = "1"', 'AND')
-		->where($db->quoteName('renewaldate') . "< NOW() + INTERVAL $report_expiring_days DAY");
+		->where($db->quoteName('renewaldate') . "> NOW() + INTERVAL $report_expiring_days DAY");
 		$db->setQuery((string) $check_member_expiring_query);
 		$db->execute();
 		$members_expiring_rows=$db->getNumRows();
