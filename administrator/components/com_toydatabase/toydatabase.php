@@ -1731,7 +1731,7 @@ $query_permissions
 $db->setQuery((string) $query_permissions);
 $db->execute();
 $permissions_rows = $db->loadAssocList();
-print_r($permissions_rows);
+//print_r($permissions_rows);
 $query_usergroups = $db->getQuery(true);
 $query_usergroups
 ->select("*")
@@ -1744,9 +1744,13 @@ foreach ($usergroups_rows as $usergroup_output) {
 	if ($permissions_rows[0]["groupname"] == $usergroup_output["id"]) {echo "selected";};
 	echo ">".$usergroup_output["title"]."</option>\n";
 };
+
+$admin_emails=$permissions_rows[0]["admin_emails"];
 ?>
 </select></td></tr>
 <tr><td colspan=2>Note: You must have already created a usergroup. If not, click <a href='index.php?option=com_users&view=groups'>HERE</a> to set one up first.</td></tr>
+<tr><td colspan=2 align=center><hr width=99%></td></tr>
+<tr><td><B>Admin emails (Comma separated):</B></td><td><input type=text name='admin_emails' id='admin_emails' value='<?=$admin_emails?>'></td></tr>
 <tr><td colspan=2 align=center><hr width=99%></td></tr>
 <tr><td colspan=2 align=right><input type=submit name='Save changes'></td></tr>
 </table>
