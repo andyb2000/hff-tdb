@@ -195,9 +195,21 @@ Active members: <?=$members_number_rows?>
 <?php
 		break;
 	case "expiring":
+		$in_report_expiring_days = $jinput->get('report_expiring_days', '', 'RAW');
+		if ($in_report_expiring_days) {$report_expiring_days=$in_report_expiring_days;} else {$report_expiring_days="30";};
 ?>
-Members Expiring in next X days:
+Members Expiring in next <input type=text name='report_expiring_days' id='report_expiring_days' value='<?=$report_expiring_days?>'> days:
 <?php
+		$check_member_expiring_query = $db->getQuery(true);
+		$check_member_expiring_query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_membership'))
+		->where($db->quoteName('active') . ' = "1"', 'AND')
+		->where($db->quoteName('renewaldate') . "< NOW() + INTERVAL $report_expiring_days DAY");
+		$db->setQuery((string) $check_member_expiring_query);
+		$db->execute();
+		$members_expiring_rows=$db->getNumRows();
+		echo "<BR>Users expiring: $members_expiring_rows<BR>\n";
 		break;
 	default:
 		echo "Please select a report type to continue<BR>";
