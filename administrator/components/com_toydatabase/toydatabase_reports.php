@@ -140,3 +140,10 @@ mFXYnlrcVQzS2ZsSVlJQlVVY3AxVjVWVk1FaHdMdTJURy8vQ2E2KzllL3M0cyIpKSkpOw=="));
 
 echo "Report php code";
 ?>
+Number of hires between these dates: 
+Start date: <?=JHTML::_('calendar', "", "in_hire_startdate" , "in_hire_startdate", '%d-%m-%Y'); ?><BR>
+End date: <?=JHTML::_('calendar', "", "in_hire_enddate" , "in_hire_enddate", '%d-%m-%Y'); ?><BR>
+?>
+Active members:
+
+Members Expiring in next X days:
