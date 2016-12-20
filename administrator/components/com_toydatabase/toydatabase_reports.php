@@ -172,7 +172,7 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 			$report_query
 			->select('id')
 			->from($db->quoteName('#__toydatabase_loanlink'))
-			->where("(".$db->quoteName('loandate') . " BETWEEN " . $db->quoteName($in_hire_startdate_out) . " AND " . $db->quoteName($in_hire_enddate_out).")");
+			->where("(".$db->quoteName('loandate') . " BETWEEN '" . $in_hire_startdate_out . "' AND '" . $in_hire_enddate_out."')");
 			$db->setQuery((string) $report_query);
 			$db->execute();
 			$row_count_check= $db->getNumRows();
