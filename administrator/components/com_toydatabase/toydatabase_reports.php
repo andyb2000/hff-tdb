@@ -181,8 +181,17 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 		};
 		break;
 	case "members":
+		$check_member_query = $db->getQuery(true);
+		$check_member_query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_membership'))
+		->where($db->quoteName('active') . ' = "1"');
+		$db->setQuery((string) $check_member_query);
+		$db->execute();
+		$members_number_rows=$db->getNumRows();
+		
 ?>
-Active members:
+Active members: <?=$members_number_rows?>
 <?php
 		break;
 	case "expiring":
