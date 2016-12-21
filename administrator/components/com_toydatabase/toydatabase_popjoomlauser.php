@@ -314,13 +314,12 @@ $toydatabase_permissions = $db->loadAssoc();
 jimport( 'joomla.access.access' );
 $toylibrary_joomlausers = JAccess::getUsersByGroup($toydatabase_permissions["groupname"]);
 jimport( 'joomla.user.user' );
-echo "<PRE>";
 $get_users_vals=array();
 foreach($toylibrary_joomlausers as $jl_users){
 	//$coach[$coaches] =& JFactory::getUser($coaches);
 	$tmp_user = JFactory::getUser($jl_users);
 	if ($tmp_user && $tmp_user->username) {
-		echo "User: ".$tmp_user->username."<BR>\n";
+//		echo "User: ".$tmp_user->username."<BR>\n";
 		array_push($get_users_vals,$tmp_user);
 	};
 };
@@ -336,7 +335,7 @@ echo "Joomla users<BR>\n";
 <?php
 	if (count($get_users_vals) > 0) {
 		foreach($get_users_vals as $single_user_loop=>$single_user_loop_val) {
-			echo "<tr>";
+			echo "<tr onclick='Javascript:window.parent.document.getElementById(\"in_joomla_userid\").value=\"".$single_user_loop_val->id."\";window.parent.SqueezeBox.close();'>";
 			echo "<td>";
 			echo $single_user_loop_val->id;
 			echo "</td><td>";
