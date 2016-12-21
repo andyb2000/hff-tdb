@@ -319,6 +319,7 @@ $get_user_vals=array();
 foreach($toylibrary_joomlausers as $jl_users){
 	//$coach[$coaches] =& JFactory::getUser($coaches);
 	print_r($jl_users);
+	echo "<BR>\n";
 };
 echo "Joomla users<BR>\n";
 
