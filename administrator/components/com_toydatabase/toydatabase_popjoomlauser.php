@@ -338,6 +338,7 @@ echo "Joomla users<BR>\n";
 			echo "<tr>";
 			echo "<td>";
 			print_r($single_user_loop);
+			echo "</td><td>";
 			print_r($single_user_loop_val);
 			echo "</td>";
 			echo "</tr>";
