@@ -333,7 +333,7 @@ echo "Joomla users<BR>\n";
 						<td width=20%><B>Member Name</B></td>
 						</tr>
 <?php
-	if (array_count($get_users_vals) > 0) {
+	if (count($get_users_vals) > 0) {
 		foreach($get_users_vals as $single_user_loop=>$single_user_loop_val) {
 			echo "<tr>";
 			echo "<td>";
