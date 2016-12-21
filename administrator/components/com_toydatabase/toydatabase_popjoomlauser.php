@@ -314,9 +314,12 @@ $toydatabase_permissions = $db->loadAssoc();
 jimport( 'joomla.access.access' );
 $toylibrary_joomlausers = JAccess::getUsersByGroup($toydatabase_permissions["groupname"]);
 jimport( 'joomla.user.user' );
+echo "<PRE>";
 foreach($toylibrary_joomlausers as $jl_users){
 	//$coach[$coaches] =& JFactory::getUser($coaches);
 	print_r($jl_users);
+	echo "And:<BR>\n";
+	print_r(JFactory::getUser($jl_users));
 };
 echo "Joomla users<BR>\n";
 
