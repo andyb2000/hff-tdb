@@ -333,6 +333,16 @@ echo "Joomla users<BR>\n";
 						<td width=20%><B>Member Name</B></td>
 						</tr>
 <?php
-							// no rows or toys in database found
-							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
+	if (array_count($get_users_vals) > 0) {
+		foreach($get_users_vals as $single_user_loop) {
+			echo "<tr>";
+			echo "<td>";
+			echo $single_user_loop;
+			echo "</td>";
+			echo "</tr>";
+		};
+	} else {
+			// no rows or toys in database found
+			echo "<tr><td colspan=2 align=center><B>Sorry - No members found</B></td></tr>\n";
+	};
 ?>
