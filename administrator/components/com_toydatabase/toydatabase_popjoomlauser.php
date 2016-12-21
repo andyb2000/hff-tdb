@@ -315,107 +315,24 @@ jimport( 'joomla.access.access' );
 $toylibrary_joomlausers = JAccess::getUsersByGroup($toydatabase_permissions["groupname"]);
 jimport( 'joomla.user.user' );
 echo "<PRE>";
-$get_user_vals=array();
+$get_users_vals=array();
 foreach($toylibrary_joomlausers as $jl_users){
 	//$coach[$coaches] =& JFactory::getUser($coaches);
-	print_r($jl_users);
-	echo "<BR>\n";
 	$tmp_user = JFactory::getUser($jl_users);
-	if ($tmp_user) {
+	if ($tmp_user && $tmp_user->username) {
 		echo "User: ".$tmp_user->username."<BR>\n";
+		array_push($get_users_vals,$tmp_user);
 	};
 };
 echo "Joomla users<BR>\n";
 
 		// display member list
-$query = $db->getQuery(true);
-		$query
-		->select('SQL_CALC_FOUND_ROWS *')
-		->from($db->quoteName('#__toydatabase_membership'))
-		->order($db->quoteName('name') . ' DESC');
-		
-		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
-		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
-		
-		$db->setQuery($query,$limitstart, $limit);
-		$row = $db->loadAssocList('id');
-		if(!empty($row)){
-			$db->setQuery('SELECT FOUND_ROWS();');
-			$num_rows=$db->loadResult();
-			jimport('joomla.html.pagination');
-			$pager=new JPagination($num_rows, $limitstart, $limit);
-		};
-		?>
-						
+?>
 						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
-						<tr><td width=5%><B>Member joomla ID</B></td>
-						<td width=10%><B>Member URN</B></td>
+						<tr><td width=5%><B>joomla ID</B></td>
 						<td width=20%><B>Member Name</B></td>
-						<td width=20%><B>Company</B></td>
-						<td width=10%><B>Postcode</B></td>
-						<td width=10%><B>Member Category</B></td>
-						<td width=10%><B>Join Date</B></td>
-						<td width=10%><B>Renewal Date</B></td>
-						<td width=5%><B>Status</B></td>
 						</tr>
-						<?php
-						if (!empty($row)) {
-							// print_r($row);
-							foreach ($row as $row_key=>$row_value) {
-								// convert memb_category
-								// link to joomlaid
-								// joindate to human date
-								// renewaldate to human date
-								
-								$check_member_query = $db->getQuery(true);
-								$check_member_query
-								->select('*')
-								->from($db->quoteName('#__toydatabase_membershiplink'))
-								->where($db->quoteName('membershipid') . ' = '. $row_value["id"]);
-								$db->setQuery((string) $check_member_query);
-								$db->execute();
-								$membership_row = $db->loadAssoc();
-								
-								$entry_joindate=JFactory::getDate($row_value["joindate"]);
-								$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
-								
-								if ($row_value["renewaldate"] != "0000-00-00 00:00:00") {
-									$entry_renewaldate=JFactory::getDate($row_value["renewaldate"]);
-									$entry_renewaldate_out=JHtml::_('date', $entry_renewaldate, 'd/m/Y');
-								} else {
-									$entry_renewaldate_out="N/A";
-								};
-								if ($row_value["active"] == "1") {$entry_active="Active";};
-								if ($row_value["active"] == "0") {$entry_active="Pending";};
-								if ($row_value["active"] == "10") {$entry_active="Suspended";};
-								if ($row_value["active"] == "99") {$entry_active="Deleted";};
-								
-								if ($row_value["id"] == $curr_member) {
-									echo "<tr style='background-color:red' onclick='Javascript:window.parent.document.getElementById(\"in_membershipid\").value=\"".$row_value["joomla_userid"]."\";window.parent.SqueezeBox.close();'>";
-								} else {
-									echo "<tr onclick='Javascript:window.parent.document.getElementById(\"in_membershipid\").value=\"".$row_value["joomla_userid"]."\";window.parent.SqueezeBox.close();'>";
-								};
-								
-								echo "<td>".$row_value["joomla_userid"]."</td>";
-								echo "<td>".$row_value["urn"]."</td>";
-								echo "<td>".$row_value["name"]."</td>";
-								echo "<td>".$row_value["companyname"]."</td>";
-								echo "<td>".$row_value["postcode"]."</td>";
-								echo "<td>".$row_value["memb_category"]."</td>";
-								echo "<td>".$entry_joindate_out."</td>";
-								echo "<td>".$entry_renewaldate_out."</td>";
-								echo "<td>".$entry_active."</td>";
-								echo "</tr>\n";
-							};
-						} else {
+<?php
 							// no rows or toys in database found
 							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
-						};
-?>
-								</table><form name='limitdisplay'>
-<?php
-						echo $pager->getListFooter();
-						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
-						echo "</form>";
 ?>
