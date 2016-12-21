@@ -337,7 +337,7 @@ echo "Joomla users<BR>\n";
 		foreach($get_users_vals as $single_user_loop) {
 			echo "<tr>";
 			echo "<td>";
-			echo $single_user_loop;
+			print_r($single_user_loop);
 			echo "</td>";
 			echo "</tr>";
 		};
