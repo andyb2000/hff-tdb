@@ -318,9 +318,9 @@ echo "<PRE>";
 $get_user_vals=array();
 foreach($toylibrary_joomlausers as $jl_users){
 	//$coach[$coaches] =& JFactory::getUser($coaches);
-	$get_user_vals[$jl_users] =& JFactory::getUser($jl_users);
+	$get_user_vals[0] =& JFactory::getUser($jl_users);
 	
-	if ($get_user_vals[$jl_users]["id"]) {
+	if ($get_user_vals[0]["id"]) {
 		print_r($jl_users);
 		echo "And:<BR>\n";
 		print_r($get_user_vals[$jl_users]);
