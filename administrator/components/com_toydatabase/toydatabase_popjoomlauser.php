@@ -330,6 +330,7 @@ echo "Joomla users<BR>\n";
 ?>
 						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 						<tr><td width=5%><B>joomla ID</B></td>
+						<td width=20%><B>Member Username</B></td>
 						<td width=20%><B>Member Name</B></td>
 						</tr>
 <?php
@@ -339,10 +340,10 @@ echo "Joomla users<BR>\n";
 			echo "<td>";
 			echo $single_user_loop_val->id;
 			echo "</td><td>";
-			print_r($single_user_loop_val);
-			//echo $single_user_loop_val["username"];
+//			print_r($single_user_loop_val);
+			echo $single_user_loop_val->username;
 			echo "</td><td>";
-			//echo $single_user_loop_val["name"];
+			echo $single_user_loop_val->name;
 			echo "</td>";
 			echo "</tr>";
 		};
