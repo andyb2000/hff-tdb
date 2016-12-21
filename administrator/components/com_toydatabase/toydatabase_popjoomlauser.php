@@ -339,7 +339,7 @@ echo "Joomla users<BR>\n";
 			echo "<td>";
 			echo $single_user_loop_val["id"];
 			echo "</td><td>";
-			//print_r($single_user_loop_val);
+			print_r($single_user_loop_val);
 			echo $single_user_loop_val["username"];
 			echo "</td><td>";
 			echo $single_user_loop_val["name"];
