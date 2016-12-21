@@ -320,6 +320,10 @@ foreach($toylibrary_joomlausers as $jl_users){
 	//$coach[$coaches] =& JFactory::getUser($coaches);
 	print_r($jl_users);
 	echo "<BR>\n";
+	$tmp_user = JFactory::getUser($jl_users);
+	if ($tmp_user) {
+		echo "User: ".$tmp_user->username."<BR>\n";
+	};
 };
 echo "Joomla users<BR>\n";
 
