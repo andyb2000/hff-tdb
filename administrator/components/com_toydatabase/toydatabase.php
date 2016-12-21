@@ -1053,7 +1053,27 @@ switch($loan_act) {
 					$db->quoteName('returndate') . ' = ' . $db->quote($frm_returndate_out),
 					$db->quoteName('status') . ' = ' . $db->quote($frm_in_status)
 			);
-			$upd_request->update($db->quoteName('#__toydatabase_loanlink'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
+			if ($ddid == "0") {
+				// it's a new entry
+				$ins_columns = array('equipmentid','membershipid', 'loandate', 'returnbydate', 'returndate', 'status');
+				$ins_values = array($db->quote($frm_in_equipmentid),$db->quote($frm_in_membershipid),$db->quote($frm_loandate_out),$db->quote($frm_returnbydate_out),$db->quote($frm_returndate_out),$db->quote($frm_in_status));
+				$ins_request = $db->getQuery(true);
+				$ins_request
+				->insert($db->quoteName('#__toydatabase_loanlink'))
+				->columns($db->quoteName($ins_columns))
+				->values(implode(',', $ins_values));
+				try {
+					$db->setQuery($ins_request);
+					$db->execute();
+					$newuser_id = $db->insertid();
+				}
+				catch (RuntimeException $e) {
+					echo "Error with mysql ".$e->getMessage()."<BR><BR>\n";
+					JFactory::getApplication()->enqueueMessage($e->getMessage());
+					return false;
+				};				
+			} else {
+				$upd_request->update($db->quoteName('#__toydatabase_loanlink'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
 			try {
 				$db->setQuery($upd_request);
 				$db->execute();
@@ -1061,6 +1081,7 @@ switch($loan_act) {
 			catch (RuntimeException $e) {
 				JFactory::getApplication()->enqueueMessage($e->getMessage());
 				return false;
+			};
 			};
 			echo "<h2>Complete</h2> - Request has been updated<BR>\n";
 			// send update email to end user
