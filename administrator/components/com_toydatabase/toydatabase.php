@@ -1533,27 +1533,29 @@ switch($member_act) {
 	case "1":
 		// display specific member
 		if($tab == "member") {
-			$query = $db->getQuery(true);
-			$query
-			->select('*')
-			->from($db->quoteName('#__toydatabase_membership'))
-			->where($db->quoteName('id') . ' = '. $ddid);
-			$db->setQuery((string) $query);
-			$db->execute();
-			$row = $db->loadAssoc();
+			if ($ddid) {
+				$query = $db->getQuery(true);
+				$query
+				->select('*')
+				->from($db->quoteName('#__toydatabase_membership'))
+				->where($db->quoteName('id') . ' = '. $ddid);
+				$db->setQuery((string) $query);
+				$db->execute();
+				$row = $db->loadAssoc();
 			
-			// get member type lookup
-			$query_membtype = $db->getQuery(true);
-			$query_membtype
-			->select('*')
-			->from($db->quoteName('#__toydatabase_membershiplink'))
-			->where($db->quoteName('membershipid') . ' = '. $ddid);
-			$db->setQuery((string) $query_membtype);
-			$db->execute();
-			$memb_typerow = $db->loadAssoc();
-			if ($row["renewaldate"] != "0000-00-00 00:00:00") {
-				$entry_renewaldate=JFactory::getDate($row["renewaldate"]);
-				$in_renewaldate=JHtml::_('date', $entry_requestdate, 'd/m/Y');
+				// get member type lookup
+				$query_membtype = $db->getQuery(true);
+				$query_membtype
+				->select('*')
+				->from($db->quoteName('#__toydatabase_membershiplink'))
+				->where($db->quoteName('membershipid') . ' = '. $ddid);
+				$db->setQuery((string) $query_membtype);
+				$db->execute();
+				$memb_typerow = $db->loadAssoc();
+				if ($row["renewaldate"] != "0000-00-00 00:00:00") {
+					$entry_renewaldate=JFactory::getDate($row["renewaldate"]);
+					$in_renewaldate=JHtml::_('date', $entry_requestdate, 'd/m/Y');
+				};
 			};
 			?>
 					<form method=post name='update_member'>
@@ -1703,7 +1705,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 						<input type=hidden name='member_act' value='4'>
 						<input type=hidden name='tab' value='member'>
 						<table width=100% border=0 cellpadding=0 cellspacing=0>
-						<tr align=right><td align=right><input type=button name='newmember' id='newmember' value='Add a new member link' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=member&loan_act=4"'></td></tr>
+						<tr align=right><td align=right><input type=button name='newmember' id='newmember' value='Add a new member link' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=member&member_act=1"'></td></tr>
 						</table>
 						</form>
 						<!-- END new member button -->
