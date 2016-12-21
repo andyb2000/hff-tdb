@@ -971,6 +971,54 @@ This is the approval panel.
 switch($loan_act) {
 	case "4":
 		// add a manual loan request
+		if($tab == "loan") {
+		
+			?>
+									<form method=post name='loanrequest' id='loanrequest'>
+									<input type=hidden name='loan_act' value='2'>
+									<input type=hidden name='ddid' value='0'>
+									<input type=hidden name='tab' value='loan'>
+									<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+									<tr>
+									<td valign=top><B>Toy id :</B></td>
+									<td><input type=text size=5 name='in_equipmentid' id='in_equipmentid' value=''>&nbsp;
+									<a href="<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_poptoy.php?curr_toy=<?=$row["equipmentid"]?>" class="modal" id='toyselector' name='toyselector' rel="{handler: 'iframe', size: {x: 500, y: 400}}">Toy selector</a>
+									</td>
+									</tr>
+									<tr>
+									<td valign=top><B>Member id :</B></td>
+									<td><input type=text size=5 name='in_membershipid' id='in_membershipid' value=''>&nbsp;
+									<a href="<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_popmember.php?curr_member=<?=$row["membershipid"]?>" class="modal" id='memberselector' name='memberselector' rel="{handler: 'iframe', size: {x: 500, y: 400}}">Member selector</a>
+									</td>
+									</tr>
+									<tr>
+									<td valign=top><B>Loan Requested Date :</B></td>
+									<td><?=JHTML::_('calendar', date("%d-%m-%Y"), "in_loandate" , "in_loandate", '%d-%m-%Y'); ?></td>
+									</tr>
+									<tr>
+									<td valign=top><B>Return By Date :</B></td>
+									<td><?=JHTML::_('calendar', date("%d-%m-%Y"), "in_returnbydate" , "in_returnbydate", '%d-%m-%Y'); ?></td>
+									</tr>
+									<tr>
+									<td valign=top><B>Returned Date :</B></td>
+									<td><?=JHTML::_('calendar', "", "in_returndate" , "in_returndate", '%d-%m-%Y'); ?></td>
+									</tr>
+									<tr>
+									<td valign=top><B>Status :</B></td>
+									<td><select name='in_status'>
+									<option value=''></option>
+									<option value='1'>Approved</option>
+									<option value='2'>Pending</option>
+									<option value='3'>Rejected</option>
+									<option value='3'>Returned</option>
+									</select>
+									</td>
+									</tr>
+									<tr><td colspan=2 align=right><input type=submit value='Create request'></td></tr>
+									</table>
+									</form>
+						<?php
+						};				
 		break;
 	case "2":
 		// save changes to loan request
