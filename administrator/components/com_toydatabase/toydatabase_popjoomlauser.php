@@ -317,7 +317,7 @@ jimport( 'joomla.user.user' );
 echo "<PRE>";
 foreach($toylibrary_joomlausers as $jl_users){
 	//$coach[$coaches] =& JFactory::getUser($coaches);
-	$get_user_vals=JFactory::getUser($jl_users);
+	$get_user_vals =& JFactory::getUser($jl_users);
 	
 	if ($get_user_vals["id"]) {
 		print_r($jl_users);
