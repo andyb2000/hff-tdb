@@ -307,12 +307,12 @@ padding: 0;
 <BR><center><h2>Toy database system administration</h2></center><BR><BR>
 <?php
 
-JSubMenuHelper::addEntry('Toys/Equipment', dirname(__FILE__) .  '/toydatabase_toys.php');
-JSubMenuHelper::addEntry('Toy Categories', 'the url to be launched on click on the item');
-JSubMenuHelper::addEntry('Approval Requests', 'the url to be launched on click on the item');
-JSubMenuHelper::addEntry('Members', 'the url to be launched on click on the item');
-JSubMenuHelper::addEntry('Reports', 'the url to be launched on click on the item');
-JSubMenuHelper::addEntry('Configuration', 'the url to be launched on click on the item');
+JSubMenuHelper::addEntry('Toys/Equipment', JURI::current()."?option=com_toydatabase&page=toys",true);
+JSubMenuHelper::addEntry('Toy Categories', JURI::current()."?option=com_toydatabase&page=categories",false);
+JSubMenuHelper::addEntry('Approval Requests', JURI::current()."?option=com_toydatabase&page=requests",false);
+JSubMenuHelper::addEntry('Members', JURI::current()."?option=com_toydatabase&page=members",false);
+JSubMenuHelper::addEntry('Reports', JURI::current()."?option=com_toydatabase&page=reports",false);
+JSubMenuHelper::addEntry('Configuration', JURI::current()."?option=com_toydatabase&page=configuration",false);
 
 $options = array(
 		'onActive' => 'function(title, description){
