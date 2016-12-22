@@ -254,7 +254,6 @@ padding: 0;
 
      }
       </script>
-<BR><center><h2>Toy database system administration</h2></center><BR><BR>
 <?php
 
 if ($page == "toys") {
