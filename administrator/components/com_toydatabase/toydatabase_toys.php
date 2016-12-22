@@ -29,6 +29,7 @@ switch($act) {
 		if($tab == "toys") {
 			?>
                 <form method=post name='update_toy'>
+				<input type=hidden name='page' value='toys'>
                 <input type=hidden name='act' value='2'>
                 <input type=hidden name='ddid' value='0'>
                 <input type=hidden name='tab' value='toys'>
@@ -272,6 +273,7 @@ switch($act) {
 		
 		?>
 		<form method=post name='update_toy'>
+		<input type=hidden name='page' value='toys'>
 		<input type=hidden name='act' value='2'>
 		<input type=hidden name='ddid' value='<?=$ddid?>'>
 		<input type=hidden name='tab' value='toys'>
@@ -387,6 +389,7 @@ switch($act) {
 		
 		<!-- Toy database search -->
 		<form method=post name='toy_search' id='toy_search' onsubmit="return false">
+		<input type=hidden name='page' value='toys'>
 		<input type=hidden name='act' value='3'>
 		<input type=hidden name='tab' value='toys'>
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
@@ -397,6 +400,7 @@ switch($act) {
 
 		<!-- New toy button -->
                 <form method=post onsubmit="return false" name='toy_new' id='toy_new'>
+				<input type=hidden name='page' value='toys'>        
                 <input type=hidden name='act' value='4'>
                 <table width=100% border=0 cellpadding=0 cellspacing=0>
                 <tr align=right><td align=right><input type=button name='newtoy' id='newtoy' value='Add a new toy' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=toys&act=4"'></td></tr>
