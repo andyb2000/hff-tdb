@@ -178,60 +178,6 @@ mFXYnlrcVQzS2ZsSVlJQlVVY3AxVjVWVk1FaHdMdTJURy8vQ2E2KzllL3M0cyIpKSkpOw=="));
           background-color: #ffff99;
           cursor: pointer;
     }
-dl.tabs {
-float: left;
-margin: 10px 0 -1px;
-z-index: 50;
-}
-
-dl.tabs dt.open {
-background: none repeat scroll 0 0 #F9F9F9;
-border-bottom: 1px solid #F9F9F9;
-color: #000000;
-z-index: 100;
-}
-
-dl.tabs dt.open {
-border-bottom: medium none !important;
-font-weight: bold;
-font-size: 50%;
-}
-dl.tabs dt {
-float: left;
-margin-left: 3px;
-padding: 4px 10px;
-font-size: 50%;
-}
-dl.tabs dt {
-background: -moz-linear-gradient(center top , #E4E2CC, #F5F1E6) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
-border: medium none !important;
-border-radius: 5px 5px 0 0;
-}
-
-dl.tabs dt.open {
-color: #000000;
-}
-dl.tabs dt.open {
-font-weight: bold;
-}
-
-dl.tabs dt.closed {
-background: -moz-linear-gradient(center top , #F5F1E6, #E4E2CC) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
-}
-
-dl.tabs dt {
-background: none repeat scroll 0 0 #E9E9E9;
-border: 1px solid #CCCCCC;
-color: #666666;
-float: left;
-margin-left: 3px;
-padding: 4px 10px;
-}
-dl.tabs dt {
-background: -moz-linear-gradient(center top , #E4E2CC, #F5F1E6) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
-border: medium none !important;
-border-radius: 5px 5px 0 0;
-}
 
 div.current {
 border: 1px solid #CCCCCC;
