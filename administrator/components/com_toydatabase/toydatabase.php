@@ -307,7 +307,12 @@ padding: 0;
 <BR><center><h2>Toy database system administration</h2></center><BR><BR>
 <?php
 
-JSubMenuHelper::addEntry('the link string to be displayed', 'the url to be launched on click on the item');
+JSubMenuHelper::addEntry('Toys/Equipment', dirname(__FILE__) .  '/toydatabase_toys.php');
+JSubMenuHelper::addEntry('Toy Categories', 'the url to be launched on click on the item');
+JSubMenuHelper::addEntry('Approval Requests', 'the url to be launched on click on the item');
+JSubMenuHelper::addEntry('Members', 'the url to be launched on click on the item');
+JSubMenuHelper::addEntry('Reports', 'the url to be launched on click on the item');
+JSubMenuHelper::addEntry('Configuration', 'the url to be launched on click on the item');
 
 $options = array(
 		'onActive' => 'function(title, description){
