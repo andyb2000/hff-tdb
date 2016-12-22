@@ -466,6 +466,8 @@ switch($act) {
 		};
 		?>
 		</table><form name="adminForm" id="adminForm">
+		<input type=hidden name='option' value='com_toydatabase'>
+		<input type=hidden name='page' value='toys'>
 		<?php
 			echo $pager->getListFooter();
 			echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
