@@ -694,16 +694,16 @@ switch($act) {
 		->order($db->quoteName('name') . ' ASC');
 		
 		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
-		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		$equipment_limit = $app->getUserStateFromRequest("$option.equipment_limit", 'equipment_limit', 25, 'int');
+		$equipment_limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
-		$db->setQuery($query,$limitstart, $limit);
+		$db->setQuery($query,$equipment_limitstart, $equipment_limit);
 		$row = $db->loadAssocList('id');
 		if(!empty($row)){
 			$db->setQuery('SELECT FOUND_ROWS();');
 			$num_rows=$db->loadResult();
 			jimport('joomla.html.pagination');
-			$pager=new JPagination($num_rows, $limitstart, $limit);
+			$pager=new JPagination($num_rows, $equipment_limitstart, $equipment_limit);
 		};
 		
 		?>
@@ -790,9 +790,9 @@ switch($act) {
 		?>
 		</table><form name='limitdisplay'>
 		<?php
+			echo "</form>";		
 			echo $pager->getListFooter();
 			echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
-			echo "</form>";
 			// end of default: switch
 			break;
 }; // enc of switch selecting act
@@ -915,8 +915,8 @@ switch($cat_act) {
 		->order($db->quoteName('category') . ' ASC');
 		
 		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
-		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		$category_limit = $app->getUserStateFromRequest("$option.category_limit", 'category_limit', 25, 'int');
+		$category_limitstart = JFactory::getApplication()->input->get('category_limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
 		$row = $db->loadAssocList('id');
@@ -924,7 +924,7 @@ switch($cat_act) {
 			$db->setQuery('SELECT FOUND_ROWS();');
 			$num_rows=$db->loadResult();
 			jimport('joomla.html.pagination');
-			$pager=new JPagination($num_rows, $limitstart, $limit);
+			$pager=new JPagination($num_rows, $category_limitstart, $category_limit);
 		};
 ?>
 		<!-- New category button -->
@@ -953,9 +953,9 @@ switch($cat_act) {
 ?>
 				</table><form name='limitdisplay'>
 <?php
+		echo "</form>";
 		echo $pager->getListFooter();
 		echo "Number of categories to display per page: ".$pager->getLimitBox()."<BR>\n";
-		echo "</form>";
 		// end of default: switch
 		break;
 };
