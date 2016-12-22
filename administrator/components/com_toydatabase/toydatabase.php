@@ -1578,21 +1578,9 @@ switch($member_act) {
 					<tr>
 					<td valign=top><B>Type :</B></td>
 					<td><select name='in_type'>
-<?php 
-// get membershiptypes
-$query_membtypes = $db->getQuery(true);
-$query_membtypes
-->select("*")
-->from($db->quoteName('#__toydatabase_membershiptypes'));
-$db->setQuery((string) $query_membtypes);
-$db->execute();
-$membershiptypes_rows= $db->loadAssocList();
-foreach ($membershiptypes_rows as $membershiptypes_output) {
-	echo "<option value='".$membershiptypes_output["id"]."' ";
-	if ($memb_typerow["membershiptypeid"] == $membershiptypes_output["id"]) {echo "selected";};
-	echo ">".$membershiptypes_output["type"]."</option>\n";
-};
-?>
+<option value=''></option>
+<option value='1'>Individual</option>
+<option value='2'>Organisation</option>
 					</select></td>
 					</tr>
 					<tr>
@@ -1631,12 +1619,21 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					<td valign=top><B>Membership Category :</B></td>
 					<td><select name='in_memb_category'/>
 <option value=''></option>
-<option value='1' <?php if ($row["memb_category"] == "1") {echo "selected";}; ?>>Individual / Family</option>
-<option value='2' <?php if ($row["memb_category"] == "2") {echo "selected";}; ?>>Voluntary Organisation</option>
-<option value='3' <?php if ($row["memb_category"] == "3") {echo "selected";}; ?>>Schools</option>
-<option value='4' <?php if ($row["memb_category"] == "4") {echo "selected";}; ?>>Childcare settings</option>
-<option value='5' <?php if ($row["memb_category"] == "5") {echo "selected";}; ?>>Childminders</option>
-<option value='6' <?php if ($row["memb_category"] == "6") {echo "selected";}; ?>>Organisations outside of Hartlepool</option>
+<?php 
+// get membershiptypes
+$query_membtypes = $db->getQuery(true);
+$query_membtypes
+->select("*")
+->from($db->quoteName('#__toydatabase_membershiptypes'));
+$db->setQuery((string) $query_membtypes);
+$db->execute();
+$membershiptypes_rows= $db->loadAssocList();
+foreach ($membershiptypes_rows as $membershiptypes_output) {
+	echo "<option value='".$membershiptypes_output["id"]."' ";
+	if ($row["memb_category"] == $membershiptypes_output["id"]) {echo "selected";};
+	echo ">".$membershiptypes_output["type"]."</option>\n";
+};
+?>
 </select>
 					</td>
 					</tr>
@@ -1739,6 +1736,16 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 								$db->execute();
 								$membership_row = $db->loadAssoc();
 								
+								// get member category
+								$get_memb_cat = $db->getQuery(true);
+								$get_memb_cat
+								->select('*')
+								->from($db->quoteName('#__toydatabase_membershiptypes'))
+								->where($db->quoteName('id') . ' = '. $row_value["memb_category"]);
+								$db->setQuery((string) $get_memb_cat);
+								$db->execute();
+								$memb_cat_data = $db->loadAssoc();
+								
 								$entry_joindate=JFactory::getDate($row_value["joindate"]);
 								$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
 								
@@ -1759,7 +1766,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 								echo "<td>".$row_value["name"]."</td>";
 								echo "<td>".$row_value["companyname"]."</td>";
 								echo "<td>".$row_value["postcode"]."</td>";
-								echo "<td>".$row_value["memb_category"]."</td>";
+								echo "<td>".$memb_cat_data["type"]."</td>";
 								echo "<td>".$entry_joindate_out."</td>";
 								echo "<td>".$entry_renewaldate_out."</td>";
 								echo "<td>".$entry_active."</td>";
