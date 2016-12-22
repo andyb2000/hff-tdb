@@ -36,6 +36,8 @@ JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.calendar');
 JHTML::_('behavior.modal');
 
+JToolBarHelper::title('Toy Database','sample'):
+
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
 //$query
