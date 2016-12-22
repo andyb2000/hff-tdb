@@ -21,6 +21,8 @@ defined('_JEXEC') or die('Restricted access');
 //$controller->redirect();
 
 $jinput = JFactory::getApplication()->input;
+$page = $jinput->get('page', 'toys', 'RAW'); // page for the display page and set a default of 'toys'
+
 $tab = $jinput->get('tab', '', 'RAW'); // tab is a text RAW input
 $act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
 $cat_act = $jinput->get('cat_act', '', 'INT'); // action is just an integer 1 2 or 3
@@ -307,12 +309,36 @@ padding: 0;
 <BR><center><h2>Toy database system administration</h2></center><BR><BR>
 <?php
 
-JSubMenuHelper::addEntry('Toys/Equipment', JURI::current()."?option=com_toydatabase&page=toys",true);
-JSubMenuHelper::addEntry('Toy Categories', JURI::current()."?option=com_toydatabase&page=categories",false);
-JSubMenuHelper::addEntry('Approval Requests', JURI::current()."?option=com_toydatabase&page=requests",false);
-JSubMenuHelper::addEntry('Members', JURI::current()."?option=com_toydatabase&page=members",false);
-JSubMenuHelper::addEntry('Reports', JURI::current()."?option=com_toydatabase&page=reports",false);
-JSubMenuHelper::addEntry('Configuration', JURI::current()."?option=com_toydatabase&page=configuration",false);
+if ($page == "toys") {
+	JSubMenuHelper::addEntry('Toys/Equipment', JURI::current()."?option=com_toydatabase&page=toys",true);
+} else {
+	JSubMenuHelper::addEntry('Toys/Equipment', JURI::current()."?option=com_toydatabase&page=toys",false);
+};
+if ($page == "categories") {
+	JSubMenuHelper::addEntry('Toy Categories', JURI::current()."?option=com_toydatabase&page=categories",true);
+} else {
+	JSubMenuHelper::addEntry('Toy Categories', JURI::current()."?option=com_toydatabase&page=categories",false);
+};
+if ($page == "requests") {
+	JSubMenuHelper::addEntry('Approval Requests', JURI::current()."?option=com_toydatabase&page=requests",true);
+} else {
+	JSubMenuHelper::addEntry('Approval Requests', JURI::current()."?option=com_toydatabase&page=requests",false);
+};
+if ($page == "members") {
+	JSubMenuHelper::addEntry('Members', JURI::current()."?option=com_toydatabase&page=members",true);
+} else {
+	JSubMenuHelper::addEntry('Members', JURI::current()."?option=com_toydatabase&page=members",false);
+};
+if ($page == "reports") {
+	JSubMenuHelper::addEntry('Reports', JURI::current()."?option=com_toydatabase&page=reports",true);
+} else {
+	JSubMenuHelper::addEntry('Reports', JURI::current()."?option=com_toydatabase&page=reports",false);
+};
+if ($page == "configuration") {
+	JSubMenuHelper::addEntry('Configuration', JURI::current()."?option=com_toydatabase&page=configuration",true);
+} else {
+	JSubMenuHelper::addEntry('Configuration', JURI::current()."?option=com_toydatabase&page=configuration",false);
+};
 
 $options = array(
 		'onActive' => 'function(title, description){
