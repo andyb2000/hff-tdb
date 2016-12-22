@@ -465,7 +465,7 @@ switch($act) {
 			echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
 		};
 		?>
-		</table><form name='limitdisplay'>
+		</table><form name="adminForm" id="adminForm">
 		<?php
 			echo $pager->getListFooter();
 			echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
