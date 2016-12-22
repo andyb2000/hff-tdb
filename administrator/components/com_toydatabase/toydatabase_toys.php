@@ -59,7 +59,7 @@ switch($act) {
                 <tr>
                         <td valign=top><B>Toy Description :</B></td>
                         <td><?php 
-                        echo $editor->display('in_toydescription', '', '100%', '100px', '20', '4',true);
+                        echo $editor->display('in_toydescription', '', '100%', '100px', '10', '4',true);
                         ?>
                         </td>
                 </tr>
@@ -303,7 +303,7 @@ switch($act) {
 		<tr>
 			<td valign=top><B>Toy Description :</B></td>
 			<td><?php 
-			echo $editor->display('in_toydescription', $row["description"], '100%', '100px', '20', '4',true);			
+			echo $editor->display('in_toydescription', $row["description"], '100%', '100px', '10', '4',true);			
 			?>
 			</td>
 		</tr>
