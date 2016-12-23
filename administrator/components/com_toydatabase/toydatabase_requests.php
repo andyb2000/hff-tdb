@@ -402,7 +402,7 @@ switch($loan_act) {
 ?>
 						</table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
-		<input type=hidden name='page' value='toys'>
+		<input type=hidden name='page' value='requests'>
 <?php
 				echo $pager->getListFooter();
 				echo "Number of loan requests to display per page: ".$pager->getLimitBox()."<BR>\n";
