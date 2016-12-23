@@ -263,7 +263,7 @@ padding: 0;
                }
             }
             
-            xmlhttp.open("GET","<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_livesearch_admin.php?pname=<?=JURI::current()?>&q="+str,true);
+            xmlhttp.open("GET","<?=JURI::root()?>toydatabase_livesearch_admin.php?pname=<?=JURI::current()?>&q="+str,true);
             xmlhttp.send();
          }
 
