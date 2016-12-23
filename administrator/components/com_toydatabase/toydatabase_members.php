@@ -399,7 +399,9 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
 						};
 ?>
-								</table><form name='limitdisplay'>
+								</table><form name="adminForm" id="adminForm">
+		<input type=hidden name='option' value='com_toydatabase'>
+		<input type=hidden name='page' value='toys'>
 <?php
 						echo $pager->getListFooter();
 						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";

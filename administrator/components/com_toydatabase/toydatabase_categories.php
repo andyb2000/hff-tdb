@@ -152,7 +152,9 @@ switch($cat_act) {
 			echo "<tr><td colspan=1 align=center><B>Sorry - No categories found</B></td></tr>\n";
 		};
 ?>
-				</table><form name='limitdisplay'>
+				</table><form name="adminForm" id="adminForm">
+		<input type=hidden name='option' value='com_toydatabase'>
+		<input type=hidden name='page' value='toys'>
 <?php
 		echo "</form>";
 		echo $pager->getListFooter();

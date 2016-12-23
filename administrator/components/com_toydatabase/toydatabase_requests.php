@@ -400,7 +400,9 @@ switch($loan_act) {
 					echo "<tr><td colspan=6 align=center><B>Sorry - No loan requests found</B></td></tr>\n";
 				};
 ?>
-						</table><form name='limitdisplay'>
+						</table><form name="adminForm" id="adminForm">
+		<input type=hidden name='option' value='com_toydatabase'>
+		<input type=hidden name='page' value='toys'>
 <?php
 				echo $pager->getListFooter();
 				echo "Number of loan requests to display per page: ".$pager->getLimitBox()."<BR>\n";
