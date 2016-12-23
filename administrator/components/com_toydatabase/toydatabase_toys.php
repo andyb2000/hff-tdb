@@ -357,7 +357,7 @@ switch($act) {
 			<td><?=JHTML::_('calendar', $loanlink_rows["returnbydate"], "in_toyreturndate" , "in_toyreturndate", '%Y-%m-%d'); ?></td>
 		</tr>
 		<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
-		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::current()?>?option=com_toydatabase&tab=toys&act=5&ddid=<?=$ddid?>';};"></td></tr>
+		<tr><td colspan=2 align=right><input type=button value='Delete Toy' onclick="Javascript:if(confirm('Are you sure, this is permenantly deleting this toy?')) {self.location='<?=JURI::current()?>?option=com_toydatabase&page=toys&tab=toys&act=5&ddid=<?=$ddid?>';};"></td></tr>
 		</table>
 		</form>
 		<?php
@@ -417,7 +417,7 @@ switch($act) {
 		if (!empty($row)) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
-				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=toys&act=1&ddid=$row_key\"'>";
+				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&page=toys&tab=toys&act=1&ddid=$row_key\"'>";
 				echo "<td>".$row_value["name"]."</td>\n";
 				echo "<td>";
 				// Now retrieve the category (ies)
