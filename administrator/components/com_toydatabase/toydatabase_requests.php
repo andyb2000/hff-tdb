@@ -283,7 +283,7 @@ switch($loan_act) {
 				<input type=hidden name='loan_act' value='4'>
 				<input type=hidden name='tab' value='loan'>
 				<table width=100% border=0 cellpadding=0 cellspacing=0>
-				<tr align=right><td align=right><input type=button name='newloan' id='newloan' value='Add a new request manually' onclick='self.location="<?=JURI::getInstance()->toString() ?>&page=loan&tab=loan&loan_act=4"'></td></tr>
+				<tr align=right><td align=right><input type=button name='newloan' id='newloan' value='Add a new request manually' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=loan&loan_act=4"'></td></tr>
 				</table>
 				</form>
 				<!-- END new loan button -->
