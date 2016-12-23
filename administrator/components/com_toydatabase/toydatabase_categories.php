@@ -156,9 +156,9 @@ switch($cat_act) {
 		<input type=hidden name='option' value='com_toydatabase'>
 		<input type=hidden name='page' value='toys'>
 <?php
-		echo "</form>";
 		echo $pager->getListFooter();
 		echo "Number of categories to display per page: ".$pager->getLimitBox()."<BR>\n";
+		echo "</form>";
 		// end of default: switch
 		break;
 };
