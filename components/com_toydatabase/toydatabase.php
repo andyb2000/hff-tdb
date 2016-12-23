@@ -446,8 +446,18 @@ Register to use the toy database library:<BR>
 					$frm_requestedloandate_out=JHtml::_('date', $frm_requestedloandate_out, 'Y-m-d 00:00:00');
 					$frm_requestedloanreturndate_out=JFactory::getDate($frm_requestedloanreturndate);
 					$frm_requestedloanreturndate_out=JHtml::_('date', $frm_requestedloanreturndate_out, 'Y-m-d 00:00:00');
+					
+					// do not use the joomlaid, we need the members id from our database so do a lookup
+					$query
+					->select('*')
+					->from($db->quoteName('#__toydatabase_membership'))
+					->where($db->quoteName('joomla_userid') . ' = '. $user->id);
+					$db->setQuery((string) $query);
+					$db->execute();
+					$row = $db->loadAssoc();
+					
 					$ins_columns = array('equipmentid', 'membershipid', 'requestdate', 'loandate', 'returnbydate','status');
-					$ins_values = array($ddid, $user->id, 'NOW()', $db->quote($frm_requestedloandate_out), $db->quote($frm_requestedloanreturndate_out),'2');
+					$ins_values = array($ddid, $row["id"], 'NOW()', $db->quote($frm_requestedloandate_out), $db->quote($frm_requestedloanreturndate_out),'2');
 					$ins_request
 					->insert($db->quoteName('#__toydatabase_loanlink'))
 					->columns($db->quoteName($ins_columns))
