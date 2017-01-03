@@ -985,6 +985,7 @@ if (!empty($row)) {
 };
 ?>
 </table><form name='limitdisplay'>
+<input type=hidden name='toycategoryselect' value='<?=$toycategoryselect?>'>
 <?php
 	echo $pager->getListFooter();
 	echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
