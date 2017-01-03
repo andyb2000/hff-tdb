@@ -37,7 +37,12 @@ function resize($newWidth, $originalFile) {
 			$image_save_func = 'imagegif';
 			$new_image_ext = 'gif';
 			break;
-
+		case 'image/x-ms-bmp':
+			$image_create_func = 'imagecreatefrombmp';
+			$image_save_func = 'imagebmp';
+			$new_image_ext = 'bmp';
+			break;
+			
 		default:
 			throw new Exception('Unknown image type. ('.$mime.')');
 	}
