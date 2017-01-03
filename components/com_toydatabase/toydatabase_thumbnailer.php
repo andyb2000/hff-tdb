@@ -38,8 +38,8 @@ function resize($newWidth, $originalFile) {
 			$new_image_ext = 'gif';
 			break;
 		case 'image/x-ms-bmp':
-			$image_create_func = 'imagecreatefrombmp';
-			$image_save_func = 'imagebmp';
+			$image_create_func = 'imagecreatefromwbmp';
+			$image_save_func = 'imagewbmp';
 			$new_image_ext = 'bmp';
 			break;
 			
