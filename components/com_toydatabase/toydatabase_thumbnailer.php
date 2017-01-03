@@ -39,7 +39,7 @@ function resize($newWidth, $originalFile) {
 			break;
 
 		default:
-			throw new Exception('Unknown image type.');
+			throw new Exception('Unknown image type. ('.$mime.')');
 	}
 
 	$img = $image_create_func($originalFile);
