@@ -319,6 +319,17 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 			$pager=new JPagination($num_rows, $limitstart, $limit);
 		};
 		?>
+				<!-- Toy database search -->
+		<form method=post name='member_search' id='member_search' onsubmit="return false">
+		<input type=hidden name='page' value='members'>
+		<input type=hidden name='act' value='1'>
+		<input type=hidden name='tab' value='members'>
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right>Search members:</td><td width=230><input type=text size=20 onkeyup = "showResultMembers(this.value)"><div id = "livesearch_members"></div></td></tr>
+		</table>
+		</form>
+		<!-- END Toy database search -->
+		
 						<!-- New member button -->
 						<form method=post onsubmit="return false">
 						<input type=hidden name='member_act' value='4'>
