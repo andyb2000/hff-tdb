@@ -314,7 +314,7 @@ switch($loan_act) {
 						$check_member_query
 						->select('*')
 						->from($db->quoteName('#__toydatabase_membership'))
-						->where($db->quoteName('joomla_userid') . ' = '. $row_value["membershipid"]);
+						->where($db->quoteName('id') . ' = '. $row_value["membershipid"]);
 						$db->setQuery((string) $check_member_query);
 						$db->execute();
 						$membership_count_check= $db->getNumRows();
