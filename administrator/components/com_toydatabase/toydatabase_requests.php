@@ -364,7 +364,8 @@ switch($loan_act) {
 						echo "DEBUG overdie: $overdue_days_output<BR>\n";
 						// So overdue days will be a positive number of days overdue
 						// anything negative or 0 is ontime (but the returndate will be empty for overdue too)
-						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+						
+						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00" && $overdue_days > 0)) {
 							$overdue_html_text="(Overdue $overdue_days_output days)";
 							$overdue_row_highlighter=1;
 						} else {
