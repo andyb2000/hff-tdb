@@ -45,7 +45,7 @@ switch($loan_act) {
 									<option value='1'>Approved</option>
 									<option value='2'>Pending</option>
 									<option value='3'>Rejected</option>
-									<option value='3'>Returned</option>
+									<option value='4'>Returned</option>
 									</select>
 									</td>
 									</tr>
@@ -247,7 +247,7 @@ switch($loan_act) {
 							<option value='1' <?php if ($row["status"] == "1") {echo "selected";}; ?>>Approved</option>
 							<option value='2' <?php if ($row["status"] == "2") {echo "selected";}; ?>>Pending</option>
 							<option value='3' <?php if ($row["status"] == "3") {echo "selected";}; ?>>Rejected</option>
-							<option value='3' <?php if ($row["status"] == "4") {echo "selected";}; ?>>Returned</option>
+							<option value='4' <?php if ($row["status"] == "4") {echo "selected";}; ?>>Returned</option>
 							</select>
 							</td>
 							</tr>
