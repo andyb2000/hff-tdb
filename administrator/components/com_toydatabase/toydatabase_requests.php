@@ -364,6 +364,7 @@ switch($loan_act) {
 							$overdue_html_text="";
 							$overdue_row_highlighter=0;
 						};
+						echo "DEBUG status: ".$row_value["status"]."<BR>\n";
 						switch($row_value["status"]) {
 							case "4":
 								$loan_status="Returned";
