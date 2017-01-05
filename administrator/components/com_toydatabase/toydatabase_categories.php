@@ -129,10 +129,11 @@ switch($cat_act) {
 		};
 ?>
 		<!-- Print/PDF button -->
-		<?php 
-//		echo JHTML::_('image.site',  'printButton.png', '/images/M_images/', NULL, NULL, JText::_( 'Print' ) );
-		echo JHTML::_('icon.print_popup',  'article', '', '');
-		?>
+		<form method=post onsubmit="return false">
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Categories' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=categories");'></td></tr>
+		</table>
+		</form>
 		<!-- end print button -->
 
 		<!-- New category button -->
