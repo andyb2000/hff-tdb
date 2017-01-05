@@ -283,6 +283,8 @@ if(!empty($row)){
 								</table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
 		<input type=hidden name='page' value='reports'>
+		<input type=hidden name='tab' value='reports'>
+		<input type=hidden name='report' value='suspended'>
 <?php
 						echo $pager->getListFooter();
 						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
