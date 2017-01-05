@@ -362,7 +362,9 @@ switch($loan_act) {
 						echo "DEBUG overdue days in unix timestamp: ".$overdue_days."<BR>\n";
 						$overdue_days_output=date("d",$overdue_days);
 						echo "DEBUG overdie: $overdue_days_output<BR>\n";
-						if (($overdue_days_output < 0) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+						// So overdue days will be a positive number of days overdue
+						// anything negative or 0 is ontime (but the returndate will be empty for overdue too)
+						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
 							$overdue_html_text="(Overdue $overdue_days_output days)";
 							$overdue_row_highlighter=1;
 						} else {
