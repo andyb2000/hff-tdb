@@ -14,6 +14,9 @@ $debug=0;
 // This script needs to be able to take whatever query and display it formatted
 // it will also be called without joomla components so init joomla first
 
+// revision 05/01/17 - this wont really work. So go to plan B and take in the type to display, all
+// sql and display code will be in this file (duplicate really of the display options in the individual
+// admin files)
 
 define( '_JEXEC', 1 );
 define('JPATH_BASE', dirname(__FILE__)."/../../.." );//this is when we are in the root,means path to Joomla installation
@@ -27,43 +30,165 @@ $app->initialise();
 $db = JFactory::getDBO();// Joomla database object
 $jinput = JFactory::getApplication()->input;
 
-$db_table = $jinput->get('db_table', '', 'RAW'); // db_table is what we are querying (limit to valid options)
-$db_where = $jinput->get('db_where', '', 'RAW'); // db_where is the entire where query
-$displ_tc = $jinput->get('displ_tc', '', 'RAW'); // displ_tc is the table headers in csv format (Member name, Expiry, etc)
+$disp = $jinput->get('displ', '', 'RAW'); // disp is the display type (categories,members,toys,requests)
 
-// sanitise input here
-
-$query = $db->getQuery(true);
-
-$query
-	->select(array('*'))
-	->from($db->quoteName($db_table));
-if ($db_where) {
-	$query->where($db_where);
-};
-	$db->setQuery((string) $query);
-	$db->execute();
-	$toydatabase_num_rows = $db->getNumRows();
-
-	if ($toydatabase_num_rows > 0) {
-		$toydatabase_return = $db->loadAssocList();
-		$displ_tc_array = explode(",", $displ_tc);
-		echo "<table>\n<tr>\n";
-		foreach ($displ_tc_array as $displ_tc_entries) {
-			echo "<td><B>".$displ_tc_entries."</B></td>\n";
-		};
-		echo "</tr>";
-		foreach ($toydatabase_return as $toy_value) {
-			echo "<tr>";
-			foreach($toy_value as $toy_value_values) {
-				echo "<td>".$toy_value_values."</td>\n";
-			};
-			echo "</tr>\n";
-		};
-		echo "</table>";
-	} else {
-		echo "</table>";
-		echo "No rows returned<BR>\n";
-	}
-
+// push out the headers, display, etc
 ?>
+<HTML>
+<HEAD>
+<TITLE>Toy library database - printout view</TITLE>
+<style>
+    /**
+    * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
+    * http://www.cssportal.com
+    */
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    }
+    /* HTML5 display-role reset for older browsers */
+    article, aside, details, figcaption, figure,
+    footer, header, hgroup, menu, nav, section {
+    display: block;
+    }
+    body {
+    line-height: 1;
+    }
+    ol, ul {
+    list-style: none;
+    }
+    blockquote, q {
+    quotes: none;
+    }
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+    content: '';
+    content: none;
+    }
+    table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    }
+    
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color:#333
+}
+
+p {
+    padding: 10px;
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 1000px;
+}
+
+#headerwrap {
+    width: 1000px;
+    float: left;
+    margin: 0 auto;
+}
+
+#header {
+    height: 75px;
+    background: #B0DAFF;
+    border-radius: 10px;
+    border: 1px solid #9cc6eb;
+    margin: 5px;
+}
+
+#contentwrap {
+    width: 1000;
+    float: left;
+    margin: 0 auto;
+}
+
+#content {
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid #ebebeb;
+    margin: 5px;
+}
+
+#footerwrap {
+    width: 1000px;
+    float: left;
+    margin: 0 auto;
+    clear: both;
+}
+
+#footer {
+    height: 40px;
+    background: #B0DAFF;
+    border-radius: 10px;
+    border: 1px solid #9cc6eb;
+    margin: 5px;
+}
+    
+</style>
+</HEAD>
+<BODY>
+
+<?php 
+
+switch($disp) {
+	case "categories":
+		$query = $db->getQuery(true);
+		$query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_equipment_category'))
+		->order($db->quoteName('category') . ' ASC');
+		
+		$db->setQuery($query);
+		$row = $db->loadAssocList('id');
+		?>
+				
+				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+				<tr><td width=30%><B>Category name</B></td></tr>
+				<?php
+				if (!empty($row)) {
+					// print_r($row);
+					foreach ($row as $row_key=>$row_value) {
+						echo "<tr>";
+						echo "<td>".$row_value["category"]."</td></tr>\n";
+					};
+				} else {
+					// no rows or toys in database found
+					echo "<tr><td colspan=1 align=center><B>Sorry - No categories found</B></td></tr>\n";
+				};
+		?>
+						</table>
+<?php 
+		break;
+	case "members":
+		break;
+	case "toys":
+		break;
+	case "requests":
+		break;
+	default:
+		// nothing should get here so give blank
+		echo "";
+		break;
+};
+?>
+</BODY>
+</HTML>
