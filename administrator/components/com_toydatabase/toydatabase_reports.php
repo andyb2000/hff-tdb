@@ -145,6 +145,8 @@ Select a report:&nbsp;
 <a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=members'>Active Membership</a>
 &nbsp;|&nbsp;
 <a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=expiring'>Expiring Members</a>
+&nbsp;|&nbsp;
+<a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=suspended'>Suspended Members</a>
 <BR><BR>
 <form name='reports' id='reports' method=post>
 <input type=hidden name='tab' value='report'>
@@ -180,6 +182,20 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 			echo "Found $row_count_check hire entries<BR>";
 			
 		};
+		break;
+	case "suspended":
+		$check_member_query = $db->getQuery(true);
+		$check_member_query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_membership'))
+		->where($db->quoteName('active') . ' = "10"');
+		$db->setQuery((string) $check_member_query);
+		$db->execute();
+		$members_number_rows=$db->getNumRows();
+		
+		?>
+		Suspended members: <?=$members_number_rows?>
+<?php 
 		break;
 	case "members":
 		$check_member_query = $db->getQuery(true);
