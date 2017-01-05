@@ -356,7 +356,10 @@ switch($loan_act) {
 						// date diff to see if theyre overdue
 						$curr_date=JFactory::getDate();
 						echo "DEBUG curr_date: ".$curr_date->toUnix()."    entry_returnbydate: ".$entry_returnbydate->toUnix()."  <BR>\n";
-						$overdue_days=($curr_date->toUnix() - $entry_returnbydate->toUnix());
+						$first_calc_date=$entry_returnbydate->toUnix();
+						$second_calc_date=$curr_date->toUnix();
+						$overdue_days=($second_calc_date - $first_calc_date);
+						echo "DEBUG overdue days in unix timestamp: ".$overdue_days."<BR>\n";
 						$overdue_days_output=date("d",$overdue_days);
 						echo "DEBUG overdie: $overdue_days_output<BR>\n";
 						if (($overdue_days_output < 0) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
