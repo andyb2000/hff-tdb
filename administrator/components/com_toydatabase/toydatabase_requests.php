@@ -395,18 +395,18 @@ switch($loan_act) {
 						echo "<td>".$entry_returndate_out."</td>";
 						echo "</tr>\n";
 					};
+					?>
+											</table><form name="adminForm" id="adminForm">
+							<input type=hidden name='option' value='com_toydatabase'>
+							<input type=hidden name='page' value='requests'>
+					<?php
+									echo $pager->getListFooter();
+									echo "Number of loan requests to display per page: ".$pager->getLimitBox()."<BR>\n";
+									echo "</form>";
 				} else {
 					// no rows or toys in database found
 					echo "<tr><td colspan=6 align=center><B>Sorry - No loan requests found</B></td></tr>\n";
 				};
-?>
-						</table><form name="adminForm" id="adminForm">
-		<input type=hidden name='option' value='com_toydatabase'>
-		<input type=hidden name='page' value='requests'>
-<?php
-				echo $pager->getListFooter();
-				echo "Number of loan requests to display per page: ".$pager->getLimitBox()."<BR>\n";
-				echo "</form>";
 				// end of default: switch
 		break;
 };
