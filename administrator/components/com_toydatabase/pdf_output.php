@@ -152,15 +152,13 @@ p {
 <div id="headerwrap">
         <div id="header">
             <center><p>Toy library Database for <?=$config->get('sitename')?></p></center>
-        </div>
-        </div>
 <?php 
 
 switch($disp) {
 	case "categories":
 		echo "<p>Toy Category display</p>";
 		echo "</div></div>";
-		echo "<div id='contentwrap'><div id='content'>";
+		echo "<div id='contentwrap'><div id='content' align='center'>";
 		
 		$query = $db->getQuery(true);
 		$query
