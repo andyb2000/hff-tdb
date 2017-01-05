@@ -189,19 +189,17 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 		->select('*')
 		->from($db->quoteName('#__toydatabase_membership'))
 		->where($db->quoteName('active') . ' = "10"');
-		$db->setQuery((string) $check_member_query);
-		$db->execute();
-		$members_number_rows=$db->getNumRows();
+//		$db->setQuery((string) $check_member_query);
+//		$db->execute();
+//		$members_number_rows=$db->getNumRows();
 		
-		?>
-		Suspended members: <?=$members_number_rows?>
-<?php 
+//		Suspended members: <?=$members_number_rows?>
 
 $app = JFactory::getApplication();
 $limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
 $limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 
-$db->setQuery($query,$limitstart, $limit);
+$db->setQuery($check_member_query,$limitstart, $limit);
 $row = $db->loadAssocList('id');
 if(!empty($row)){
 	$db->setQuery('SELECT FOUND_ROWS();');
