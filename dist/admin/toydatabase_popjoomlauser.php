@@ -7,36 +7,26 @@
  */
 $debug=0;
 
-// No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+define( '_JEXEC', 1 );
+define('JPATH_BASE', dirname(__FILE__)."/../../.." );//this is when we are in the root,means path to Joomla installation
+define( 'DS', DIRECTORY_SEPARATOR );
 
-// Get an instance of the controller prefixed by HelloWorld
-//$controller = JControllerLegacy::getInstance('ToyDatabase');
+require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
+require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
 
-// Perform the Request task
-//$input = JFactory::getApplication()->input;
-//$controller->execute($input->getCmd('task'));
-
-// Redirect if set by the controller
-//$controller->redirect();
+$app = JFactory::getApplication('site');
+$app->initialise();
+$db = JFactory::getDBO();// Joomla database object
 
 $jinput = JFactory::getApplication()->input;
-$page = $jinput->get('page', 'toys', 'RAW'); // page for the display page and set a default of 'toys'
 
-$tab = $jinput->get('tab', '', 'RAW'); // tab is a text RAW input
-$act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
-$cat_act = $jinput->get('cat_act', '', 'INT'); // action is just an integer 1 2 or 3
-$loan_act = $jinput->get('loan_act', '', 'INT'); // action is just an integer 1 2 or 3
-$member_act = $jinput->get('member_act', '', 'INT'); // action is just an integer 1 2 or 3
-$ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
-$subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
+$curr_member = $jinput->get('curr_member', '', 'RAW'); // tab is a text RAW input
+
 $config = JFactory::getConfig();
 $editor = JFactory::getEditor();
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.calendar');
 JHTML::_('behavior.modal');
-
-JToolBarHelper::title('Toy Database','address contact');
 
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
@@ -180,6 +170,60 @@ mFXYnlrcVQzS2ZsSVlJQlVVY3AxVjVWVk1FaHdMdTJURy8vQ2E2KzllL3M0cyIpKSkpOw=="));
           background-color: #ffff99;
           cursor: pointer;
     }
+dl.tabs {
+float: left;
+margin: 10px 0 -1px;
+z-index: 50;
+}
+
+dl.tabs dt.open {
+background: none repeat scroll 0 0 #F9F9F9;
+border-bottom: 1px solid #F9F9F9;
+color: #000000;
+z-index: 100;
+}
+
+dl.tabs dt.open {
+border-bottom: medium none !important;
+font-weight: bold;
+font-size: 50%;
+}
+dl.tabs dt {
+float: left;
+margin-left: 3px;
+padding: 4px 10px;
+font-size: 50%;
+}
+dl.tabs dt {
+background: -moz-linear-gradient(center top , #E4E2CC, #F5F1E6) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+border: medium none !important;
+border-radius: 5px 5px 0 0;
+}
+
+dl.tabs dt.open {
+color: #000000;
+}
+dl.tabs dt.open {
+font-weight: bold;
+}
+
+dl.tabs dt.closed {
+background: -moz-linear-gradient(center top , #F5F1E6, #E4E2CC) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+}
+
+dl.tabs dt {
+background: none repeat scroll 0 0 #E9E9E9;
+border: 1px solid #CCCCCC;
+color: #666666;
+float: left;
+margin-left: 3px;
+padding: 4px 10px;
+}
+dl.tabs dt {
+background: -moz-linear-gradient(center top , #E4E2CC, #F5F1E6) repeat scroll 0 0 rgba(0, 0, 0, 0) !important;
+border: medium none !important;
+border-radius: 5px 5px 0 0;
+}
 
 div.current {
 border: 1px solid #CCCCCC;
@@ -254,43 +298,56 @@ padding: 0;
 
      }
       </script>
+<BR><center><h2>Toy database system administration</h2></center><BR><BR>
 <?php
+$query_toypermissions = $db->getQuery(true);
+$query_toypermissions
+->select('*')
+->from($db->quoteName('#__toydatabase_permissions'))
+->where($db->quoteName('function') . ' = "member"');
+$db->setQuery((string) $query_toypermissions);
+$db->execute();
+$toydatabase_permissions = $db->loadAssoc();
+// $toydatabase_permissions["groupname"] is actually number in joomla
 
-if ($page == "toys") {
-	JSubMenuHelper::addEntry('Toys/Equipment', JURI::current()."?option=com_toydatabase&page=toys",true);
-	include_once("toydatabase_toys.php");
-} else {
-	JSubMenuHelper::addEntry('Toys/Equipment', JURI::current()."?option=com_toydatabase&page=toys",false);
+// get joomla users
+jimport( 'joomla.access.access' );
+$toylibrary_joomlausers = JAccess::getUsersByGroup($toydatabase_permissions["groupname"]);
+jimport( 'joomla.user.user' );
+$get_users_vals=array();
+foreach($toylibrary_joomlausers as $jl_users){
+	//$coach[$coaches] =& JFactory::getUser($coaches);
+	$tmp_user = JFactory::getUser($jl_users);
+	if ($tmp_user && $tmp_user->username) {
+//		echo "User: ".$tmp_user->username."<BR>\n";
+		array_push($get_users_vals,$tmp_user);
+	};
 };
-if ($page == "categories") {
-	JSubMenuHelper::addEntry('Toy Categories', JURI::current()."?option=com_toydatabase&page=categories",true);
-	include_once("toydatabase_categories.php");
-} else {
-	JSubMenuHelper::addEntry('Toy Categories', JURI::current()."?option=com_toydatabase&page=categories",false);
-};
-if ($page == "requests") {
-	JSubMenuHelper::addEntry('Approval Requests', JURI::current()."?option=com_toydatabase&page=requests",true);
-	include_once("toydatabase_requests.php");
-} else {
-	JSubMenuHelper::addEntry('Approval Requests', JURI::current()."?option=com_toydatabase&page=requests",false);
-};
-if ($page == "members") {
-	JSubMenuHelper::addEntry('Members', JURI::current()."?option=com_toydatabase&page=members",true);
-	include_once("toydatabase_members.php");
-} else {
-	JSubMenuHelper::addEntry('Members', JURI::current()."?option=com_toydatabase&page=members",false);
-};
-if ($page == "reports") {
-	JSubMenuHelper::addEntry('Reports', JURI::current()."?option=com_toydatabase&page=reports",true);
-	include_once("toydatabase_reports.php");
-} else {
-	JSubMenuHelper::addEntry('Reports', JURI::current()."?option=com_toydatabase&page=reports",false);
-};
-if ($page == "configuration") {
-	JSubMenuHelper::addEntry('Configuration', JURI::current()."?option=com_toydatabase&page=configuration",true);
-	include_once("toydatabase_configuration.php");
-} else {
-	JSubMenuHelper::addEntry('Configuration', JURI::current()."?option=com_toydatabase&page=configuration",false);
-};
+echo "Joomla users<BR>\n";
 
+		// display member list
+?>
+						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+						<tr><td width=5%><B>joomla ID</B></td>
+						<td width=20%><B>Member Username</B></td>
+						<td width=20%><B>Member Name</B></td>
+						</tr>
+<?php
+	if (count($get_users_vals) > 0) {
+		foreach($get_users_vals as $single_user_loop=>$single_user_loop_val) {
+			echo "<tr onclick='Javascript:window.parent.document.getElementById(\"in_joomla_userid\").value=\"".$single_user_loop_val->id."\";window.parent.SqueezeBox.close();'>";
+			echo "<td>";
+			echo $single_user_loop_val->id;
+			echo "</td><td>";
+//			print_r($single_user_loop_val);
+			echo $single_user_loop_val->username;
+			echo "</td><td>";
+			echo $single_user_loop_val->name;
+			echo "</td>";
+			echo "</tr>";
+		};
+	} else {
+			// no rows or toys in database found
+			echo "<tr><td colspan=2 align=center><B>Sorry - No members found</B></td></tr>\n";
+	};
 ?>

@@ -6,10 +6,10 @@
 	<author>Andy Brown</author>
 	<authorEmail>andy@broadcast-tech.co.uk</authorEmail>
 	<authorUrl>http://www.broadcast-tech.co.uk</authorUrl>
-	<copyright>2016 Andy Brown</copyright>
+	<copyright>2016/2017 Andy Brown</copyright>
 	<license>Licensed to user only, no distribution</license>
-	<version>1.0.1</version>
-	<description>Toy Database and management system</description>
+	<version>1.1.0</version>
+	<description>Toy Database and management system. Releases are in the x.x.0 range (anything x.x.[1-9] are test branches)</description>
  <install> <!-- Runs on install -->
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
@@ -29,8 +29,8 @@
 	<files folder="site">
 		<filename>index.html</filename>
 		<filename>toydatabase.php</filename>
-		<filename>controller.php</filename>
-		<folder>views</folder>
+		<filename>toydatabase_livesearch.php</filename>
+		<filename>toydatabase_thumbnailer.php</filename>
 	</files>
  
 	<administration>
@@ -44,6 +44,16 @@
 			<!-- Admin Main File Copy Section -->
 			<filename>index.html</filename>
 			<filename>toydatabase.php</filename>
+			<filename>toydatabase_categories.php</filename>
+			<filename>toydatabase_configuration.php</filename>
+			<filename>toydatabase_livesearch_admin.php</filename>
+			<filename>toydatabase_members.php</filename>
+			<filename>toydatabase_popjoomlauser.php</filename>
+			<filename>toydatabase_popmember.php</filename>
+			<filename>toydatabase_poptoy.php</filename>
+			<filename>toydatabase_reports.php</filename>
+			<filename>toydatabase_requests.php</filename>
+			<filename>toydatabase_toys.php</filename>
 			<!-- SQL files section -->
 			<folder>sql</folder>
 		</files>

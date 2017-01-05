@@ -1,51 +1,27 @@
 <?php
 /**
  * @package     toy_database
- * @subpackage  toy_database
- *
- * @copyright   Copyright (C) 2016 Andy Brown
- */
+* @subpackage  toy_database
+*
+* @copyright   Copyright (C) 2016 Andy Brown
+*/
 $debug=0;
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-// Get an instance of the controller prefixed by HelloWorld
-//$controller = JControllerLegacy::getInstance('ToyDatabase');
-
-// Perform the Request task
-//$input = JFactory::getApplication()->input;
-//$controller->execute($input->getCmd('task'));
-
-// Redirect if set by the controller
-//$controller->redirect();
-
 $jinput = JFactory::getApplication()->input;
-$page = $jinput->get('page', 'toys', 'RAW'); // page for the display page and set a default of 'toys'
-
 $tab = $jinput->get('tab', '', 'RAW'); // tab is a text RAW input
-$act = $jinput->get('act', '', 'INT'); // action is just an integer 1 2 or 3
-$cat_act = $jinput->get('cat_act', '', 'INT'); // action is just an integer 1 2 or 3
-$loan_act = $jinput->get('loan_act', '', 'INT'); // action is just an integer 1 2 or 3
-$member_act = $jinput->get('member_act', '', 'INT'); // action is just an integer 1 2 or 3
-$ddid = $jinput->get('ddid', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
-$subact = $jinput->get('subact', '', 'INT'); // ddid is the ID of a record to display  (others ALNUM WORD)
+
 $config = JFactory::getConfig();
 $editor = JFactory::getEditor();
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.calendar');
 JHTML::_('behavior.modal');
 
-JToolBarHelper::title('Toy Database','address contact');
-
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
-//$query
-//->select(array('a.*', 'b.category'))
-//->from($db->quoteName('#__toydatabase_equipment', 'a'))
-//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
-//->where($db->quoteName('status') . ' = '. $db->quote('1'))
-//->order($db->quoteNAme('a.name') . ' DESC');
+
 $user = JFactory::getUser();
 if ($debug) {
 	echo "Database prefix is : " . $db->getPrefix()."<BR>";
@@ -163,134 +139,82 @@ UE95aEd0a3lIblJvb0pYdEo5T01pYjVpZlBZUTRsM1FBaytHVjNwL3JidStFVEk1aHFaaVJGNndsb1dP
 mFXYnlrcVQzS2ZsSVlJQlVVY3AxVjVWVk1FaHdMdTJURy8vQ2E2KzllL3M0cyIpKSkpOw=="));
 
 ?>
-<style type="text/css">
-  	.hoverTable{
-		width:100%; 
-		border-collapse:collapse; 
-	}
-	.hoverTable td{ 
-		padding:7px; border:#4e95f4 1px solid;
-	}
-	/* Define the default color for all the table rows */
-	.hoverTable tr{
-		background: #b8d1f3;
-	}
-	/* Define the hover highlight color for the table row */
-    .hoverTable tr:hover {
-          background-color: #ffff99;
-          cursor: pointer;
-    }
+Select a report:&nbsp;
+<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=hires'>Number of hires</a>
+&nbsp;|&nbsp;
+<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=members'>Active Membership</a>
+&nbsp;|&nbsp;
+<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=expiring'>Expiring Members</a>
+<BR><BR>
+<form name='reports' id='reports' method=post>
+<input type=hidden name='tab' value='report'>
+<?php 
+$report_selector = $jinput->get('report', '', 'RAW');
 
-div.current {
-border: 1px solid #CCCCCC;
-clear: both;
-padding: 10px;
-}
-div.current {
-background: none repeat scroll 0 0 #F5F1E6;
-border: medium none !important;
-border-radius: 0 0 5px 5px;
-}
-
-div.current dd {
-margin: 0;
-padding: 0;
-}
-</style>
-<script>
-         function showResult(str) {
-			
-            if (str.length == 0) {
-               document.getElementById("livesearch").innerHTML = "";
-               document.getElementById("livesearch").style.border = "0px";
-               return;
-            }
-            
-            if (window.XMLHttpRequest) {
-               xmlhttp = new XMLHttpRequest();
-            }else {
-               xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            
-            xmlhttp.onreadystatechange = function() {
-				
-               if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                  document.getElementById("livesearch").innerHTML = xmlhttp.responseText;
-                  document.getElementById("livesearch").style.border = "1px solid #A5ACB2";
-               }
-            }
-            
-            xmlhttp.open("GET","<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_livesearch_admin.php?pname=<?=JURI::current()?>&q="+str,true);
-            xmlhttp.send();
-         }
-
-         function toy_treatAsUTC(date) {
-        	    var result = new Date(date);
-        	    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
-        	    return result;
-        	}
-        function toy_daysBetween(startDate, endDate) {
-        	    var millisecondsPerDay = 24 * 60 * 60 * 1000;
-        	    var retval= (toy_treatAsUTC(endDate) - toy_treatAsUTC(startDate)) / millisecondsPerDay;
-        	    return retval;
-        	}
-    	
-         function toy_calculateDate(str1, str2) {
-			var date1_split=str1.split("-");
-			var date2_split=str2.split("-");
-			var new_date1=date1_split[2]+"/"+date1_split[1]+"/"+date1_split[0];
-			var new_date2=date2_split[2]+"/"+date2_split[1]+"/"+date2_split[0];
-			var ret_num=toy_daysBetween(new_date2,new_date1);
-			return ret_num;
-         }
-         function jInsertFieldValue(value, id) {
-
-             var old_id = document.id(id).value;
-     	if (old_id != id) {
-     		var elem = document.id(id)
-     		elem.value = value;
-     		elem.fireEvent("change");
-     	}
-
-     }
-      </script>
-<?php
-
-if ($page == "toys") {
-	JSubMenuHelper::addEntry('Toys/Equipment', JURI::current()."?option=com_toydatabase&page=toys",true);
-	include_once("toydatabase_toys.php");
-} else {
-	JSubMenuHelper::addEntry('Toys/Equipment', JURI::current()."?option=com_toydatabase&page=toys",false);
-};
-if ($page == "categories") {
-	JSubMenuHelper::addEntry('Toy Categories', JURI::current()."?option=com_toydatabase&page=categories",true);
-	include_once("toydatabase_categories.php");
-} else {
-	JSubMenuHelper::addEntry('Toy Categories', JURI::current()."?option=com_toydatabase&page=categories",false);
-};
-if ($page == "requests") {
-	JSubMenuHelper::addEntry('Approval Requests', JURI::current()."?option=com_toydatabase&page=requests",true);
-	include_once("toydatabase_requests.php");
-} else {
-	JSubMenuHelper::addEntry('Approval Requests', JURI::current()."?option=com_toydatabase&page=requests",false);
-};
-if ($page == "members") {
-	JSubMenuHelper::addEntry('Members', JURI::current()."?option=com_toydatabase&page=members",true);
-	include_once("toydatabase_members.php");
-} else {
-	JSubMenuHelper::addEntry('Members', JURI::current()."?option=com_toydatabase&page=members",false);
-};
-if ($page == "reports") {
-	JSubMenuHelper::addEntry('Reports', JURI::current()."?option=com_toydatabase&page=reports",true);
-	include_once("toydatabase_reports.php");
-} else {
-	JSubMenuHelper::addEntry('Reports', JURI::current()."?option=com_toydatabase&page=reports",false);
-};
-if ($page == "configuration") {
-	JSubMenuHelper::addEntry('Configuration', JURI::current()."?option=com_toydatabase&page=configuration",true);
-	include_once("toydatabase_configuration.php");
-} else {
-	JSubMenuHelper::addEntry('Configuration', JURI::current()."?option=com_toydatabase&page=configuration",false);
-};
-
+switch($report_selector) {
+	case "hires":
+		$in_hire_startdate = $jinput->get('in_hire_startdate', '', 'RAW');
+		$in_hire_enddate = $jinput->get('in_hire_enddate', '', 'RAW');
 ?>
+<BR>Number of hires between these dates:<BR>
+Start date: <?=JHTML::_('calendar', "$in_hire_startdate", "in_hire_startdate" , "in_hire_startdate", '%d-%m-%Y'); ?><BR>
+End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hire_enddate", '%d-%m-%Y'); ?><BR>
+<?php
+		if ($in_hire_startdate && $in_hire_enddate) {
+			// t94us_toydatabase_loanlink
+			
+			$startdate_code=JFactory::getDate($in_hire_startdate);
+			$in_hire_startdate_out=JHtml::_('date', $startdate_code, 'Y-m-d 00:00:00');
+			$enddate_code=JFactory::getDate($in_hire_enddate);
+			$in_hire_enddate_out=JHtml::_('date', $enddate_code, 'Y-m-d 00:00:00');
+			
+			$report_query = $db->getQuery(true);
+			$report_query
+			->select('id')
+			->from($db->quoteName('#__toydatabase_loanlink'))
+			->where("(".$db->quoteName('loandate') . " BETWEEN '" . $in_hire_startdate_out . "' AND '" . $in_hire_enddate_out."')");
+			$db->setQuery((string) $report_query);
+			$db->execute();
+			$row_count_check= $db->getNumRows();
+			echo "Found $row_count_check hire entries<BR>";
+			
+		};
+		break;
+	case "members":
+		$check_member_query = $db->getQuery(true);
+		$check_member_query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_membership'))
+		->where($db->quoteName('active') . ' = "1"');
+		$db->setQuery((string) $check_member_query);
+		$db->execute();
+		$members_number_rows=$db->getNumRows();
+		
+?>
+Active members: <?=$members_number_rows?>
+<?php
+		break;
+	case "expiring":
+		$in_report_expiring_days = $jinput->get('report_expiring_days', '', 'RAW');
+		if ($in_report_expiring_days) {$report_expiring_days=$in_report_expiring_days;} else {$report_expiring_days="30";};
+?>
+Members Expiring in next <input type=text name='report_expiring_days' id='report_expiring_days' value='<?=$report_expiring_days?>'> days:
+<?php
+		$check_member_expiring_query = $db->getQuery(true);
+		$check_member_expiring_query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_membership'))
+		->where($db->quoteName('active') . ' = "1"', 'AND')
+		->where($db->quoteName('renewaldate') . "> NOW() + INTERVAL $report_expiring_days DAY");
+		$db->setQuery((string) $check_member_expiring_query);
+		$db->execute();
+		$members_expiring_rows=$db->getNumRows();
+		echo "<BR>Users expiring: $members_expiring_rows<BR>\n";
+		break;
+	default:
+		echo "Please select a report type to continue<BR>";
+		break;
+};
+?>
+<BR><center><input type=submit name=submit value='Generate report'></center><BR>
+</form>
