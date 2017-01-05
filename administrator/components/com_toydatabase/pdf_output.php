@@ -109,7 +109,7 @@ p {
 }
 
 #header {
-    height: 75px;
+    height: 85px;
     background: #B0DAFF;
     border-radius: 10px;
     border: 1px solid #9cc6eb;
@@ -204,7 +204,7 @@ switch($disp) {
         </div>
         <div id="footerwrap">
         <div id="footer">
-            <center><p>Toy library database (C)<?=date("Y")?> Andy Brown broadcast-tech.co.uk</p></center>
+            <center><p>Toy library database (C)<?=date("Y")?> Andy Brown www.broadcast-tech.co.uk software</p></center>
         </div>
         </div>
     </div>
