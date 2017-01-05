@@ -186,7 +186,7 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 	case "suspended":
 		$check_member_query = $db->getQuery(true);
 		$check_member_query
-		->select('*')
+		->select('SQL_CALC_FOUND_ROWS *')
 		->from($db->quoteName('#__toydatabase_membership'))
 		->where($db->quoteName('active') . ' = "10"');
 //		$db->setQuery((string) $check_member_query);
@@ -290,7 +290,7 @@ if(!empty($row)){
 	case "members":
 		$check_member_query = $db->getQuery(true);
 		$check_member_query
-		->select('SQL_CALC_FOUND_ROWS *')
+		->select('*')
 		->from($db->quoteName('#__toydatabase_membership'))
 		->where($db->quoteName('active') . ' = "1"')
 		->order($db->quoteName('name') . ' DESC');
