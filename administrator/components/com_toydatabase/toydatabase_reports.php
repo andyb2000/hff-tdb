@@ -184,6 +184,7 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 		};
 		break;
 	case "suspended":
+		
 		$check_member_query = $db->getQuery(true);
 		$check_member_query
 		->select('SQL_CALC_FOUND_ROWS *')
@@ -206,6 +207,8 @@ if(!empty($row)){
 	$num_rows=$db->loadResult();
 	jimport('joomla.html.pagination');
 	$pager=new JPagination($num_rows, $limitstart, $limit);
+} else {
+echo "ERROR: no pagination loaded<BR>\n";
 };
 ?>
 						
