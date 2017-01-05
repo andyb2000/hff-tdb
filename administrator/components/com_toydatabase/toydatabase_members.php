@@ -319,6 +319,13 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 			$pager=new JPagination($num_rows, $limitstart, $limit);
 		};
 		?>
+				<!-- Print/PDF button -->
+		<form method=post onsubmit="return false">
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Members' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=members");'></td></tr>
+		</table>
+		</form>
+		<!-- end print button -->
 				<!-- Toy database search -->
 		<form method=post name='member_search' id='member_search' onsubmit="return false">
 		<input type=hidden name='page' value='members'>
