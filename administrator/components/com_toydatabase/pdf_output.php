@@ -276,6 +276,82 @@ switch($disp) {
 <?php
 		break;
 	case "toys":
+		echo "<p><b>Toys display</b></p>";
+		echo "</div></div>";
+		echo "<div id='contentwrap'><div id='content' align='center'>";
+		
+		$query = $db->getQuery(true);
+		$query
+		->select('*')
+		->from($db->quoteName('#__toydatabase_equipment'))
+		->order($db->quoteName('name') . ' ASC');
+		
+		$db->setQuery($query);
+		$row = $db->loadAssocList('id');
+		?>
+				
+				<table width=85% border=1 cellpadding=0 cellspacing=0>
+				<tr><td width=30%><B>Toy name</B></td>
+				<td width=30%><B>Toy category</B></td>
+				<td width=30%><B>Toy Photo (small)</B></td>
+				<td width=10%><B>Status</B></td></tr>
+				<?php 
+				if (!empty($row)) {
+					// print_r($row);
+					foreach ($row as $row_key=>$row_value) {
+						echo "<tr>";
+						echo "<td>".$row_value["name"]."</td>\n";
+						echo "<td>";
+						// Now retrieve the category (ies)
+						$query_category = $db->getQuery(true);
+						$query_category
+						->select(array('a.*','b.category'))
+						->from($db->quoteName('#__toydatabase_categorylink','a'))
+						->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+						->where($db->quoteName('a.equipmentid') . ' = '. $row_key);
+						$db->setQuery((string) $query_category);
+						$db->execute();
+						$category_rows = $db->loadAssocList();
+						foreach ($category_rows as $cat_display) {
+							echo $cat_display["category"]."<BR>\n";
+						};
+						echo "</td>";
+						echo "<td>";
+						// check the file exists to display the image
+						if (is_file(JPATH_BASE."/../".$row_value["picture"])) {
+							// dynamically resize image using php
+							echo "<img src='".JURI::root()."/components/com_toydatabase/toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
+						} else {
+							echo "Sorry no image exists";
+						};
+						echo "</td>\n";
+						echo "<td>";
+						switch($row_value["status"]) {
+							case "3":
+								echo "Damaged/No longer available";
+								break;
+							case "2":
+								echo "Awaiting cleaning/repair";
+								break;
+							case "1":
+								echo "On Loan";
+								break;
+							case "0":
+								echo "Available";
+								break;
+							default:
+								echo "Unknown";
+								break;
+						};
+						echo "</td>\n";
+						echo "</tr>";
+					};
+				} else {
+					// no rows or toys in database found
+					echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
+				};
+				?>
+				</table>
 		break;
 	case "requests":
 		break;
