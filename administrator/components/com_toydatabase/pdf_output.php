@@ -109,7 +109,7 @@ p {
 }
 
 #header {
-    height: 105px;
+    height: 100px;
     background: #B0DAFF;
     border-radius: 10px;
     border: 1px solid #9cc6eb;
@@ -157,7 +157,7 @@ p {
 
 switch($disp) {
 	case "categories":
-		echo "<p>Toy Category display</p>";
+		echo "<p><b>Toy Category display</b></p>";
 		echo "</div></div>";
 		echo "<div id='contentwrap'><div id='content' align='center'>";
 		
