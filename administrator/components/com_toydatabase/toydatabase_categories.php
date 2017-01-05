@@ -131,7 +131,7 @@ switch($cat_act) {
 		<!-- Print/PDF button -->
 		<?php 
 //		echo JHTML::_('image.site',  'printButton.png', '/images/M_images/', NULL, NULL, JText::_( 'Print' ) );
-		echo JHTML::_('icon.print_popup',  $this->article, $this->params, $this->access);
+		echo JHTML::_('icon.print_popup',  'article', '', '');
 		?>
 		<!-- end print button -->
 
