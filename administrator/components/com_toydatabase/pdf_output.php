@@ -31,22 +31,38 @@ $db_table = $jinput->get('db_table', '', 'RAW'); // db_table is what we are quer
 $db_where = $jinput->get('db_where', '', 'RAW'); // db_where is the entire where query
 $displ_tc = $jinput->get('displ_tc', '', 'RAW'); // displ_tc is the table headers in csv format (Member name, Expiry, etc)
 
+// sanitise input here
+
 $query = $db->getQuery(true);
 
 $query
 	->select(array('*'))
 	->from($db->quoteName($db_table));
-//	->where($db_where);
+if ($db_where) {
+	$query->where($db_where);
+};
 	$db->setQuery((string) $query);
 	$db->execute();
 	$toydatabase_num_rows = $db->getNumRows();
 
 	if ($toydatabase_num_rows > 0) {
 		$toydatabase_return = $db->loadAssocList();
-		foreach ($toydatabase_return as $toy_value) {
-			print_r($toy_value);
+		$displ_tc_array = explode(",", $displ_tc);
+		echo "<table>\n<tr>\n";
+		foreach ($displ_tc_array as $displ_tc_entries) {
+			echo "<td><B>".$displ_tc_entries."</B></td>\n";
 		};
+		echo "</tr>";
+		foreach ($toydatabase_return as $toy_value) {
+			echo "<tr>";
+			foreach($toy_value as $toy_value_values) {
+				echo "<td>".$toy_value_values."</td>\n";
+			};
+			echo "</tr>\n";
+		};
+		echo "</table>";
 	} else {
+		echo "</table>";
 		echo "No rows returned<BR>\n";
 	}
 
