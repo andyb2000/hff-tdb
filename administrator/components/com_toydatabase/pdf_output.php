@@ -141,16 +141,26 @@ p {
     border-radius: 10px;
     border: 1px solid #9cc6eb;
     margin: 5px;
+    font-size: 40%;
 }
     
 </style>
 </HEAD>
 <BODY>
-
+<div id="wrapper">
+<div id="headerwrap">
+        <div id="header">
+            <center><p>Toy library Database for <?=$config->get('sitename')?></p></center>
+        </div>
+        </div>
 <?php 
 
 switch($disp) {
 	case "categories":
+		echo "<p>Toy Category display</p>";
+		echo "</div></div>";
+		echo "<div id='contentwrap'><div id='content'>";
+		
 		$query = $db->getQuery(true);
 		$query
 		->select('*')
@@ -190,5 +200,13 @@ switch($disp) {
 		break;
 };
 ?>
-</BODY>
-</HTML>
+</div>
+        </div>
+        <div id="footerwrap">
+        <div id="footer">
+            <center><p>Toy library database (C)<?=date("Y")?> Andy Brown broadcast-tech.co.uk</p></center>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
