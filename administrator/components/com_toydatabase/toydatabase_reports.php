@@ -196,21 +196,6 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 		?>
 		Suspended members: <?=$members_number_rows?>
 <?php 
-		break;
-	case "members":
-		$check_member_query = $db->getQuery(true);
-		$check_member_query
-		->select('SQL_CALC_FOUND_ROWS *')
-		->from($db->quoteName('#__toydatabase_membership'))
-		->where($db->quoteName('active') . ' = "1"')
-		->order($db->quoteName('name') . ' DESC');
-		$db->setQuery((string) $check_member_query);
-		$db->execute();
-		$members_number_rows=$db->getNumRows();
-		
-?>
-Active members: <?=$members_number_rows?>
-<?php
 
 $app = JFactory::getApplication();
 $limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
@@ -303,6 +288,22 @@ if(!empty($row)){
 						echo $pager->getListFooter();
 						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
 						echo "</form>";
+		break;
+	case "members":
+		$check_member_query = $db->getQuery(true);
+		$check_member_query
+		->select('SQL_CALC_FOUND_ROWS *')
+		->from($db->quoteName('#__toydatabase_membership'))
+		->where($db->quoteName('active') . ' = "1"')
+		->order($db->quoteName('name') . ' DESC');
+		$db->setQuery((string) $check_member_query);
+		$db->execute();
+		$members_number_rows=$db->getNumRows();
+		
+?>
+Active members: <?=$members_number_rows?>
+<?php
+
 		break;
 	case "expiring":
 		$in_report_expiring_days = $jinput->get('report_expiring_days', '', 'RAW');
