@@ -30,7 +30,7 @@ $app->initialise();
 $db = JFactory::getDBO();// Joomla database object
 $jinput = JFactory::getApplication()->input;
 
-$disp = $jinput->get('displ', '', 'RAW'); // disp is the display type (categories,members,toys,requests)
+$disp = $jinput->get('disp', '', 'RAW'); // disp is the display type (categories,members,toys,requests)
 
 // push out the headers, display, etc
 ?>
