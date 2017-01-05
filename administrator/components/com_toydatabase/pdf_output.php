@@ -152,6 +152,7 @@ p {
 <div id="headerwrap">
         <div id="header">
             <center><p>Toy library Database for <?=$config->get('sitename')?></p></center>
+            <center><p>Output generated: <?php echo date("d/m/Y"); ?></p></center>
 <?php 
 
 switch($disp) {
