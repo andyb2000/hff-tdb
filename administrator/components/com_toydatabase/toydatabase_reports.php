@@ -194,7 +194,6 @@ End date: <?=JHTML::_('calendar', "$in_hire_enddate", "in_hire_enddate" , "in_hi
 //		$db->execute();
 //		$members_number_rows=$db->getNumRows();
 		
-//		Suspended members: <?=$members_number_rows?>
 
 $app = JFactory::getApplication();
 $limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
