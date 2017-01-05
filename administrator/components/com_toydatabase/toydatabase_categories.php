@@ -128,6 +128,12 @@ switch($cat_act) {
 			$pager=new JPagination($num_rows, $category_limitstart, $category_limit);
 		};
 ?>
+		<!-- Print/PDF button -->
+		<?php 
+		echo JHTML::_('image.site',  'printButton.png', '/images/M_images/', NULL, NULL, JText::_( 'Print' ) );
+		?>
+		<!-- end print button -->
+		
 		<!-- New category button -->
 		<form method=post onsubmit="return false">
 		<input type=hidden name='cat_act' value='4'>
