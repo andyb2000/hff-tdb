@@ -206,10 +206,9 @@ if(!empty($row)){
 	$num_rows=$db->loadResult();
 	jimport('joomla.html.pagination');
 	$pager=new JPagination($num_rows, $limitstart, $limit);
-} else {
-echo "ERROR: no pagination loaded<BR>\n";
 };
 ?>
+</form>
 						
 						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 						<tr><td width=5%><B>Member joomla ID</B></td>
@@ -283,7 +282,7 @@ echo "ERROR: no pagination loaded<BR>\n";
 ?>
 								</table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
-		<input type=hidden name='page' value='members'>
+		<input type=hidden name='page' value='reports'>
 <?php
 						echo $pager->getListFooter();
 						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
