@@ -255,7 +255,7 @@ switch($disp) {
 										if ($row_value["active"] == "10") {$entry_active="Suspended";};
 										if ($row_value["active"] == "99") {$entry_active="Deleted";};
 										
-										echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&page=members&member_act=1&ddid=$row_key\"'>";
+										echo "<tr>";
 										echo "<td>".$row_value["joomla_userid"]."</td>";
 										echo "<td>".$row_value["urn"]."</td>";
 										echo "<td>".$row_value["name"]."</td>";
