@@ -140,14 +140,15 @@ mFXYnlrcVQzS2ZsSVlJQlVVY3AxVjVWVk1FaHdMdTJURy8vQ2E2KzllL3M0cyIpKSkpOw=="));
 
 ?>
 Select a report:&nbsp;
-<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=hires'>Number of hires</a>
+<a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=hires'>Number of hires</a>
 &nbsp;|&nbsp;
-<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=members'>Active Membership</a>
+<a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=members'>Active Membership</a>
 &nbsp;|&nbsp;
-<a href='<?=JURI::current()?>?option=com_toydatabase&tab=reports&report=expiring'>Expiring Members</a>
+<a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=expiring'>Expiring Members</a>
 <BR><BR>
 <form name='reports' id='reports' method=post>
 <input type=hidden name='tab' value='report'>
+<input type=hidden name='page' value='reports'>
 <?php 
 $report_selector = $jinput->get('report', '', 'RAW');
 
