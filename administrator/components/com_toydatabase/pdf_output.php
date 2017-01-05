@@ -318,7 +318,7 @@ switch($disp) {
 						echo "</td>";
 						echo "<td>";
 						// check the file exists to display the image
-						if (is_file(JPATH_BASE."/../".$row_value["picture"])) {
+						if (is_file(JPATH_BASE."/../../../".$row_value["picture"])) {
 							// dynamically resize image using php
 							echo "<img src='".JURI::root()."/components/com_toydatabase/toydatabase_thumbnailer.php?img=".$row_value["picture"]."' alt='".$row_value["picture"]."'>";
 						} else {
