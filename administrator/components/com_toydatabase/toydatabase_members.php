@@ -324,7 +324,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 						<input type=hidden name='member_act' value='4'>
 						<input type=hidden name='tab' value='member'>
 						<table width=100% border=0 cellpadding=0 cellspacing=0>
-						<tr align=right><td align=right><input type=button name='newmember' id='newmember' value='Add a new member link' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=member&member_act=1"'></td></tr>
+						<tr align=right><td align=right><input type=button name='newmember' id='newmember' value='Add a new member link' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=member&page=members&member_act=1"'></td></tr>
 						</table>
 						</form>
 						<!-- END new member button -->
@@ -382,7 +382,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 								if ($row_value["active"] == "10") {$entry_active="Suspended";};
 								if ($row_value["active"] == "99") {$entry_active="Deleted";};
 								
-								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&member_act=1&ddid=$row_key\"'>";
+								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&page=members&member_act=1&ddid=$row_key\"'>";
 								echo "<td>".$row_value["joomla_userid"]."</td>";
 								echo "<td>".$row_value["urn"]."</td>";
 								echo "<td>".$row_value["name"]."</td>";
