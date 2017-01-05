@@ -171,7 +171,7 @@ switch($disp) {
 		?>
 				
 				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
-				<tr><td width=30%><B>Category name</B></td></tr>
+				<tr><th width=30%><B>Category name</B></th></tr>
 				<?php
 				if (!empty($row)) {
 					// print_r($row);
