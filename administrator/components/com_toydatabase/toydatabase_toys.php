@@ -389,7 +389,7 @@ switch($act) {
 		<!-- Print/PDF button -->
 		<form method=post onsubmit="return false">
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
-		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Categories' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=toys");'></td></tr>
+		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Toys' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=toys");'></td></tr>
 		</table>
 		</form>
 		<!-- end print button -->
