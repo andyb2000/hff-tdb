@@ -35,8 +35,8 @@ $query = $db->getQuery(true);
 
 $query
 	->select(array('*'))
-	->from($db->quoteName($db_table))
-	->where($db_where);
+	->from($db->quoteName($db_table));
+//	->where($db_where);
 	$db->setQuery((string) $query);
 	$db->execute();
 	$toydatabase_num_rows = $db->getNumRows();
