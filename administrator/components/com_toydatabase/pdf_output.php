@@ -109,7 +109,7 @@ p {
 }
 
 #header {
-    height: 85px;
+    height: 105px;
     background: #B0DAFF;
     border-radius: 10px;
     border: 1px solid #9cc6eb;
