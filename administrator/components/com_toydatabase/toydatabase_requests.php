@@ -394,7 +394,7 @@ switch($loan_act) {
 								$row_lighting="light blue";
 								break;
 						};
-						if ($overdue_row_highlighter == 1) {$row_lighting="light red";};
+						if ($overdue_row_highlighter == 1) {$row_lighting="rgb(255, 179, 179)";};
 						echo "<tr style='background-color:$row_lighting' onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$loan_status."</td>";
 						echo "<td>".$membername_val."</td>";
