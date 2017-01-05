@@ -130,10 +130,11 @@ switch($cat_act) {
 ?>
 		<!-- Print/PDF button -->
 		<?php 
-		echo JHTML::_('image.site',  'printButton.png', '/images/M_images/', NULL, NULL, JText::_( 'Print' ) );
+//		echo JHTML::_('image.site',  'printButton.png', '/images/M_images/', NULL, NULL, JText::_( 'Print' ) );
+		echo JHTML::_('icon.print_popup',  $this->article, $this->params, $this->access);
 		?>
 		<!-- end print button -->
-		
+
 		<!-- New category button -->
 		<form method=post onsubmit="return false">
 		<input type=hidden name='cat_act' value='4'>
