@@ -171,7 +171,7 @@ switch($disp) {
 		$row = $db->loadAssocList('id');
 		?>
 				
-				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+				<table width=85% border=1 cellpadding=0 cellspacing=0>
 				<tr><th width=30%><B>Category name</B></th></tr>
 				<?php
 				if (!empty($row)) {
@@ -189,6 +189,9 @@ switch($disp) {
 <?php 
 		break;
 	case "members":
+		echo "<p><b>Toy Membership display</b></p>";
+		echo "</div></div>";
+		echo "<div id='contentwrap'><div id='content' align='center'>";
 		break;
 	case "toys":
 		break;
