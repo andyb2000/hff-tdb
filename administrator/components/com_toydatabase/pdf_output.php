@@ -352,6 +352,7 @@ switch($disp) {
 				};
 				?>
 				</table>
+<?php 
 		break;
 	case "requests":
 		break;
