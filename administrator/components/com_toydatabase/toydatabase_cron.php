@@ -31,8 +31,8 @@ $query_toypermissions
 ->select('*')
 ->from($db->quoteName('#__toydatabase_permissions'));
 $db->setQuery((string) $query_toypermissions);
-$db->execute();
-$toydatabase_permissions = $db->AssocList();
+// $db->execute();
+$toydatabase_permissions = $db->loadAssocList();
 
 if ($debug) {
 	echo "toydatabase_cron.php<BR>\n";
