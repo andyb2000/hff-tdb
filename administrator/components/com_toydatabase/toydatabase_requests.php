@@ -86,12 +86,13 @@ switch($loan_act) {
 					$db->quoteName('loandate') . ' = ' . $db->quote($frm_loandate_out),
 					$db->quoteName('returnbydate') . ' = ' . $db->quote($frm_returnbydate_out),
 					$db->quoteName('returndate') . ' = ' . $db->quote($frm_returndate_out),
-					$db->quoteName('status') . ' = ' . $db->quote($frm_in_status)
+					$db->quoteName('status') . ' = ' . $db->quote($frm_in_status),
+					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
 			if ($ddid == "0") {
 				// it's a new entry
-				$ins_columns = array('equipmentid','membershipid', 'loandate', 'returnbydate', 'returndate', 'status', 'requestdate');
-				$ins_values = array($db->quote($frm_in_equipmentid),$db->quote($frm_in_membershipid),$db->quote($frm_loandate_out),$db->quote($frm_returnbydate_out),$db->quote($frm_returndate_out),$db->quote($frm_in_status),'NOW()');
+				$ins_columns = array('equipmentid','membershipid', 'loandate', 'returnbydate', 'returndate', 'status', 'requestdate','adminuser');
+				$ins_values = array($db->quote($frm_in_equipmentid),$db->quote($frm_in_membershipid),$db->quote($frm_loandate_out),$db->quote($frm_returnbydate_out),$db->quote($frm_returndate_out),$db->quote($frm_in_status),'NOW()',$db->quote($user->id));
 				$ins_request = $db->getQuery(true);
 				$ins_request
 				->insert($db->quoteName('#__toydatabase_loanlink'))
