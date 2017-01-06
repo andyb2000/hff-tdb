@@ -171,7 +171,8 @@ switch($act) {
 					$db->quoteName('picture') . ' = ' . $db->quote($frm_in_toyimage),
 					$db->quoteName('description') . ' = ' . $db->quote($frm_in_toydescription),
 					$db->quoteName('storagelocation') . ' = ' . $db->quote($frm_in_toylocation),
-					$db->quoteName('status') . ' = ' . $db->quote($frm_in_toystatus)
+					$db->quoteName('status') . ' = ' . $db->quote($frm_in_toystatus),
+					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
 			$upd_request->update($db->quoteName('#__toydatabase_equipment'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
 			try {
