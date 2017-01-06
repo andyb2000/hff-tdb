@@ -99,5 +99,12 @@ if ($cron_run_now == 1) {
 		echo "FAILED to upd database: ".$e->getMessage();
 		return false;
 	};
+	
+	// DO THE CRON STUFF HERE
+	
+	// members that are expiring (in the next 7 days?)
+	// any loans currently pending
+	// any loans taking place today so we can set the toy to out on loan
+	// aob
 };
 ?>
