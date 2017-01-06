@@ -64,6 +64,22 @@ if (!$toydatabase_permissions["cron"]["permissions"]) {
 		return false;
 	};
 	$cron_run_now=1;
+} else {
+	// cron exists, so check its age
+	$today = new DateTime(); // This object represents current date/time
+	$today->setTime( 0, 0, 0 ); // reset time part, to prevent partial comparison
+	$match_date = DateTime::createFromFormat( "Y-m-d H:i:s", $toydatabase_permissions["cron"]["permissions"] );
+	$match_date->setTime( 0, 0, 0 ); // reset time part, to prevent partial comparison
+	$diff = $today->diff( $match_date );
+	$diffDays = (integer)$diff->format( "%R%a" ); // Extract days count in interval
+	// diffDays is either 0 for today, negative for yesterday or positive tomorrow
+	if ($diffDays != 0) {
+		// we didnt run today so run cron now
+		if ($debug) {echo "Cron hasn't ran already $diffDays<BR>\n";};
+		$cron_run_now=1;
+	} else {
+		if ($debug) {echo "Cron was already ran $diffDays<BR>\n";};
+	};
 };
 
 if ($cron_run_now == 1) {
