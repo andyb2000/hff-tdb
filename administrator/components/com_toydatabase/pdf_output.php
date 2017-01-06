@@ -3,7 +3,7 @@
  * @package     toy_database
  * @subpackage  toy_database
  *
- * @copyright   Copyright (C) 2016 Andy Brown
+ * @copyright   Copyright (C) 2016/7 Andy Brown
  */
 $debug=0;
 
