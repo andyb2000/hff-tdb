@@ -68,7 +68,8 @@ if (!$toydatabase_permissions["cron"]["permissions"]) {
 
 if ($cron_run_now == 1) {
 	// update cron entry to now
-	if ($debug) {echo "Updating cron NOW<BR>\n";
+	if ($debug) {echo "Updating cron NOW<BR>\n";};
+	
 	$upd_request = $db->getQuery(true);
 	$upd_fields = array(
 			$db->quoteName('permissions') . ' = NOW()'
