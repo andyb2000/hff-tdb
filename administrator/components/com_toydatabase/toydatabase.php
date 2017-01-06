@@ -38,6 +38,34 @@ JHTML::_('behavior.modal');
 
 JToolBarHelper::title('Toy Database','address contact');
 
+// -------------------------------------------------------------------------------------------
+/*
+	Definitions
+	toydatabase_equipment:
+		status == 0 available, 1 on loan, 2 cleaning/repair, 3 damaged
+		active == not used (set to 1)
+	
+	toydatabase_loanlink
+		status == 1 approved, 2 pending, 3 rejected, 4 returned
+		
+	
+	So to check if a toy is available two checks must take place:
+		check toydatabase_equipment status
+		
+	That toydatabase_equipment status is updated ONLY by the admin area toydatabase_requests.php
+	And sets it to on loan, etc, as required.
+	The admin can override this on the toydatabase_toys.php by setting the value but they
+	are warned about this.
+	
+	Something else to consider:
+	A loan is set in the future and approved. The toy should not go into state of 'on loan'
+	until that date is passed, how to handle that? Background script that should run daily
+	that will set the toydatabase_equipment status to 1 based on querying the toydatabase_loanlink
+	table and current date?
+
+*/
+// -------------------------------------------------------------------------------------------
+
 $db    = JFactory::getDBO();
 $query = $db->getQuery(true);
 //$query
