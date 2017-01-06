@@ -63,11 +63,12 @@ if (!$toydatabase_permissions["cron"]["permissions"]) {
 		echo "FAILED to update database: ".$e->getMessage()."<BR>\n";
 		return false;
 	};
-//	$cron_run_now=1;
+	$cron_run_now=1;
 };
 
 if ($cron_run_now == 1) {
 	// update cron entry to now
+	if ($debug) {echo "Updating cron NOW<BR>\n";
 	$upd_request = $db->getQuery(true);
 	$upd_fields = array(
 			$db->quoteName('permissions') . ' = NOW()'
