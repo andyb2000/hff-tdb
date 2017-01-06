@@ -39,6 +39,7 @@ if ($debug) {
 	echo "<PRE>\n";
 	print_r($toydatabase_permissions);
 	echo "</PRE>\n";
+	echo "So cron last run would be: ".$toydatabase_permissions["cron"]["permissions"]."<BR>\n";
 	echo "<BR>\n";
 };
 ?>
