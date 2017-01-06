@@ -42,4 +42,44 @@ if ($debug) {
 	echo "So cron last run would be: ".$toydatabase_permissions["cron"]["permissions"]."<BR>\n";
 	echo "<BR>\n";
 };
+
+$cron_run_now=0;
+// check when cron last ran
+if (!$toydatabase_permissions["cron"]["permissions"]) {
+	// no cron entry table
+	echo "NO CRON<BR>\n";
+	$ins_request = $db->getQuery(true);
+	$ins_columns = array('function','permissions');
+	$ins_values = array($db->quote("cron"), "NOW()");
+	$ins_request
+	->insert($db->quoteName('#__toydatabase_permissions'))
+	->columns($db->quoteName($ins_columns))
+	->values(implode(',', $ins_values));
+	try {
+		$db->setQuery($ins_request);
+		$db->execute();
+	}
+	catch (RuntimeException $e) {
+		echo "FAILED to update database: ".$e->getMessage()."<BR>\n";
+		return false;
+	};
+//	$cron_run_now=1;
+};
+
+if ($cron_run_now == 1) {
+	// update cron entry to now
+	$upd_request = $db->getQuery(true);
+	$upd_fields = array(
+			$db->quoteName('permissions') . ' = NOW()'
+	);
+	$upd_request->update($db->quoteName('#__toydatabase_permissions'))->set($upd_fields)->where($db->quoteName('function') . ' = "cron"');
+	try {
+		$db->setQuery($upd_request);
+		$db->execute();
+	}
+	catch (RuntimeException $e) {
+		echo "FAILED to upd database: ".$e->getMessage();
+		return false;
+	};
+};
 ?>
