@@ -5,7 +5,7 @@
  *
  * @copyright   Copyright (C) 2016/7 Andy Brown
  */
-$debug=0;
+$debug=1;
 
 // Cron scheduler for the toydatabase system
 
@@ -34,5 +34,11 @@ $db->setQuery((string) $query_toypermissions);
 $db->execute();
 $toydatabase_permissions = $db->loadAssoc();
 
-print_r($toydatabase_permissions);
+if ($debug) {
+	echo "toydatabase_cron.php<BR>\n";
+	echo "<PRE>\n";
+	print_r($toydatabase_permissions);
+	echo "</PRE>\n";
+	echo "<BR>\n";
+};
 ?>
