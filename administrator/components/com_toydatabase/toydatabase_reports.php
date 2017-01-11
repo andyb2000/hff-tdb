@@ -528,8 +528,7 @@ if ($in_report_past_members) {echo "checked";};
 							echo "<tr><td colspan=9 align=center><B>Sorry - No members found</B></td></tr>\n";
 							echo "</table>\n";
 						};
-?>
-								
+							
 		break;
 	default:
 		echo "Please select a report type to continue<BR>";
