@@ -155,10 +155,6 @@ switch($cat_act) {
 				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=category&cat_act=1&ddid=$row_key\"'>";
 				echo "<td>".$row_value["category"]."</td></tr>\n";
 			};
-		} else {
-			// no rows or toys in database found
-			echo "<tr><td colspan=1 align=center><B>Sorry - No categories found</B></td></tr>\n";
-		};
 ?>
 				</table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
@@ -167,6 +163,11 @@ switch($cat_act) {
 		echo $pager->getListFooter();
 		echo "Number of categories to display per page: ".$pager->getLimitBox()."<BR>\n";
 		echo "</form>";
+		} else {
+			// no rows or toys in database found
+			echo "<tr><td colspan=1 align=center><B>Sorry - No categories found</B></td></tr>\n";
+			echo "</table>";
+		};
 		// end of default: switch
 		break;
 };
