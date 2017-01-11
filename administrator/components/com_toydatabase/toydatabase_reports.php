@@ -319,9 +319,85 @@ if(!empty($row)){
 		</table>
 		</form>
 		<!-- end print button -->
-Active members: <?=$num_rows?>
+Active members: <?=$num_rows?><BR>
+<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+						<tr><td width=5%><B>Member joomla ID</B></td>
+						<td width=10%><B>Member URN</B></td>
+						<td width=20%><B>Member Name</B></td>
+						<td width=20%><B>Company</B></td>
+						<td width=10%><B>Postcode</B></td>
+						<td width=10%><B>Member Category</B></td>
+						<td width=10%><B>Join Date</B></td>
+						<td width=10%><B>Renewal Date</B></td>
+						<td width=5%><B>Status</B></td>
+						</tr>
+						<?php
+						if (!empty($row)) {
+							// print_r($row);
+							foreach ($row as $row_key=>$row_value) {
+								// convert memb_category
+								// link to joomlaid
+								// joindate to human date
+								// renewaldate to human date
+								
+								$check_member_query = $db->getQuery(true);
+								$check_member_query
+								->select('*')
+								->from($db->quoteName('#__toydatabase_membershiplink'))
+								->where($db->quoteName('membershipid') . ' = '. $row_value["id"]);
+								$db->setQuery((string) $check_member_query);
+								$db->execute();
+								$membership_row = $db->loadAssoc();
+								
+								// get member category
+								$get_memb_cat = $db->getQuery(true);
+								$get_memb_cat
+								->select('*')
+								->from($db->quoteName('#__toydatabase_membershiptypes'))
+								->where($db->quoteName('id') . ' = '. $row_value["memb_category"]);
+								$db->setQuery((string) $get_memb_cat);
+								$db->execute();
+								$memb_cat_data = $db->loadAssoc();
+								
+								$entry_joindate=JFactory::getDate($row_value["joindate"]);
+								$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
+								
+								if ($row_value["renewaldate"] != "0000-00-00 00:00:00") {
+									$entry_renewaldate=JFactory::getDate($row_value["renewaldate"]);
+									$entry_renewaldate_out=JHtml::_('date', $entry_renewaldate, 'd/m/Y');
+								} else {
+									$entry_renewaldate_out="N/A";
+								};
+								if ($row_value["active"] == "1") {$entry_active="Active";};
+								if ($row_value["active"] == "0") {$entry_active="Pending";};
+								if ($row_value["active"] == "10") {$entry_active="Suspended";};
+								if ($row_value["active"] == "99") {$entry_active="Deleted";};
+								
+								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&page=members&member_act=1&ddid=$row_key\"'>";
+								echo "<td>".$row_value["joomla_userid"]."</td>";
+								echo "<td>".$row_value["urn"]."</td>";
+								echo "<td>".$row_value["name"]."</td>";
+								echo "<td>".$row_value["companyname"]."</td>";
+								echo "<td>".$row_value["postcode"]."</td>";
+								echo "<td>".$memb_cat_data["type"]."</td>";
+								echo "<td>".$entry_joindate_out."</td>";
+								echo "<td>".$entry_renewaldate_out."</td>";
+								echo "<td>".$entry_active."</td>";
+								echo "</tr>\n";
+							};
+						} else {
+							// no rows or toys in database found
+							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
+						};
+?>
+								</table><form name="adminForm" id="adminForm">
+		<input type=hidden name='option' value='com_toydatabase'>
+		<input type=hidden name='page' value='reports'>
+		<input type=hidden name='report' value='members'>
 <?php
-
+						echo $pager->getListFooter();
+						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
+						echo "</form>";
 		break;
 	case "expiring":
 		$in_report_expiring_days = $jinput->get('report_expiring_days', '', 'RAW');
