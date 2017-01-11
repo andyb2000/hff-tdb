@@ -516,7 +516,8 @@ if ($in_report_past_members) {echo "checked";};
 ?>
 </table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
-		<input type=hidden name='page' value='members'>
+		<input type=hidden name='page' value='reports'>
+		<input type=hidden name='report' value='expiring'>
 <?php
 						echo $pager->getListFooter();
 						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
