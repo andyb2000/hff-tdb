@@ -412,7 +412,8 @@ Members Expiring in next <input type=text name='report_expiring_days' id='report
 <input type=checkbox name='report_past_members' value='1' <?php 
 if ($in_report_past_members) {echo "checked";};
 ?>>&nbsp;Include members past their expiry date<BR>
-
+<BR><center><input type=submit name=submit value='Generate report'></center><BR>
+</form>
 <?php
 		$check_member_expiring_query = $db->getQuery(true);
 		$check_member_expiring_query
@@ -443,6 +444,7 @@ if ($in_report_past_members) {echo "checked";};
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
 		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Members' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=members");'></td></tr>
 		</table>
+		<BR>
 		<!-- end print button -->
 		<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 						<tr><td width=5%><B>Member joomla ID</B></td>
