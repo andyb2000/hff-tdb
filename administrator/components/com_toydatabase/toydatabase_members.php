@@ -177,7 +177,7 @@ switch($member_act) {
 				
 				if ($row["renewaldate"] != "0000-00-00 00:00:00") {
 					$entry_renewaldate=JFactory::getDate($row["renewaldate"]);
-					$in_renewaldate=JHtml::_('date', $entry_requestdate, 'd-m-Y');
+					$in_renewaldate=JHtml::_('date', $entry_renewaldate, 'd-m-Y');
 				};
 			};
 			?>
