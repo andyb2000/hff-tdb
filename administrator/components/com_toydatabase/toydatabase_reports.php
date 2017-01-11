@@ -442,7 +442,7 @@ if ($in_report_past_members) {echo "checked";};
 ?>
 				<!-- Print/PDF button -->
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
-		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Members' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=members");'></td></tr>
+		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Members' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=expiring_members&report_expiring_days=<?=$in_report_expiring_days?>&report_past_members=<?=$in_report_past_members?>");'></td></tr>
 		</table>
 		<BR>
 		<!-- end print button -->
