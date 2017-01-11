@@ -262,7 +262,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					</tr>
 					<tr>
 					<td valign=top><B>Renewal Date :</B></td>
-					<td><?=JHTML::_('calendar', $in_renewaldate, "in_renewaldate" , "in_renewaldate", '%d-%m-%Y'); ?></td>
+					<td><?=$in_renewaldate?>  <?=JHTML::_('calendar', $in_renewaldate, "in_renewaldate" , "in_renewaldate", '%d-%m-%Y'); ?></td>
 					</tr>
 					<tr>
 					<td valign=top><B>Join Date (locked) :</B></td>
