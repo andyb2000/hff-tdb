@@ -147,6 +147,8 @@ Select a report:&nbsp;
 <a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=expiring'>Expiring Members</a>
 &nbsp;|&nbsp;
 <a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=suspended'>Suspended Members</a>
+&nbsp;|&nbsp;
+<a href='<?=JURI::current()?>?option=com_toydatabase&page=reports&tab=reports&report=onhire'>Out On Hire items</a>
 <BR><BR>
 <form name='reports' id='reports' method=post>
 <input type=hidden name='tab' value='report'>
@@ -155,6 +157,22 @@ Select a report:&nbsp;
 $report_selector = $jinput->get('report', '', 'RAW');
 
 switch($report_selector) {
+	case "onhire":
+		?>
+	<BR>Items out on hire at present/Overdue:<BR>
+	<?php
+				$report_query = $db->getQuery(true);
+				$report_query
+				->select(array('a.*', 'b.membershipid', 'b.loandate','b.returnbydate'))
+				->from($db->quoteName('#__toydatabase_equipment', 'a'))
+				->join('LEFT', $db->quoteName('#__toydatabase_loanlink', 'b') . ' ON (' . $db->quoteName('a.id') . ' = ' . $db->quoteName('b.equipmentid') . ')')
+				->where($db->quoteName('a.status') . ' = "1"', 'AND')
+				->where($db->quoteName('b.returndate') . ' != "0000-00-00 00:00:00"');
+				$db->setQuery((string) $report_query);
+				$db->execute();
+				$row_count_check= $db->getNumRows();
+				echo "Found $row_count_check items on hire entries<BR>";
+			break;
 	case "hires":
 		$in_hire_startdate = $jinput->get('in_hire_startdate', '', 'RAW');
 		$in_hire_enddate = $jinput->get('in_hire_enddate', '', 'RAW');
