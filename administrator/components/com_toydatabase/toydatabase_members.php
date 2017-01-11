@@ -427,7 +427,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 						echo "</form>";
 						} else {
 							// no rows or toys in database found
-							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
+							echo "<tr><td colspan=9 align=center><B>Sorry - No members found</B></td></tr>\n";
 							echo "</table>";
 						};
 			// end of default: switch
