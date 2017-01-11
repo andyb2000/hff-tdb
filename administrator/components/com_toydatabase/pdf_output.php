@@ -210,8 +210,12 @@ switch($disp) {
 												$db->execute();
 												$memb_cat_data = $db->loadAssoc();
 												
-												$entry_joindate=JFactory::getDate($row_value["joindate"]);
-												$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
+												if ($row_value["joindate"] != "0000-00-00 00:00:00") {
+													$entry_joindate=JFactory::getDate($row_value["joindate"]);
+													$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
+												} else {
+													$entry_joindate_out="N/A";
+												};
 												
 												if ($row_value["renewaldate"] != "0000-00-00 00:00:00") {
 													$entry_renewaldate=JFactory::getDate($row_value["renewaldate"]);
