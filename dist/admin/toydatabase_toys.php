@@ -171,7 +171,8 @@ switch($act) {
 					$db->quoteName('picture') . ' = ' . $db->quote($frm_in_toyimage),
 					$db->quoteName('description') . ' = ' . $db->quote($frm_in_toydescription),
 					$db->quoteName('storagelocation') . ' = ' . $db->quote($frm_in_toylocation),
-					$db->quoteName('status') . ' = ' . $db->quote($frm_in_toystatus)
+					$db->quoteName('status') . ' = ' . $db->quote($frm_in_toystatus),
+					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
 			$upd_request->update($db->quoteName('#__toydatabase_equipment'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
 			try {
@@ -386,6 +387,13 @@ switch($act) {
 		};
 		
 		?>
+		<!-- Print/PDF button -->
+		<form method=post onsubmit="return false">
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Toys' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=toys");'></td></tr>
+		</table>
+		</form>
+		<!-- end print button -->
 		
 		<!-- Toy database search -->
 		<form method=post name='toy_search' id='toy_search' onsubmit="return false">

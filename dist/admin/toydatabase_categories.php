@@ -128,6 +128,14 @@ switch($cat_act) {
 			$pager=new JPagination($num_rows, $category_limitstart, $category_limit);
 		};
 ?>
+		<!-- Print/PDF button -->
+		<form method=post onsubmit="return false">
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Categories' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=categories");'></td></tr>
+		</table>
+		</form>
+		<!-- end print button -->
+
 		<!-- New category button -->
 		<form method=post onsubmit="return false">
 		<input type=hidden name='cat_act' value='4'>

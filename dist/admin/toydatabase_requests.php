@@ -45,7 +45,7 @@ switch($loan_act) {
 									<option value='1'>Approved</option>
 									<option value='2'>Pending</option>
 									<option value='3'>Rejected</option>
-									<option value='3'>Returned</option>
+									<option value='4'>Returned</option>
 									</select>
 									</td>
 									</tr>
@@ -86,12 +86,13 @@ switch($loan_act) {
 					$db->quoteName('loandate') . ' = ' . $db->quote($frm_loandate_out),
 					$db->quoteName('returnbydate') . ' = ' . $db->quote($frm_returnbydate_out),
 					$db->quoteName('returndate') . ' = ' . $db->quote($frm_returndate_out),
-					$db->quoteName('status') . ' = ' . $db->quote($frm_in_status)
+					$db->quoteName('status') . ' = ' . $db->quote($frm_in_status),
+					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
 			if ($ddid == "0") {
 				// it's a new entry
-				$ins_columns = array('equipmentid','membershipid', 'loandate', 'returnbydate', 'returndate', 'status');
-				$ins_values = array($db->quote($frm_in_equipmentid),$db->quote($frm_in_membershipid),$db->quote($frm_loandate_out),$db->quote($frm_returnbydate_out),$db->quote($frm_returndate_out),$db->quote($frm_in_status));
+				$ins_columns = array('equipmentid','membershipid', 'loandate', 'returnbydate', 'returndate', 'status', 'requestdate','adminuser');
+				$ins_values = array($db->quote($frm_in_equipmentid),$db->quote($frm_in_membershipid),$db->quote($frm_loandate_out),$db->quote($frm_returnbydate_out),$db->quote($frm_returndate_out),$db->quote($frm_in_status),'NOW()',$db->quote($user->id));
 				$ins_request = $db->getQuery(true);
 				$ins_request
 				->insert($db->quoteName('#__toydatabase_loanlink'))
@@ -247,7 +248,7 @@ switch($loan_act) {
 							<option value='1' <?php if ($row["status"] == "1") {echo "selected";}; ?>>Approved</option>
 							<option value='2' <?php if ($row["status"] == "2") {echo "selected";}; ?>>Pending</option>
 							<option value='3' <?php if ($row["status"] == "3") {echo "selected";}; ?>>Rejected</option>
-							<option value='3' <?php if ($row["status"] == "4") {echo "selected";}; ?>>Returned</option>
+							<option value='4' <?php if ($row["status"] == "4") {echo "selected";}; ?>>Returned</option>
 							</select>
 							</td>
 							</tr>
@@ -314,7 +315,7 @@ switch($loan_act) {
 						$check_member_query
 						->select('*')
 						->from($db->quoteName('#__toydatabase_membership'))
-						->where($db->quoteName('joomla_userid') . ' = '. $row_value["membershipid"]);
+						->where($db->quoteName('id') . ' = '. $row_value["membershipid"]);
 						$db->setQuery((string) $check_member_query);
 						$db->execute();
 						$membership_count_check= $db->getNumRows();
@@ -355,9 +356,14 @@ switch($loan_act) {
 						
 						// date diff to see if theyre overdue
 						$curr_date=JFactory::getDate();
-						$overdue_days=($entry_returnbydate->toUnix())-($curr_date->toUnix());
+						$first_calc_date=$entry_returnbydate->toUnix();
+						$second_calc_date=$curr_date->toUnix();
+						$overdue_days=($second_calc_date - $first_calc_date);
 						$overdue_days_output=date("d",$overdue_days);
-						if (($overdue_days_output < 0) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+						// So overdue days will be a positive number of days overdue
+						// anything negative or 0 is ontime (but the returndate will be empty for overdue too)
+						
+						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00" && $overdue_days > 0)) {
 							$overdue_html_text="(Overdue $overdue_days_output days)";
 							$overdue_row_highlighter=1;
 						} else {
@@ -368,9 +374,11 @@ switch($loan_act) {
 							case "4":
 								$loan_status="Returned";
 								$row_lighting="";
+								break;
 							case "3":
 								$loan_status="Rejected";
 								$row_lighting="blue";
+								break;
 							case "2":
 								$loan_status="Pending";
 								$row_lighting="yellow";
@@ -384,6 +392,7 @@ switch($loan_act) {
 								$row_lighting="light blue";
 								break;
 						};
+						if ($overdue_row_highlighter == 1) {$row_lighting="rgb(255, 179, 179)";};
 						echo "<tr style='background-color:$row_lighting' onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$loan_status."</td>";
 						echo "<td>".$membername_val."</td>";
@@ -395,18 +404,18 @@ switch($loan_act) {
 						echo "<td>".$entry_returndate_out."</td>";
 						echo "</tr>\n";
 					};
+					?>
+											</table><form name="adminForm" id="adminForm">
+							<input type=hidden name='option' value='com_toydatabase'>
+							<input type=hidden name='page' value='requests'>
+					<?php
+									echo $pager->getListFooter();
+									echo "Number of loan requests to display per page: ".$pager->getLimitBox()."<BR>\n";
+									echo "</form>";
 				} else {
 					// no rows or toys in database found
 					echo "<tr><td colspan=6 align=center><B>Sorry - No loan requests found</B></td></tr>\n";
 				};
-?>
-						</table><form name="adminForm" id="adminForm">
-		<input type=hidden name='option' value='com_toydatabase'>
-		<input type=hidden name='page' value='requests'>
-<?php
-				echo $pager->getListFooter();
-				echo "Number of loan requests to display per page: ".$pager->getLimitBox()."<BR>\n";
-				echo "</form>";
 				// end of default: switch
 		break;
 };

@@ -174,9 +174,10 @@ switch($member_act) {
 				$db->setQuery((string) $query_membtype);
 				$db->execute();
 				$memb_typerow = $db->loadAssoc();
+				
 				if ($row["renewaldate"] != "0000-00-00 00:00:00") {
 					$entry_renewaldate=JFactory::getDate($row["renewaldate"]);
-					$in_renewaldate=JHtml::_('date', $entry_requestdate, 'd/m/Y');
+					$in_renewaldate=JHtml::_('date', $entry_renewaldate, 'd-m-Y');
 				};
 			};
 			?>
@@ -319,12 +320,30 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 			$pager=new JPagination($num_rows, $limitstart, $limit);
 		};
 		?>
+				<!-- Print/PDF button -->
+		<form method=post onsubmit="return false">
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Members' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=members");'></td></tr>
+		</table>
+		</form>
+		<!-- end print button -->
+				<!-- Toy database search -->
+		<form method=post name='member_search' id='member_search' onsubmit="return false">
+		<input type=hidden name='page' value='members'>
+		<input type=hidden name='act' value='1'>
+		<input type=hidden name='tab' value='members'>
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right>Search members:</td><td width=230><input type=text size=20 onkeyup = "showResultMembers(this.value)"><div id = "livesearch_members"></div></td></tr>
+		</table>
+		</form>
+		<!-- END Toy database search -->
+		
 						<!-- New member button -->
 						<form method=post onsubmit="return false">
 						<input type=hidden name='member_act' value='4'>
 						<input type=hidden name='tab' value='member'>
 						<table width=100% border=0 cellpadding=0 cellspacing=0>
-						<tr align=right><td align=right><input type=button name='newmember' id='newmember' value='Add a new member link' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=member&member_act=1"'></td></tr>
+						<tr align=right><td align=right><input type=button name='newmember' id='newmember' value='Add a new member link' onclick='self.location="<?=JURI::getInstance()->toString() ?>&tab=member&page=members&member_act=1"'></td></tr>
 						</table>
 						</form>
 						<!-- END new member button -->
@@ -368,8 +387,12 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 								$db->execute();
 								$memb_cat_data = $db->loadAssoc();
 								
-								$entry_joindate=JFactory::getDate($row_value["joindate"]);
-								$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
+								if ($row_value["joindate"] != "0000-00-00 00:00:00") {
+									$entry_joindate=JFactory::getDate($row_value["joindate"]);
+									$entry_joindate_out=JHtml::_('date', $entry_joindate, 'd/m/Y');
+								} else {
+									$entry_joindate_out="N/A";
+								};
 								
 								if ($row_value["renewaldate"] != "0000-00-00 00:00:00") {
 									$entry_renewaldate=JFactory::getDate($row_value["renewaldate"]);
@@ -382,7 +405,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 								if ($row_value["active"] == "10") {$entry_active="Suspended";};
 								if ($row_value["active"] == "99") {$entry_active="Deleted";};
 								
-								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&member_act=1&ddid=$row_key\"'>";
+								echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&tab=member&page=members&member_act=1&ddid=$row_key\"'>";
 								echo "<td>".$row_value["joomla_userid"]."</td>";
 								echo "<td>".$row_value["urn"]."</td>";
 								echo "<td>".$row_value["name"]."</td>";
