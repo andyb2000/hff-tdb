@@ -472,11 +472,7 @@ switch($act) {
 				echo "</td>\n";
 				echo "</tr>";
 			};
-		} else {
-			// no rows or toys in database found
-			echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
-		};
-		?>
+?>
 		</table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
 		<input type=hidden name='page' value='toys'>
@@ -484,6 +480,11 @@ switch($act) {
 			echo $pager->getListFooter();
 			echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
 			echo "</form>";
+		} else {
+			// no rows or toys in database found
+			echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
+			echo "</table><BR>\n";
+		};
 			// end of default: switch
 			break;
 }; // enc of switch selecting act
