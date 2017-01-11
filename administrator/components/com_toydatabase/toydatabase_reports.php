@@ -429,7 +429,7 @@ if ($in_report_past_members) {echo "checked";};
 		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
-		$db->setQuery($query,$limitstart, $limit);
+		$db->setQuery($check_member_expiring_query,$limitstart, $limit);
 		$row = $db->loadAssocList('id');
 		if(!empty($row)){
 			$db->setQuery('SELECT FOUND_ROWS();');
