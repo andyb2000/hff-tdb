@@ -43,10 +43,12 @@
 		<files folder="admin">
 			<!-- Admin Main File Copy Section -->
 			<filename>index.html</filename>
+			<filename>pdf_output.php</filename>
 			<filename>toydatabase.php</filename>
 			<filename>toydatabase_categories.php</filename>
 			<filename>toydatabase_configuration.php</filename>
 			<filename>toydatabase_livesearch_admin.php</filename>
+			<filename>toydatabase_livesearch_members_admin.php</filename>
 			<filename>toydatabase_members.php</filename>
 			<filename>toydatabase_popjoomlauser.php</filename>
 			<filename>toydatabase_popmember.php</filename>
