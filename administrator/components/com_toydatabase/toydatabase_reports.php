@@ -293,16 +293,33 @@ if(!empty($row)){
 	case "members":
 		$check_member_query = $db->getQuery(true);
 		$check_member_query
-		->select('*')
+		->select('SQL_CALC_FOUND_ROWS *')
 		->from($db->quoteName('#__toydatabase_membership'))
 		->where($db->quoteName('active') . ' = "1"')
 		->order($db->quoteName('name') . ' DESC');
-		$db->setQuery((string) $check_member_query);
-		$db->execute();
-		$members_number_rows=$db->getNumRows();
+		
+		$app = JFactory::getApplication();
+		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+		
+		$db->setQuery($check_member_query,$limitstart, $limit);
+		$row = $db->loadAssocList('id');
+		if(!empty($row)){
+			$db->setQuery('SELECT FOUND_ROWS();');
+			$num_rows=$db->loadResult();
+			jimport('joomla.html.pagination');
+			$pager=new JPagination($num_rows, $limitstart, $limit);
+		};
 		
 ?>
-Active members: <?=$members_number_rows?>
+<!-- Print/PDF button -->
+		<form method=post onsubmit="return false">
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Active Members' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=active_members");'></td></tr>
+		</table>
+		</form>
+		<!-- end print button -->
+Active members: <?=$num_rows?>
 <?php
 
 		break;
