@@ -407,7 +407,8 @@ Active members: <?=$num_rows?><BR>
 		$in_report_expiring_days = $jinput->get('report_expiring_days', '', 'RAW');
 		if ($in_report_expiring_days) {$report_expiring_days=$in_report_expiring_days;} else {$report_expiring_days="30";};
 ?>
-Members Expiring in next <input type=text name='report_expiring_days' id='report_expiring_days' value='<?=$report_expiring_days?>'> days:
+Members Expiring in next <input type=text name='report_expiring_days' id='report_expiring_days' value='<?=$report_expiring_days?>'> days:<BR>
+(And will include members PAST their expiry date also)<BR>
 <?php
 		$check_member_expiring_query = $db->getQuery(true);
 		$check_member_expiring_query
