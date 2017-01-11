@@ -168,6 +168,9 @@ switch($report_selector) {
 				->join('LEFT', $db->quoteName('#__toydatabase_loanlink', 'b') . ' ON (' . $db->quoteName('a.id') . ' = ' . $db->quoteName('b.equipmentid') . ')')
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
 				->where($db->quoteName('b.returndate') . ' != "0000-00-00 00:00:00"');
+				echo "DEBUG:<PRE>\n";
+				print_r($report_query);
+				echo "</PRE><BR>\n";
 				$db->setQuery((string) $report_query);
 				$db->execute();
 				$row_count_check= $db->getNumRows();
