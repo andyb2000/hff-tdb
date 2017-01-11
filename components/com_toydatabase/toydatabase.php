@@ -763,10 +763,6 @@ receive email confirmation once it has been accepted.<BR>
 	<td><?=$row["description"]?></td>
 </tr>
 <tr>
-	<td><B>Toy Location :</B></td>
-	<td><?=$row["storagelocation"]?></td>
-</tr>
-<tr>
 	<td><B>Toy Status :</B></td>
 	<td><?php
 	switch($row["status"]) {
@@ -797,22 +793,6 @@ receive email confirmation once it has been accepted.<BR>
 	?>
 	</td>
 </tr>
-<tr>
-	<td><B>Toy Loan state :</B></td>
-	<td><?php
-		switch($loanlink_rows["status"]) {
-			case "2":
-				echo "AWAITING LOAN REQUEST";
-		 		break;
-			case "1":
-				echo "ON LOAN";
-				break;
-			default:
-				echo "AVAILABLE";
-				break;
-		};
-	?></td>
-</tr>
 <?php
 if ($loanlink_rows["returnbydate"]) {	
 ?>
@@ -842,7 +822,7 @@ if ($loanlink_rows["returnbydate"]) {
 			echo "<a href='".JURI::current()."?act=2&ddid=$ddid&stdate=$mysql_date_url'>Book this toy</a>\n";
 		};
 	} else {
-		echo "Sorry - You need to be a member and logged into book a toy out";
+		echo "Sorry - You need to be a member and logged in to book a toy out";
 	};
 	?>
 	</td>
