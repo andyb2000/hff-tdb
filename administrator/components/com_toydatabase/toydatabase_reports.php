@@ -169,7 +169,7 @@ switch($report_selector) {
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
 				->where($db->quoteName('b.returndate') . ' != "0000-00-00 00:00:00"');
 				echo "DEBUG:<PRE>\n";
-				print_r($report_query);
+				echo $db->replacePrefix((string) $report_query);
 				echo "</PRE><BR>\n";
 				$db->setQuery((string) $report_query);
 				$db->execute();
