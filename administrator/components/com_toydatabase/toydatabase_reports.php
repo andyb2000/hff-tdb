@@ -517,7 +517,7 @@ if ($in_report_past_members) {echo "checked";};
 							};
 						} else {
 							// no rows or toys in database found
-							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
+							echo "<tr><td colspan=9 align=center><B>Sorry - No members found</B></td></tr>\n";
 						};
 ?>
 								</table><form name="adminForm" id="adminForm">
