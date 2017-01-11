@@ -515,18 +515,21 @@ if ($in_report_past_members) {echo "checked";};
 								echo "<td>".$entry_active."</td>";
 								echo "</tr>\n";
 							};
-						} else {
-							// no rows or toys in database found
-							echo "<tr><td colspan=9 align=center><B>Sorry - No members found</B></td></tr>\n";
-						};
 ?>
-								</table><form name="adminForm" id="adminForm">
+</table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
 		<input type=hidden name='page' value='members'>
 <?php
 						echo $pager->getListFooter();
 						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
 						echo "</form>";
+						} else {
+							// no rows or toys in database found
+							echo "<tr><td colspan=9 align=center><B>Sorry - No members found</B></td></tr>\n";
+							echo "</table>\n";
+						};
+?>
+								
 		break;
 	default:
 		echo "Please select a report type to continue<BR>";
