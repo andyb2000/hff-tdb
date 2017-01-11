@@ -405,17 +405,25 @@ Active members: <?=$num_rows?><BR>
 		break;
 	case "expiring":
 		$in_report_expiring_days = $jinput->get('report_expiring_days', '', 'RAW');
+		$in_report_past_members = $jinput->get('report_past_members', '', 'RAW');
 		if ($in_report_expiring_days) {$report_expiring_days=$in_report_expiring_days;} else {$report_expiring_days="30";};
 ?>
 Members Expiring in next <input type=text name='report_expiring_days' id='report_expiring_days' value='<?=$report_expiring_days?>'> days:<BR>
-(And will include members PAST their expiry date also)<BR>
+<input type=checkbox name='report_past_members' value='1' <?php 
+if ($in_report_past_members) {echo "checked";};
+?>>&nbsp;Include members past their expiry date<BR>
+
 <?php
 		$check_member_expiring_query = $db->getQuery(true);
 		$check_member_expiring_query
 		->select('*')
 		->from($db->quoteName('#__toydatabase_membership'))
-		->where($db->quoteName('active') . ' = "1"', 'AND')
-		->where("(".$db->quoteName('renewaldate') . "> NOW() + INTERVAL $report_expiring_days DAY OR renewaldate < NOW())");
+		->where($db->quoteName('active') . ' = "1"', 'AND');
+		if($in_report_past_members) {
+			$check_member_expiring_query->where("(".$db->quoteName('renewaldate') . "> NOW() + INTERVAL $report_expiring_days DAY OR renewaldate < NOW())");
+		} else {
+			$check_member_expiring_query->where($db->quoteName('renewaldate') . "> NOW() + INTERVAL $report_expiring_days DAY");
+		};
 		$db->setQuery((string) $check_member_expiring_query);
 		$db->execute();
 		$members_expiring_rows=$db->getNumRows();
