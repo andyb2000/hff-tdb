@@ -163,7 +163,7 @@ switch($report_selector) {
 	<?php
 				$report_query = $db->getQuery(true);
 				$report_query
-				->select(array('a.*', 'b.*'))
+				->select(array('SQL_CALC_FOUND_ROWS', 'a.*', 'b.*'))
 				->from($db->quoteName('#__toydatabase_loanlink', 'a'))
 				->join('LEFT', $db->quoteName('#__toydatabase_equipment', 'b') . ' ON (' . $db->quoteName('a.equipmentid') . ' = ' . $db->quoteName('b.id') . ')')
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
@@ -171,10 +171,21 @@ switch($report_selector) {
 				echo "DEBUG:<PRE>\n";
 				echo $db->replacePrefix((string) $report_query);
 				echo "</PRE><BR>\n";
-				$db->setQuery((string) $report_query);
-				$db->execute();
-				$row_count_check= $db->getNumRows();
-				echo "Found $row_count_check items on hire entries<BR>";
+				$app = JFactory::getApplication();
+				$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+				$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+				
+				$db->setQuery($report_query,$limitstart, $limit);
+				$row = $db->loadAssocList('a.id');
+				if(!empty($row)){
+					$db->setQuery('SELECT FOUND_ROWS();');
+					$num_rows=$db->loadResult();
+					jimport('joomla.html.pagination');
+					$pager=new JPagination($num_rows, $limitstart, $limit);
+				};
+				// $row_count_check= $db->getNumRows();
+				echo "Found $num_rows items on hire entries<BR>";
+				
 			break;
 	case "hires":
 		$in_hire_startdate = $jinput->get('in_hire_startdate', '', 'RAW');
