@@ -168,10 +168,13 @@ switch($report_selector) {
 				->join('INNER', $db->quoteName('#__toydatabase_equipment', 'b') . ' ON (' . $db->quoteName('a.equipmentid') . ' = ' . $db->quoteName('b.id') . ')')
 				->join('INNER', $db->quoteName('#__toydatabase_membership', 'c') . ' ON (' . $db->quoteName('a.membershipid') . ' = ' . $db->quoteName('c.id') . ')')
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
-				->where($db->quoteName('a.returndate') . ' = "0000-00-00 00:00:00"');
+				->where($db->quoteName('a.returndate') . ' = "0000-00-00 00:00:00"')
+				->order($db->quoteName('a.returnbydate') . ' DESC');
+			if ($debug) {
 				echo "DEBUG:<PRE>\n";
 				echo $db->replacePrefix((string) $report_query);
 				echo "</PRE><BR>\n";
+			};
 				$app = JFactory::getApplication();
 				$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
 				$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
@@ -200,13 +203,18 @@ switch($report_selector) {
 				if (!empty($row)) {
 					// print_r($row);
 					foreach ($row as $row_key=>$row_value) {
+						$entry_loandate=JFactory::getDate($row_value["loandate"]);
+						$entry_loandate_out=JHtml::_('date', $entry_loandate, 'd/m/Y');
+						$entry_returnbydate=JFactory::getDate($row_value["returnbydate"]);
+						$entry_returnbydate_out=JHtml::_('date', $entry_returnbydate, 'd/m/Y');
+						
 						echo "<tr>";
 						echo "<td>".$row_value["urn"]."</td>";
 						echo "<td>".$row_value["name"]."</td>";
 						echo "<td>".$row_value["memberurn"]."</td>";
 						echo "<td>".$row_value["membername"]."</td>";
-						echo "<td>".$row_value["loandate"]."</td>";
-						echo "<td>".$row_value["returnbydate"]."</td>";
+						echo "<td>".$entry_loandate_out."</td>";
+						echo "<td>".$entry_returnbydate_out."</td>";
 						echo "</tr>\n";
 						};
 				} else {
