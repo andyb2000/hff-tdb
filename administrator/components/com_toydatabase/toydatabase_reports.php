@@ -163,9 +163,10 @@ switch($report_selector) {
 	<?php
 				$report_query = $db->getQuery(true);
 				$report_query
-				->select(array('SQL_CALC_FOUND_ROWS a.*', 'b.*'))
+				->select(array('SQL_CALC_FOUND_ROWS a.*', 'b.*', 'c.*'))
 				->from($db->quoteName('#__toydatabase_loanlink', 'a'))
-				->join('LEFT', $db->quoteName('#__toydatabase_equipment', 'b') . ' ON (' . $db->quoteName('a.equipmentid') . ' = ' . $db->quoteName('b.id') . ')')
+				->join('INNER', $db->quoteName('#__toydatabase_equipment', 'b') . ' ON (' . $db->quoteName('a.equipmentid') . ' = ' . $db->quoteName('b.id') . ')')
+				->join('INNER', $db->quoteName('#__toydatabase_membership', 'c') . ' ON (' . $db->quoteName('a.membershipid') . ' = ' . $db->quoteName('c.id') . ')')
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
 				->where($db->quoteName('a.returndate') . ' = "0000-00-00 00:00:00"');
 				echo "DEBUG:<PRE>\n";
@@ -190,6 +191,7 @@ switch($report_selector) {
 				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 				<tr><td width=5%><B>Equipment URN</B></td>
 				<td width=10%><B>Equipment Name</B></td>
+				<td width=20%><B>Member URN</B></td>
 				<td width=20%><B>Member Name</B></td>
 				<td width=20%><B>Loaned on</B></td>
 				<td width=10%><B>Return by date</B></td>
@@ -201,14 +203,15 @@ switch($report_selector) {
 						echo "<tr>";
 						echo "<td>".$row_value["urn"]."</td>";
 						echo "<td>".$row_value["name"]."</td>";
-						echo "<td>".$row_value["member_name"]."</td>";
+						echo "<td>".$row_value["c.urn"]."</td>";
+						echo "<td>".$row_value["c.name"]."</td>";
 						echo "<td>".$row_value["loandate"]."</td>";
 						echo "<td>".$row_value["returnbydate"]."</td>";
 						echo "</tr>\n";
 						};
 				} else {
 							// no rows or toys in database found
-							echo "<tr><td colspan=5 align=center><B>Sorry - No entries found</B></td></tr>\n";
+							echo "<tr><td colspan=6 align=center><B>Sorry - No entries found</B></td></tr>\n";
 				};
 						?>
 														</table><form name="adminForm" id="adminForm">
