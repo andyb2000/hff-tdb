@@ -190,11 +190,11 @@ switch($report_selector) {
 </form>
 				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 				<tr><td width=5%><B>Equipment URN</B></td>
-				<td width=10%><B>Equipment Name</B></td>
-				<td width=20%><B>Member URN</B></td>
+				<td width=30%><B>Equipment Name</B></td>
+				<td width=5%><B>Member URN</B></td>
 				<td width=20%><B>Member Name</B></td>
 				<td width=20%><B>Loaned on</B></td>
-				<td width=10%><B>Return by date</B></td>
+				<td width=20%><B>Return by date</B></td>
 				</tr>
 				<?php
 				if (!empty($row)) {
