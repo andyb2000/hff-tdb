@@ -169,7 +169,7 @@ switch($report_selector) {
 				->join('INNER', $db->quoteName('#__toydatabase_membership', 'c') . ' ON (' . $db->quoteName('a.membershipid') . ' = ' . $db->quoteName('c.id') . ')')
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
 				->where($db->quoteName('a.returndate') . ' = "0000-00-00 00:00:00"')
-				->order($db->quoteName('a.returnbydate') . ' DESC');
+				->order($db->quoteName('a.returnbydate') . ' ASC');
 			if ($debug) {
 				echo "DEBUG:<PRE>\n";
 				echo $db->replacePrefix((string) $report_query);
