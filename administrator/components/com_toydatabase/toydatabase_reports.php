@@ -163,7 +163,7 @@ switch($report_selector) {
 	<?php
 				$report_query = $db->getQuery(true);
 				$report_query
-				->select(array('SQL_CALC_FOUND_ROWS a.*', 'b.*', 'c.*'))
+				->select(array('SQL_CALC_FOUND_ROWS a.*', 'b.*', 'c.name as membername', 'c.urn as memberurn'))
 				->from($db->quoteName('#__toydatabase_loanlink', 'a'))
 				->join('INNER', $db->quoteName('#__toydatabase_equipment', 'b') . ' ON (' . $db->quoteName('a.equipmentid') . ' = ' . $db->quoteName('b.id') . ')')
 				->join('INNER', $db->quoteName('#__toydatabase_membership', 'c') . ' ON (' . $db->quoteName('a.membershipid') . ' = ' . $db->quoteName('c.id') . ')')
@@ -203,8 +203,8 @@ switch($report_selector) {
 						echo "<tr>";
 						echo "<td>".$row_value["urn"]."</td>";
 						echo "<td>".$row_value["name"]."</td>";
-						echo "<td>".$row_value["c.urn"]."</td>";
-						echo "<td>".$row_value["c.name"]."</td>";
+						echo "<td>".$row_value["memberurn"]."</td>";
+						echo "<td>".$row_value["membername"]."</td>";
 						echo "<td>".$row_value["loandate"]."</td>";
 						echo "<td>".$row_value["returnbydate"]."</td>";
 						echo "</tr>\n";
