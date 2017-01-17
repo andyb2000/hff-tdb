@@ -936,6 +936,19 @@ foreach ($category_all_rows as $cat_display) {
 if (!empty($row)) {
 	// print_r($row);
 	foreach ($row as $row_key=>$row_value) {
+		// And retrieve the loan state _toydatabase_loanlink
+		// If its on loan it will return a row and its status will be 1
+		// when returned the status should be set to 0 or something other than 1 basically
+		$query_loanlink = $db->getQuery(true);
+		$query_loanlink
+		->select('*')
+		->from($db->quoteName('#__toydatabase_loanlink'))
+		->where($db->quoteName('equipmentid') . ' = '. $row_key, 'AND')
+		->where($db->quoteName('status') . ' = '. '1');
+		$db->setQuery((string) $query_loanlink);
+		$db->execute();
+		$loanlink_rows = $db->loadAssoc();
+		
 		echo "<tr onclick='self.location=\"".JURI::current()."?act=1&ddid=$row_key\"'>";
 		echo "<td>".$row_value["name"]."</td>\n";
 		echo "<td>";
@@ -963,7 +976,10 @@ if (!empty($row)) {
 		};
 		echo "</td>\n";
 		echo "<td>";
-		switch($row_value["status"]) {
+		if ($loanlink_rows["status"] == 1) {$override_status=1;} else {
+			$override_status=$row_value["status"];
+		};
+		switch($override_status) {
 			case "3":
 				echo "Damaged/No longer available";
 				break;
