@@ -163,11 +163,11 @@ switch($report_selector) {
 	<?php
 				$report_query = $db->getQuery(true);
 				$report_query
-				->select(array('a.*', 'b.membershipid', 'b.loandate','b.returnbydate'))
-				->from($db->quoteName('#__toydatabase_equipment', 'a'))
-				->join('LEFT', $db->quoteName('#__toydatabase_loanlink', 'b') . ' ON (' . $db->quoteName('a.id') . ' = ' . $db->quoteName('b.equipmentid') . ')')
+				->select(array('a.*', 'b.*'))
+				->from($db->quoteName('#__toydatabase_loanlink', 'a'))
+				->join('LEFT', $db->quoteName('#__toydatabase_equipment', 'b') . ' ON (' . $db->quoteName('a.equipmentid') . ' = ' . $db->quoteName('b.id') . ')')
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
-				->where($db->quoteName('b.returndate') . ' != "0000-00-00 00:00:00"');
+				->where($db->quoteName('a.returndate') . ' = "0000-00-00 00:00:00"');
 				echo "DEBUG:<PRE>\n";
 				echo $db->replacePrefix((string) $report_query);
 				echo "</PRE><BR>\n";
