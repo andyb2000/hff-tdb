@@ -188,9 +188,16 @@ switch($report_selector) {
 					$pager=new JPagination($num_rows, $limitstart, $limit);
 				};
 				// $row_count_check= $db->getNumRows();
-				echo "Found $num_rows items on hire entries<BR>";
-?>
-</form>
+				?>
+				</form>
+				<!-- Print/PDF button -->
+				<form method=post onsubmit="return false">
+				<table width=100% border=0 cellpadding=0 cellspacing=0>
+				<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Active Members' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=active_members");'></td></tr>
+				</table>
+				</form>
+				<!-- end print button -->
+				Found <?=$num_rows?> items on hire entries<BR>
 				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 				<tr><td width=5%><B>Equipment URN</B></td>
 				<td width=30%><B>Equipment Name</B></td>
