@@ -773,7 +773,7 @@ receive email confirmation once it has been accepted.<BR>
 ?>
 <table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 <tr>
-	<td width=45><B>Toy Name :</B></td>
+	<td width=85><B>Toy Name :</B></td>
 	<td><?=$row["name"]?></td>
 </tr>
 <tr>
