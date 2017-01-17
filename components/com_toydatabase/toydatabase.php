@@ -787,7 +787,10 @@ receive email confirmation once it has been accepted.<BR>
 <tr>
 	<td><B>Toy Status :</B></td>
 	<td><?php
-	switch($row["status"]) {
+	if ($loanlink_rows["status"] == 1) {$override_status=1;} else {
+		$override_status=$row["status"];
+	};
+	switch($override_status) {
 		case "3":
 			echo "DAMAGED/NO LONGER AVAILABLE";
 			break;
