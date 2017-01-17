@@ -163,7 +163,7 @@ switch($report_selector) {
 	<?php
 				$report_query = $db->getQuery(true);
 				$report_query
-				->select(array('SQL_CALC_FOUND_ROWS', 'a.*', 'b.*'))
+				->select(array('SQL_CALC_FOUND_ROWS a.*', 'b.*'))
 				->from($db->quoteName('#__toydatabase_loanlink', 'a'))
 				->join('LEFT', $db->quoteName('#__toydatabase_equipment', 'b') . ' ON (' . $db->quoteName('a.equipmentid') . ' = ' . $db->quoteName('b.id') . ')')
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
