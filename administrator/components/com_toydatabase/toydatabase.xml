@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.2.0" method="upgrade">
+ 
+	<name>Toy Database</name>
+	<creationDate>November 2016</creationDate>
+	<author>Andy Brown</author>
+	<authorEmail>andy@broadcast-tech.co.uk</authorEmail>
+	<authorUrl>http://www.broadcast-tech.co.uk</authorUrl>
+	<copyright>2016/2017 Andy Brown</copyright>
+	<license>Licensed to user only, no distribution</license>
+	<version>1.1.0</version>
+	<description>Toy Database and management system. Releases are in the x.x.0 range (anything x.x.[1-9] are test branches)</description>
+ <install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+ 
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>toydatabase.php</filename>
+		<filename>toydatabase_livesearch.php</filename>
+		<filename>toydatabase_thumbnailer.php</filename>
+	</files>
+ 
+	<administration>
+		<!-- Administration Menu Section -->
+		<menu link='index.php?option=com_toydatabase'>Toy Database</menu>
+		<!-- Administration Main File Copy Section -->
+		<!-- Note the folder attribute: This attribute describes the folder
+			to copy FROM in the package to install therefore files copied
+			in this section are copied from /admin/ in the package -->
+		<files folder="admin">
+			<!-- Admin Main File Copy Section -->
+			<filename>index.html</filename>
+			<filename>pdf_output.php</filename>
+			<filename>toydatabase.php</filename>
+			<filename>toydatabase_categories.php</filename>
+			<filename>toydatabase_configuration.php</filename>
+			<filename>toydatabase_livesearch_admin.php</filename>
+			<filename>toydatabase_livesearch_members_admin.php</filename>
+			<filename>toydatabase_members.php</filename>
+			<filename>toydatabase_popjoomlauser.php</filename>
+			<filename>toydatabase_popmember.php</filename>
+			<filename>toydatabase_poptoy.php</filename>
+			<filename>toydatabase_reports.php</filename>
+			<filename>toydatabase_requests.php</filename>
+			<filename>toydatabase_toys.php</filename>
+			<!-- SQL files section -->
+			<folder>sql</folder>
+		</files>
+	</administration>
+ 
+</extension>
