@@ -13,6 +13,7 @@ $db = JFactory::getDBO();// Joomla database object
 $q = urldecode($_REQUEST["q"]);
 $pname = $_REQUEST["pname"];
 $query_toyname = $db->getQuery(true);
+$hint="";
 
 if (strlen($q)>2) {
 	$hint = "";

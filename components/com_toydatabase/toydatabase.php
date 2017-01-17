@@ -38,11 +38,30 @@ $query = $db->getQuery(true);
 //->where($db->quoteName('status') . ' = '. $db->quote('1'))
 //->order($db->quoteNAme('a.name') . ' DESC');
 $user = JFactory::getUser();
+
+// generate the current url
+$curr_j_url = rtrim(JURI::base(),'/');
+        $subpathURL = JURI::base(true);
+        if(!empty($subpathURL) && ($subpathURL != '/')) {
+            $curr_j_url = substr($rootURL, 0, -1 * strlen($subpathURL));
+        }
+
+// Non SEF URL
+$core_url = 'index.php?option=com_toydatabase';
+
+// better will be check if SEF option is enable!
+$router = new JRouterSite(array('mode'=>JROUTER_MODE_SEF));
+$curr_j_url = $router->build($core_url)->toString(array('path', 'query', 'fragment'));
+// SEF URL !
+$curr_j_url = JURI::root().str_replace('/administrator/', '', $curr_j_url);
+$mysql_date_url="";
+
 if ($debug) {
 echo "Database prefix is : " . $db->getPrefix()."<BR>";
 echo "<BR>";
 echo 'Joomla current URI is ' . JURI::current() . "\n";
 echo "<BR>";
+echo "curr_j_url var: $curr_j_url<BR>\n";
 echo "Act input is: ".$act."<BR>\n";
 echo "DDID input is: ".$ddid."<BR>\n";
 echo "Your name is {$user->name}, your email is {$user->email}, and your username is {$user->username}<BR>";
@@ -176,6 +195,7 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 	echo "<a href='".JURI::current()."?act=99'>Join toy library database</a><BR>\n";
 	echo "<BR>If you already use the Toy Library and would like a login created:<BR>\n";
 	echo "<a href='".JURI::current()."?act=98'>Click here to create a login</a><BR>\n";
+	echo "Or if you are a member, <a href='/component/users/'>click here to login</a><BR>\n";
 	$user_toymembership=0;
 };
 ?>
@@ -678,7 +698,9 @@ Register to use the toy database library:<BR>
 						
 				} else {
 					echo "<h2>Error: Your submission was invalid, you must complete all fields</h2><BR>\n";
-				}
+				};
+				echo "<BR><BR><h2>Thank you</h2><BR>";
+				echo "Your submission has been sent. You will hear back from us shortly confirming the request. You'll also receive an email to confirm this<BR>\n";
 				break;
 			default:
 				// display the form
@@ -864,6 +886,7 @@ if ($loanlink_rows["returnbydate"]) {
 		};
 		
 		$app = JFactory::getApplication();
+		$option = JRequest::getCmd('option');
 		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
@@ -882,7 +905,7 @@ if ($loanlink_rows["returnbydate"]) {
 <form method=post onsubmit="return false">
 <input type=hidden name='act' value=''>
 <table width=100% border=0 cellpadding=0 cellspacing=0>
-<tr align=right><td>Toy Category:</td><td><select name='toycategoryselect' onchange='this.form.submit();'>
+<tr><td>Toy Category:</td><td><select name='toycategoryselect' onchange='this.form.submit();'>
 <?php 
 echo "<option value=''></option>\n";
 $get_all_category = $db->getQuery(true);
@@ -898,7 +921,8 @@ foreach ($category_all_rows as $cat_display) {
 	echo ">".$cat_display["category"]."</option>\n";
 };
 ?>
-</select></td><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
+</select></td></tr>
+<tr><td>Search toy library:</td><td><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch"></div></td></tr>
 </table>
 </form>
 <!-- END Toy database search -->

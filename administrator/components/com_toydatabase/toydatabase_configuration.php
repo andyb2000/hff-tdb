@@ -1,3 +1,39 @@
+<?php
+	$in_groupmembership = $jinput->get('groupmembership', '', 'RAW');
+	$in_admin_emails = $jinput->get('admin_emails', '', 'RAW');
+
+	if ($in_groupmembership) {
+		// update
+		$upd_request = $db->getQuery(true);
+			$upd_fields = array(
+					$db->quoteName('groupname') . ' = ' . $db->quote($in_groupmembership)
+			);
+			$upd_request->update($db->quoteName('#__toydatabase_permissions'))->set($upd_fields)->where($db->quoteName('function') . ' = "member"');
+			try {
+				$db->setQuery($upd_request);
+				$db->execute();
+			}
+			catch (RuntimeException $e) {
+				JFactory::getApplication()->enqueueMessage($e->getMessage());
+				echo "ERROR with group membership update: ".$e->getMessage();
+				return false;
+			};
+		$upd_request = $db->getQuery(true);
+			$upd_fields = array(
+					$db->quoteName('groupname') . ' = ' . $db->quote($in_admin_emails)
+			);
+			$upd_request->update($db->quoteName('#__toydatabase_permissions'))->set($upd_fields)->where($db->quoteName('function') . ' = "admin_emails"');
+			try {
+				$db->setQuery($upd_request);
+				$db->execute();
+			}
+			catch (RuntimeException $e) {
+				JFactory::getApplication()->enqueueMessage($e->getMessage());
+				echo "ERROR with admin emails update: ".$e->getMessage();
+				return false;
+			};
+	};
+?>
 <form method=post name='configuration'>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
 <tr><td><B>User group membership association:</B></td>
@@ -22,7 +58,7 @@ $db->execute();
 $usergroups_rows = $db->loadAssocList();
 foreach ($usergroups_rows as $usergroup_output) {
 	echo "<option value='".$usergroup_output["id"]."' ";
-	if ($permissions_rows[0]["groupname"] == $usergroup_output["id"]) {echo "selected";};
+	if (@$permissions_rows[0]["groupname"] == $usergroup_output["id"]) {echo "selected";};
 	echo ">".$usergroup_output["title"]."</option>\n";
 };
 

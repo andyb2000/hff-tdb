@@ -6,6 +6,9 @@ define( '_JEXEC', 1 );
 define('JPATH_BASE', dirname(__FILE__)."/../../.." );//this is when we are in the root,means path to Joomla installation
 define( 'DS', DIRECTORY_SEPARATOR );
 
+// shush errors
+error_reporting(E_ERROR);
+
 require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
 require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
 
@@ -16,6 +19,7 @@ $db = JFactory::getDBO();// Joomla database object
 $q = urldecode($_REQUEST["q"]);
 $pname = $_REQUEST["pname"];
 $query_membername = $db->getQuery(true);
+$hint="";
 
 if (strlen($q)>2) {
 	$hint = "";
@@ -32,7 +36,7 @@ if (strlen($q)>2) {
 			if ($hint) {
 				$hint=$hint."<BR/>";
 			};
-			if ($pname == "http://195.97.194.74/joomla/administrator/index.php") {
+			if (strpos($pname, 'administrator/') !== false) {
 				$hint=$hint."<a href='".$pname."?option=com_toydatabase&page=members&tab=member&act=1&member_act=1&ddid=".$toy_value["id"]."'>".$toy_value["name"]."</a>";
 			} else {
 				$hint=$hint."<a href='#' onclick='Javascript:window.parent.document.getElementById(\"in_memberid\").value=\"".$toy_value["id"]."\";window.parent.SqueezeBox.close();'>".$toy_value["name"]."</a>";

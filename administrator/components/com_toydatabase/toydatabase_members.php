@@ -4,6 +4,7 @@ switch($member_act) {
 	case "2":
 		// make changes to selected user
 		if ($tab == "member") {
+			$frm_in_joomla_userid = $jinput->get('in_joomla_userid', '', 'RAW');
 			$frm_in_membername = $jinput->get('in_membername', '', 'RAW');
 			$frm_in_urn = $jinput->get('in_urn', '', 'RAW');
 			$frm_in_type = $jinput->get('in_type', '', 'RAW');
@@ -38,6 +39,28 @@ switch($member_act) {
 			$db->execute();
 			$joomlagroup_row = $db->loadAssoc();
 			$joomlagroup_registered = $joomlagroup_row["id"];
+			
+			// If ddid is empty/blank then it's adding a new user, so do the new add part instead
+			if (!$ddid) {
+				$ins_memb_request = $db->getQuery(true);
+				$ins_memb_columns = array('joomla_userid','type','urn','name','companyname','address1','address2','town','postcode','telephone','mobile','email','memb_category','joindate','creationdate','renewaldate','disabilities','children','active','adminuser');
+				$ins_memb_values = array($db->quote($frm_in_joomla_userid),$db->quote($frm_in_type),$db->quote($frm_in_urn),$db->quote($frm_in_membername),$db->quote($frm_in_companyname),$db->quote($frm_in_address1),$db->quote($frm_in_address2),$db->quote($frm_in_town),$db->quote($frm_in_postcode),$db->quote($frm_in_telephone),$db->quote($frm_in_mobile),$db->quote($frm_in_email),$db->quote($frm_in_memb_category),'NOW()','NOW()',$db->quote($frm_in_renewaldate),$db->quote($frm_in_disabilities),$db->quote($frm_in_children),$db->quote($frm_in_active),$db->quote($user->id));
+				$ins_memb_request
+								->insert($db->quoteName('#__toydatabase_membership'))
+								->columns($db->quoteName($ins_memb_columns))
+								->values(implode(',', $ins_memb_values));
+				try {
+						$db->setQuery((string) $ins_memb_request);
+						$db->execute();
+						$ddid = $db->insertid();
+						echo "OK, member added with id $ddid<BR>\n";
+				}
+					catch (RuntimeException $e) {
+						echo "Error with inserting member mysql ".$e->getMessage()."<BR><BR>\n";
+						JFactory::getApplication()->enqueueMessage($e->getMessage());
+						return false;
+					};
+			};
 				
 			// get the joomlauserid from the membership database
 			$get_memb_joomlaid = $db->getQuery(true);
@@ -427,7 +450,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 						echo "</form>";
 						} else {
 							// no rows or toys in database found
-							echo "<tr><td colspan=9 align=center><B>Sorry - No members found</B></td></tr>\n";
+							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
 							echo "</table>";
 						};
 			// end of default: switch
