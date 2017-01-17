@@ -785,6 +785,15 @@ receive email confirmation once it has been accepted.<BR>
 	<td><?=$row["description"]?></td>
 </tr>
 <tr>
+	<td><B>Toy Category :</B></td>
+	<td><?php 
+		foreach ($category_rows as $cat_display) {
+			echo $cat_display["category"]."<BR>\n";
+		};
+	?>
+	</td>
+</tr>
+<tr>
 	<td><B>Toy Status :</B></td>
 	<td><?php
 	if ($loanlink_rows["status"] == 1) {$override_status=1;} else {
@@ -808,15 +817,6 @@ receive email confirmation once it has been accepted.<BR>
 			break;
 	};
 	?></td>
-</tr>
-<tr>
-	<td><B>Toy Category :</B></td>
-	<td><?php 
-		foreach ($category_rows as $cat_display) {
-			echo $cat_display["category"]."<BR>\n";
-		};
-	?>
-	</td>
 </tr>
 <?php
 if ($loanlink_rows["returnbydate"]) {	
