@@ -176,7 +176,7 @@ switch($report_selector) {
 				$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 				
 				$db->setQuery($report_query,$limitstart, $limit);
-				$row = $db->loadAssocList('a.id');
+				$row = $db->loadAssocList('id');
 				if(!empty($row)){
 					$db->setQuery('SELECT FOUND_ROWS();');
 					$num_rows=$db->loadResult();
@@ -206,10 +206,10 @@ switch($report_selector) {
 						echo "<td>".$row_value["returnbydate"]."</td>";
 						echo "</tr>\n";
 						};
-						} else {
+				} else {
 							// no rows or toys in database found
 							echo "<tr><td colspan=5 align=center><B>Sorry - No entries found</B></td></tr>\n";
-						};
+				};
 						?>
 														</table><form name="adminForm" id="adminForm">
 								<input type=hidden name='option' value='com_toydatabase'>
