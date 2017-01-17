@@ -185,7 +185,41 @@ switch($report_selector) {
 				};
 				// $row_count_check= $db->getNumRows();
 				echo "Found $num_rows items on hire entries<BR>";
-				
+?>
+</form>
+				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+				<tr><td width=5%><B>Equipment URN</B></td>
+				<td width=10%><B>Equipment Name</B></td>
+				<td width=20%><B>Member Name</B></td>
+				<td width=20%><B>Loaned on</B></td>
+				<td width=10%><B>Return by date</B></td>
+				</tr>
+				<?php
+				if (!empty($row)) {
+					// print_r($row);
+					foreach ($row as $row_key=>$row_value) {
+						echo "<tr>";
+						echo "<td>".$row_value["urn"]."</td>";
+						echo "<td>".$row_value["name"]."</td>";
+						echo "<td>".$row_value["member_name"]."</td>";
+						echo "<td>".$row_value["loandate"]."</td>";
+						echo "<td>".$row_value["returnbydate"]."</td>";
+						echo "</tr>\n";
+						};
+						} else {
+							// no rows or toys in database found
+							echo "<tr><td colspan=5 align=center><B>Sorry - No entries found</B></td></tr>\n";
+						};
+						?>
+														</table><form name="adminForm" id="adminForm">
+								<input type=hidden name='option' value='com_toydatabase'>
+								<input type=hidden name='page' value='reports'>
+								<input type=hidden name='tab' value='reports'>
+								<input type=hidden name='report' value='onhire'>
+						<?php
+												echo $pager->getListFooter();
+												echo "Number of entries to display per page: ".$pager->getLimitBox()."<BR>\n";
+												echo "</form>";
 			break;
 	case "hires":
 		$in_hire_startdate = $jinput->get('in_hire_startdate', '', 'RAW');
