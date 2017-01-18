@@ -59,9 +59,11 @@
 	$db->setQuery((string) $query_permissions);
 	$db->execute();
 	$permissions_rows = $db->loadAssocList("function");
-echo "<PRE>";
-	print_r($permissions_rows);
-echo "</PRE>";
+	if ($debug) {
+		echo "<PRE>";
+		print_r($permissions_rows);
+		echo "</PRE>";
+	};
 
 ?>
 <form method=post name='configuration'>
