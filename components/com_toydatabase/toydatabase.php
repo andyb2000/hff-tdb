@@ -182,6 +182,14 @@ $db->execute();
 $toydatabase_permissions_num_rows = $db->getNumRows();
 $toydatabase_permissions = $db->loadAssoc();
 
+$query_permissions=$db->getQuery(true);
+$query_permissions
+->select("*")
+->from($db->quoteName('#__toydatabase_permissions'));
+$db->setQuery((string) $query_permissions);
+$db->execute();
+$permissions_rows = $db->loadAssocList("function");
+
 if ($toydatabase_permissions_num_rows <1) {
 	echo "<BR><h2>WARNING: Installation not complete, administrator please set permissions</h2><BR><BR>";
 };
@@ -191,11 +199,15 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 	echo "Welcome back toydatabase membership user<BR>";
 	$user_toymembership=1;
 } else {
-	echo "Why not join our toydatabase membership system?<BR>\n";
-	echo "<a href='".JURI::current()."?act=99'>Join toy library database</a><BR>\n";
-	echo "<BR>If you already use the Toy Library and would like a login created:<BR>\n";
-	echo "<a href='".JURI::current()."?act=98'>Click here to create a login</a><BR>\n";
-	echo "Or if you are a member, <a href='/component/users/'>click here to login</a><BR>\n";
+	if ($permissions_rows["front_html"]["groupname"]) {
+		echo $permissions_rows["front_html"]["groupname"];
+	} else {
+		echo "Why not join our toydatabase membership system?<BR>\n";
+		echo "<a href='".JURI::current()."?act=99'>Join toy library database</a><BR>\n";
+		echo "<BR>If you already use the Toy Library and would like a login created:<BR>\n";
+		echo "<a href='".JURI::current()."?act=98'>Click here to create a login</a><BR>\n";
+		echo "Or if you are a member, <a href='/component/users/'>click here to login</a><BR>\n";
+	};
 	$user_toymembership=0;
 };
 ?>
