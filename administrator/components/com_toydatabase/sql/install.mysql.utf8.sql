@@ -101,8 +101,8 @@ CREATE TABLE `#__toydatabase_loanlink` (
 CREATE TABLE `#__toydatabase_permissions` (
 	`id`       INT(11)     NOT NULL AUTO_INCREMENT,
 	`function` varchar(255) NOT NULL,
-	`groupname` varchar(255) NOT NULL,
-	`permissions` varchar(255) NOT NULL,
+	`groupname` blob NOT NULL,
+	`permissions` blob NOT NULL,
 	PRIMARY KEY (`id`)
 )
 	ENGINE =MyISAM
