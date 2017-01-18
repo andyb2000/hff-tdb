@@ -50,6 +50,18 @@
 			return false;
 		};
 	};
+	
+	
+	$query_permissions=$db->getQuery(true);
+	$query_permissions
+	->select("*")
+	->from($db->quoteName('#__toydatabase_permissions'))
+	->where($db->quoteName('function') . ' = "member"');
+	$db->setQuery((string) $query_permissions);
+	$db->execute();
+	$permissions_rows = $db->loadAssocList();
+
+	print_r($permissions_rows);
 ?>
 <form method=post name='configuration'>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
@@ -57,15 +69,6 @@
 <td><select name='groupmembership'>
 <option value=''></option>
 <?php
-$query_permissions=$db->getQuery(true);
-$query_permissions
-->select("*")
-->from($db->quoteName('#__toydatabase_permissions'))
-->where($db->quoteName('function') . ' = "member"');
-$db->setQuery((string) $query_permissions);
-$db->execute();
-$permissions_rows = $db->loadAssocList();
-//print_r($permissions_rows);
 $query_usergroups = $db->getQuery(true);
 $query_usergroups
 ->select("*")
@@ -78,7 +81,6 @@ foreach ($usergroups_rows as $usergroup_output) {
 	if (@$permissions_rows[0]["groupname"] == $usergroup_output["id"]) {echo "selected";};
 	echo ">".$usergroup_output["title"]."</option>\n";
 };
-print_r($permissions_rows[0]);
 
 $admin_emails=$permissions_rows[0]["admin_emails"];
 ?>
