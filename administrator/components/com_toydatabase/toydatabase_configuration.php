@@ -59,8 +59,9 @@
 	$db->setQuery((string) $query_permissions);
 	$db->execute();
 	$permissions_rows = $db->loadAssocList();
-
+echo "<PRE>";
 	print_r($permissions_rows);
+echo "</PRE>";
 ?>
 <form method=post name='configuration'>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
@@ -90,7 +91,7 @@ $admin_emails=$permissions_rows[0]["admin_emails"];
 <tr><td colspan=2 align=center><hr width=99%></td></tr>
 <tr><td colspan=2 align=center><hr width=99%></td></tr>
 <tr><td><B>Front end website top welcome message:</B></td><td>
-<?php 
+<?php
 			echo $editor->display('front_html', $permissions_rows[0]["front_html"], '100%', '100px', '10', '4',true);
 ?>
 </td></tr>
