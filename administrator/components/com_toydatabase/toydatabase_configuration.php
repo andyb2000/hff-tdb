@@ -55,8 +55,7 @@
 	$query_permissions=$db->getQuery(true);
 	$query_permissions
 	->select("*")
-	->from($db->quoteName('#__toydatabase_permissions'))
-	->where($db->quoteName('function') . ' = "member"');
+	->from($db->quoteName('#__toydatabase_permissions'));
 	$db->setQuery((string) $query_permissions);
 	$db->execute();
 	$permissions_rows = $db->loadAssocList();
