@@ -108,3 +108,5 @@ CREATE TABLE `#__toydatabase_permissions` (
 	ENGINE =MyISAM
 	AUTO_INCREMENT =0
 	DEFAULT CHARSET =utf8;
+insert into `#__toydatabase_permissions` values("","front_html","Why not join our toydatabase membership system?<BR><a href='?act=99'>Join toy library database</a><BR><BR>If you already use the Toy Library and would like a login created:<BR><a href='?act=98'>Click here to create a login</a><BR>Or if you are a member, <a href='/component/users/'>click here to login</a><BR>","");
+

@@ -78,6 +78,7 @@ foreach ($usergroups_rows as $usergroup_output) {
 	if (@$permissions_rows[0]["groupname"] == $usergroup_output["id"]) {echo "selected";};
 	echo ">".$usergroup_output["title"]."</option>\n";
 };
+print_r($permissions_rows[0]);
 
 $admin_emails=$permissions_rows[0]["admin_emails"];
 ?>
