@@ -79,11 +79,11 @@ $db->execute();
 $usergroups_rows = $db->loadAssocList();
 foreach ($usergroups_rows as $usergroup_output) {
 	echo "<option value='".$usergroup_output["id"]."' ";
-	if (@$permissions_rows[0]["groupname"] == $usergroup_output["id"]) {echo "selected";};
+	if (@$permissions_rows["member"]["groupname"] == $usergroup_output["id"]) {echo "selected";};
 	echo ">".$usergroup_output["title"]."</option>\n";
 };
 
-$admin_emails=$permissions_rows[0]["admin_emails"];
+$admin_emails=$permissions_rows["admin_emails"]["groupname"];
 ?>
 </select></td></tr>
 <tr><td colspan=2>Note: You must have already created a usergroup. If not, click <a href='index.php?option=com_users&view=groups'>HERE</a> to set one up first.</td></tr>
@@ -93,7 +93,7 @@ $admin_emails=$permissions_rows[0]["admin_emails"];
 <tr><td colspan=2 align=center><hr width=99%></td></tr>
 <tr><td><B>Front end website top welcome message:</B></td><td>
 <?php
-			echo $editor->display('front_html', $permissions_rows[0]["front_html"], '100%', '100px', '10', '4',true);
+			echo $editor->display('front_html', $permissions_rows["front_html"]["groupname"], '100%', '100px', '10', '4',true);
 ?>
 </td></tr>
 <tr><td colspan=2 align=right><input type=submit name='Save changes'></td></tr>
