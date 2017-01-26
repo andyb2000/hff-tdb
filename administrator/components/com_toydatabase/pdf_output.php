@@ -525,13 +525,14 @@ switch($disp) {
 		->join('INNER', $db->quoteName('#__toydatabase_categorylink', 'b') . ' ON (' . $db->quoteName('a.id') . ' = ' . $db->quoteName('b.equipmentid') . ')')
 		->where($db->quoteName('b.categoryid') . ' = '.$cat_row_value["id"])
 		->order($db->quoteName('a.name') . ' ASC');
-		
+		if ($debug) {
 			echo "DEBUG:<PRE>\n";
 			echo $db->replacePrefix((string) $query);
 			echo "</PRE><BR>\n";
+		};
 		
-//		$db->setQuery($query);
-//		$row = $db->loadAssocList('a.id');
+		$db->setQuery($query);
+		$row = $db->loadAssocList('a.id');
 		?>
 		<table width=96% border=1 cellpadding=0 cellspacing=0>
 		<tr valign=top aligh=left><td valign=top>photo</td><td valign=top>
