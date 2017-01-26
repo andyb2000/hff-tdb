@@ -308,7 +308,7 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					<tr>
 					<td valign=top><B>Notes (Internal Only) :</B></td>
 					<td><?php 
-						echo $editor->display('in_adminnotes', $row["adminnotes"], '100%', '100px', '10', '4',true);
+						echo $editor->display('in_adminnotes', $row["adminnotes"], '100%', '100px', '5', '3',true);
 					?></td>
 					</tr>
 					<tr>
