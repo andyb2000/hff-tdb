@@ -530,9 +530,10 @@ switch($disp) {
 			echo $db->replacePrefix((string) $query);
 			echo "</PRE><BR>\n";
 		};
-		
 		$db->setQuery($query);
 		$row = $db->loadAssocList('a.id');
+		print_r($row);
+		
 		if (!empty($row)) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
