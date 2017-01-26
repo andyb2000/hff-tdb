@@ -182,6 +182,14 @@ $db->execute();
 $toydatabase_permissions_num_rows = $db->getNumRows();
 $toydatabase_permissions = $db->loadAssoc();
 
+$query_permissions=$db->getQuery(true);
+$query_permissions
+->select("*")
+->from($db->quoteName('#__toydatabase_permissions'));
+$db->setQuery((string) $query_permissions);
+$db->execute();
+$permissions_rows = $db->loadAssocList("function");
+
 if ($toydatabase_permissions_num_rows <1) {
 	echo "<BR><h2>WARNING: Installation not complete, administrator please set permissions</h2><BR><BR>";
 };
@@ -191,11 +199,15 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 	echo "Welcome back toydatabase membership user<BR>";
 	$user_toymembership=1;
 } else {
-	echo "Why not join our toydatabase membership system?<BR>\n";
-	echo "<a href='".JURI::current()."?act=99'>Join toy library database</a><BR>\n";
-	echo "<BR>If you already use the Toy Library and would like a login created:<BR>\n";
-	echo "<a href='".JURI::current()."?act=98'>Click here to create a login</a><BR>\n";
-	echo "Or if you are a member, <a href='/component/users/'>click here to login</a><BR>\n";
+	if ($permissions_rows["front_html"]["groupname"]) {
+		echo $permissions_rows["front_html"]["groupname"];
+	} else {
+		echo "Why not join our toydatabase membership system?<BR>\n";
+		echo "<a href='".JURI::current()."?act=99'>Join toy library database</a><BR>\n";
+		echo "<BR>If you already use the Toy Library and would like a login created:<BR>\n";
+		echo "<a href='".JURI::current()."?act=98'>Click here to create a login</a><BR>\n";
+		echo "Or if you are a member, <a href='/component/users/'>click here to login</a><BR>\n";
+	};
 	$user_toymembership=0;
 };
 ?>
@@ -708,7 +720,8 @@ Register to use the toy database library:<BR>
 				$query
 				->select('*')
 				->from($db->quoteName('#__toydatabase_equipment'))
-				->where($db->quoteName('id') . ' = '. $ddid);
+				->where($db->quoteName('id') . ' = '. $ddid, 'AND')
+				->where($db->quoteName('status') . ' != '. $db->quote('3'));
 				$db->setQuery((string) $query);
 				$db->execute();
 				$row = $db->loadAssoc();
@@ -741,7 +754,8 @@ receive email confirmation once it has been accepted.<BR>
 		$query
 		->select('*')
 		->from($db->quoteName('#__toydatabase_equipment'))
-		->where($db->quoteName('id') . ' = '. $ddid);
+		->where($db->quoteName('id') . ' = '. $ddid, 'AND')
+		->where($db->quoteName('status') . ' != '. $db->quote('3'));
 		$db->setQuery((string) $query);
 		$db->execute();
 		$row = $db->loadAssoc();
@@ -804,7 +818,7 @@ receive email confirmation once it has been accepted.<BR>
 			echo "DAMAGED/NO LONGER AVAILABLE";
 			break;
 		case "2":
-			echo "AWAITING CLEANING/REPAIR";
+			echo "AWAITING REPAIR";
 			break;
 		case "1":
 			echo "ON LOAN";
@@ -863,7 +877,8 @@ if ($loanlink_rows["returnbydate"]) {
 			$get_search_category
 			->select('*')
 			->from($db->quoteName('#__toydatabase_categorylink'))
-			->where($db->quoteName('categoryid') . ' = '. $toycategoryselect);					
+			->where($db->quoteName('categoryid') . ' = '. $toycategoryselect, 'AND')
+			->where($db->quoteName('status') . ' != '. $db->quote('3'));
 			$db->setQuery((string) $get_search_category);
 			$db->execute();
 			$category_search_rows = $db->loadAssocList();
@@ -884,7 +899,7 @@ if ($loanlink_rows["returnbydate"]) {
 			->select('SQL_CALC_FOUND_ROWS *')
 			->from($db->quoteName('#__toydatabase_equipment'))
 			//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
-			//->where($db->quoteName('status') . ' = '. $db->quote('1'))
+			->where($db->quoteName('status') . ' != '. $db->quote('3'))
 			->order($db->quoteName('name') . ' ASC');
 		};
 		
@@ -987,7 +1002,7 @@ if (!empty($row)) {
 				echo "Damaged/No longer available";
 				break;
 			case "2":
-				echo "Awaiting cleaning/repair";
+				echo "Awaiting repair";
 				break;
 			case "1":
 				echo "On Loan";
