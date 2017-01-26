@@ -372,9 +372,11 @@ switch($loan_act) {
 						$second_calc_date=$curr_date->toUnix();
 						$overdue_days=($second_calc_date - $first_calc_date);
 						$overdue_days_output=date("d",$overdue_days);
+						// if thats negative it goes weird so use maths for number of days (unixtime in seconds)
+						$overdue_days_negative_output=$overdue_days/60/60/24;
 						// So overdue days will be a positive number of days overdue
 						// anything negative or 0 is ontime (but the returndate will be empty for overdue too)
-						echo "DEBUG: $overdue_days_output and $overdue_days<BR>\n";
+						echo "DEBUG: $overdue_days_output negative $overdue_days_negative_output and $overdue_days<BR>\n";
 						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00" && $overdue_days > 0)) {
 							$overdue_html_text="(Overdue $overdue_days_output days)";
 							$overdue_row_highlighter=1;
