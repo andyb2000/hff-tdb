@@ -22,7 +22,7 @@ CREATE TABLE `#__toydatabase_membership` (
 	`active` smallint(1) NOT NULL,
 	`creationdate` datetime NOT NULL,
 	`adminuser` int(11) NOT NULL,
-	`adminnotes` blob NOT NULL
+	`adminnotes` blob NOT NULL,
 	PRIMARY KEY (`id`)
 )
 	ENGINE =MyISAM
@@ -68,7 +68,7 @@ CREATE TABLE `#__toydatabase_equipment` (
 	`active` smallint(1) NOT NULL,
 	`creationdate` datetime NOT NULL,
 	`adminuser` int(11) NOT NULL,
-	`notes` blob NOT NULL
+	`notes` blob NOT NULL,
 	PRIMARY KEY (`id`)
 )
 	ENGINE =MyISAM
