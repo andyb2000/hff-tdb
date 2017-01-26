@@ -556,18 +556,18 @@ switch($disp) {
 						echo "<td>".$row_value["a.name"]."</td>\n";
 						echo "<td>";
 						// Now retrieve the category (ies)
-						$query_category = $db->getQuery(true);
-						$query_category
-						->select(array('a.*','b.category'))
-						->from($db->quoteName('#__toydatabase_categorylink','a'))
-						->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
-						->where($db->quoteName('a.equipmentid') . ' = '. $row_key);
-						$db->setQuery((string) $query_category);
-						$db->execute();
-						$category_rows = $db->loadAssocList();
-						foreach ($category_rows as $cat_display) {
-							echo $cat_display["category"]."<BR>\n";
-						};
+//						$query_category = $db->getQuery(true);
+//						$query_category
+//						->select(array('a.*','b.category'))
+//						->from($db->quoteName('#__toydatabase_categorylink','a'))
+//						->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
+//						->where($db->quoteName('a.equipmentid') . ' = '. $row_key);
+//						$db->setQuery((string) $query_category);
+//						$db->execute();
+//						$category_rows = $db->loadAssocList();
+//						foreach ($category_rows as $cat_display) {
+//							echo $cat_display["category"]."<BR>\n";
+//						};
 						echo "</td>";
 						echo "<td>";
 						// check the file exists to display the image
