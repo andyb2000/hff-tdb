@@ -520,7 +520,7 @@ switch($disp) {
 		
 		$query = $db->getQuery(true);
 		$query
-		->select('a.*', 'b.*')
+		->select(array('a.*', 'b.*'))
 		->from($db->quoteName('#__toydatabase_equipment', 'a'))
 		->join('INNER', $db->quoteName('#__toydatabase_categorylink', 'b') . ' ON (' . $db->quoteName('a.id') . ' = ' . $db->quoteName('b.equipmentid') . ')')
 		->where($db->quoteName('b.categoryid') . ' = '.$cat_row_value["id"])
