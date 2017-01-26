@@ -116,6 +116,7 @@ switch($act) {
 		$frm_in_toydescription = $jinput->get('in_toydescription', '', 'RAW');
 		$frm_in_toylocation = $jinput->get('in_toylocation', '', 'RAW');
 		$frm_in_toystatus = $jinput->get('in_toystatus', '', 'RAW');
+		$frm_in_toynotes = $jinput->get('in_toynotes', '', 'RAW');
 		$frm_in_toycat_arr = $jinput->get('toycat_arr', array(), 'ARRAY');
 
 		if ($ddid == 0) {
@@ -172,6 +173,7 @@ switch($act) {
 					$db->quoteName('description') . ' = ' . $db->quote($frm_in_toydescription),
 					$db->quoteName('storagelocation') . ' = ' . $db->quote($frm_in_toylocation),
 					$db->quoteName('status') . ' = ' . $db->quote($frm_in_toystatus),
+					$db->quoteName('notes') . ' = ' . $db->quote($frm_in_toynotes),
 					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
 			$upd_request->update($db->quoteName('#__toydatabase_equipment'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
@@ -313,6 +315,13 @@ switch($act) {
 		<tr>
 			<td valign=top><B>Toy Location :</B></td>
 			<td><input type=text size=30 name='in_toylocation' value='<?=$row["storagelocation"]?>'></td>
+		</tr>
+		<tr>
+			<td valign=top><B>Toy Notes :</B></td>
+			<td><?php 
+			echo $editor->display('in_toynotes', $row["notes"], '60%', '50px', '5', '2',true);
+			?>
+			</td>
 		</tr>
 		<tr>
 			<td valign=top><B>Toy Category :</B></td>
