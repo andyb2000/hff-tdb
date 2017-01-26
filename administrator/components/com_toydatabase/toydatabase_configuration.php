@@ -105,6 +105,24 @@
 		};
 	};
 	
+	if ($email_signup) {
+		toydatabase_updateconfiguration("email_signup",$email_signup);
+	};
+	if ($email_signupapproval) {
+		toydatabase_updateconfiguration("email_signupapproval",$email_signupapproval);
+	};
+	if ($email_signuprejected) {
+		toydatabase_updateconfiguration("email_signuprejected",$email_signuprejected);
+	};
+	if ($email_booktoy_request) {
+		toydatabase_updateconfiguration("email_booktoy_request",$email_booktoy_request);
+	};
+	if ($email_booktoy_approve) {
+		toydatabase_updateconfiguration("email_booktoy_approve",$email_booktoy_approve);
+	};
+	if ($email_booktoy_reject) {
+		toydatabase_updateconfiguration("email_booktoy_reject",$email_booktoy_reject);
+	};
 	
 	$query_permissions=$db->getQuery(true);
 	$query_permissions
@@ -113,9 +131,6 @@
 	$db->setQuery((string) $query_permissions);
 	$db->execute();
 	$permissions_rows = $db->loadAssocList("function");
-echo "<PRE>";
-	print_r($permissions_rows);
-echo "</PRE>";
 
 ?>
 <form method=post name='configuration'>

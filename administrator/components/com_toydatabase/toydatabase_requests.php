@@ -49,6 +49,10 @@ switch($loan_act) {
 									</select>
 									</td>
 									</tr>
+									<tr>
+							<td valign=top><B>Send email to member notifying them of their status change? (Approve/Reject) :</B></td>
+							<td><input type=checkbox name='in_emailnotify' id='in_emailnotify'></td>
+							</tr>
 									<tr><td colspan=2 align=right><input type=submit value='Create request'></td></tr>
 									</table>
 									</form>
@@ -78,6 +82,7 @@ switch($loan_act) {
 			};
 				
 			$frm_in_status = $jinput->get('in_status', '', 'RAW');
+			$frm_in_emailnotify = $jinput->get('in_emailnotify', '', 'RAW');
 			
 			$upd_request = $db->getQuery(true);
 			$upd_fields = array(
@@ -141,6 +146,8 @@ switch($loan_act) {
 			$membership_count_check= $db->getNumRows();
 			$membership_row = $db->loadAssoc();
 			
+			if ($frm_in_emailnotify) {
+				// only send if email ticked
 			$userid_mailer = JFactory::getMailer();
 			$sender = array(
 					$config->get( 'mailfrom' ),
@@ -184,6 +191,7 @@ switch($loan_act) {
 			} else {
 				echo "Email has been sent to ".$membership_row["email"]." to update them on their request<BR>\n";
 			};
+			}; // end of email send
 		};
 		break;
 	case "1":
@@ -251,6 +259,10 @@ switch($loan_act) {
 							<option value='4' <?php if ($row["status"] == "4") {echo "selected";}; ?>>Returned</option>
 							</select>
 							</td>
+							</tr>
+							<tr>
+							<td valign=top><B>Send email to member notifying them of their status change? (Approve/Reject) :</B></td>
+							<td><input type=checkbox name='in_emailnotify' id='in_emailnotify'></td>
 							</tr>
 							<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
 							</table>
