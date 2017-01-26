@@ -415,9 +415,7 @@ switch($loan_act) {
 						echo "<td>".$membername_val."</td>";
 						echo "<td>".$toyequipment_val."</td>";
 						echo "<td>".$entry_requestdate_out."</td>";
-						echo "<td ";
-						if ($overdue_row_highlighter) {echo "bgcolor=red";};
-						echo ">".$entry_returnbydate_out." ".$overdue_html_text." </td>";
+						echo "<td>".$entry_returnbydate_out." ".$overdue_html_text." </td>";
 						echo "<td>".$entry_returndate_out."</td>";
 						echo "</tr>\n";
 					};
