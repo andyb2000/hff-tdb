@@ -403,7 +403,7 @@ switch($loan_act) {
 								break;
 							case "1":
 								$loan_status="Approved";
-								$row_lighting="green";
+								$row_lighting="light green";
 								break;
 							default:
 								$loan_status="Unknown";
