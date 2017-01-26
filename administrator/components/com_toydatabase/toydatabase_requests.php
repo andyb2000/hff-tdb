@@ -378,6 +378,10 @@ switch($loan_act) {
 						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00" && $overdue_days > 0)) {
 							$overdue_html_text="(Overdue $overdue_days_output days)";
 							$overdue_row_highlighter=1;
+						} elseif (($overdue_days_output > -2) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+							// 2 days to go before overdue so make them amber
+							$overdue_html_text="(Due in $overdue_days_output days)";
+							$overdue_row_highlighter=2;
 						} else {
 							$overdue_html_text="";
 							$overdue_row_highlighter=0;
@@ -405,6 +409,7 @@ switch($loan_act) {
 								break;
 						};
 						if ($overdue_row_highlighter == 1) {$row_lighting="rgb(255, 179, 179)";};
+						if ($overdue_row_highlighter == 2) {$row_lighting="rgb(255, 194, 0)";};
 						echo "<tr style='background-color:$row_lighting' onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$loan_status."</td>";
 						echo "<td>".$membername_val."</td>";
