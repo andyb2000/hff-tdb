@@ -530,8 +530,8 @@ switch($disp) {
 			echo $db->replacePrefix((string) $query);
 			echo "</PRE><BR>\n";
 		
-		$db->setQuery($query);
-		$row = $db->loadAssocList('a.id');
+//		$db->setQuery($query);
+//		$row = $db->loadAssocList('a.id');
 		?>
 		<table width=96% border=1 cellpadding=0 cellspacing=0>
 		<tr valign=top aligh=left><td valign=top>photo</td><td valign=top>
