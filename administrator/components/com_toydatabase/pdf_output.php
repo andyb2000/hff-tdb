@@ -526,6 +526,10 @@ switch($disp) {
 		->where($db->quoteName('b.categoryid') . ' = '.$cat_row_value["id"])
 		->order($db->quoteName('a.name') . ' ASC');
 		
+			echo "DEBUG:<PRE>\n";
+			echo $db->replacePrefix((string) $query);
+			echo "</PRE><BR>\n";
+		
 		$db->setQuery($query);
 		$row = $db->loadAssocList('a.id');
 		?>
