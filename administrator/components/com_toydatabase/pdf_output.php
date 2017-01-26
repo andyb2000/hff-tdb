@@ -509,7 +509,7 @@ switch($disp) {
 		$cat_query
 		->select('*')
 		->from($db->quoteName('#__toydatabase_equipment_category'))
-		->order($db->quoteName('name') . ' ASC');
+		->order($db->quoteName('category') . ' ASC');
 		
 		$db->setQuery($cat_query);
 		$cat_row = $db->loadAssocList('id');
