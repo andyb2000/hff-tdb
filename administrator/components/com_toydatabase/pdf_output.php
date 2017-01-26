@@ -47,26 +47,7 @@ $in_report_past_members = $jinput->get('report_past_members', '', 'RAW'); // spe
     * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
     * http://www.cssportal.com
     */
-    html, body, div, span, applet, object, iframe,
-    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-    a, abbr, acronym, address, big, cite, code,
-    del, dfn, em, img, ins, kbd, q, s, samp,
-    small, strike, strong, sub, sup, tt, var,
-    b, u, i, center,
-    dl, dt, dd, ol, ul, li,
-    fieldset, form, label, legend,
-    table, caption, tbody, tfoot, thead, tr, th, td,
-    article, aside, canvas, details, embed,
-    figure, figcaption, footer, header, hgroup,
-    menu, nav, output, ruby, section, summary,
-    time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-    }
+
     /* HTML5 display-role reset for older browsers */
     article, aside, details, figcaption, figure,
     footer, header, hgroup, menu, nav, section {
@@ -91,11 +72,6 @@ $in_report_past_members = $jinput->get('report_past_members', '', 'RAW'); // spe
     border-spacing: 0;
     }
     
-body {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    color:#333
-}
 
 p {
     padding: 10px;
@@ -522,20 +498,46 @@ switch($disp) {
 <?php
 		break;
 	case "toys":
-		echo "<p><b>Toys display</b></p>";
+		echo "<p><b>Toys catalogue display</b></p>";
 		echo "</div></div>";
 		echo "<div id='contentwrap'><div id='content' align='center'>";
 		
-		$query = $db->getQuery(true);
-		$query
+		// new format 26-01-17
+		// format is to sort by categories, display toys in category, blank page
+		// then next category in a booklet styleeeeeee
+		$cat_query = $db->getQuery(true);
+		$cat_query
 		->select('*')
-		->from($db->quoteName('#__toydatabase_equipment'))
+		->from($db->quoteName('#__toydatabase_equipment_category'))
 		->order($db->quoteName('name') . ' ASC');
 		
+		$db->setQuery($cat_query);
+		$cat_row = $db->loadAssocList('id');
+		
+		if (!empty($cat_row)) {
+			foreach ($cat_row as $cat_row_key=>$cat_row_value) {
+				echo "<h2>".$cat_row_value["category"]."</h2><BR>";
+		
+		$query = $db->getQuery(true);
+		$query
+		->select('a.*', 'b.*')
+		->from($db->quoteName('#__toydatabase_equipment', 'a'))
+		->join('INNER', $db->quoteName('#__toydatabase_equipment_categorylink', 'b') . ' ON (' . $db->quoteName('a.id') . ' = ' . $db->quoteName('b.equipmentid') . ')')
+		->where($db->quoteName('b.categoryid') . ' = '.$cat_row_value["id"])
+		->order($db->quoteName('a.name') . ' ASC');
+		
 		$db->setQuery($query);
-		$row = $db->loadAssocList('id');
+		$row = $db->loadAssocList('a.id');
 		?>
-				
+		<table width=96% border=1 cellpadding=0 cellspacing=0>
+		<tr valign=top aligh=left><td valign=top>photo</td><td valign=top>
+			<table width=100% border=0 cellpadding=0 cellspacing=0>
+				<tr valign=top><td width=100>Title</td></tr>
+				<tr valign=top><td width=100>URN</td></tr>
+				<tr valign=top><td width=100%>Description<BR>goes<br>here<br></td></tr>
+			</table>
+		</td></tr>
+		</table>
 				<table width=85% border=1 cellpadding=0 cellspacing=0>
 				<tr><td width=30%><B>Toy name</B></td>
 				<td width=30%><B>Toy category</B></td>
@@ -546,7 +548,7 @@ switch($disp) {
 					// print_r($row);
 					foreach ($row as $row_key=>$row_value) {
 						echo "<tr>";
-						echo "<td>".$row_value["name"]."</td>\n";
+						echo "<td>".$row_value["a.name"]."</td>\n";
 						echo "<td>";
 						// Now retrieve the category (ies)
 						$query_category = $db->getQuery(true);
@@ -596,6 +598,8 @@ switch($disp) {
 					// no rows or toys in database found
 					echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
 				};
+			};
+		};
 				?>
 				</table>
 <?php 
