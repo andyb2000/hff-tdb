@@ -3,6 +3,7 @@
 //  toydatabase_loanlink contains the loans in the system, historical and active
 //  show them all sorted by which ones are active (then into history)
 //  allow a manual addition for a member (or non-member)
+//
 switch($loan_act) {
 	case "4":
 		// add a manual loan request
