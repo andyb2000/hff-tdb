@@ -27,6 +27,7 @@ switch($member_act) {
 			};
 			$frm_in_disabilities = $jinput->get('in_disabilities', '', 'RAW');
 			$frm_in_children = $jinput->get('in_children', '', 'RAW');
+			$frm_in_adminnotes = $jinput->get('in_adminnotes', '', 'RAW');
 			$frm_in_active = $jinput->get('active', '', 'RAW');
 				
 			// get the registered userid from joomla for activating and deactivating users
@@ -43,8 +44,8 @@ switch($member_act) {
 			// If ddid is empty/blank then it's adding a new user, so do the new add part instead
 			if (!$ddid) {
 				$ins_memb_request = $db->getQuery(true);
-				$ins_memb_columns = array('joomla_userid','type','urn','name','companyname','address1','address2','town','postcode','telephone','mobile','email','memb_category','joindate','creationdate','renewaldate','disabilities','children','active','adminuser');
-				$ins_memb_values = array($db->quote($frm_in_joomla_userid),$db->quote($frm_in_type),$db->quote($frm_in_urn),$db->quote($frm_in_membername),$db->quote($frm_in_companyname),$db->quote($frm_in_address1),$db->quote($frm_in_address2),$db->quote($frm_in_town),$db->quote($frm_in_postcode),$db->quote($frm_in_telephone),$db->quote($frm_in_mobile),$db->quote($frm_in_email),$db->quote($frm_in_memb_category),'NOW()','NOW()',$db->quote($frm_in_renewaldate),$db->quote($frm_in_disabilities),$db->quote($frm_in_children),$db->quote($frm_in_active),$db->quote($user->id));
+				$ins_memb_columns = array('joomla_userid','type','urn','name','companyname','address1','address2','town','postcode','telephone','mobile','email','memb_category','joindate','creationdate','renewaldate','disabilities','children','adminnotes','active','adminuser');
+				$ins_memb_values = array($db->quote($frm_in_joomla_userid),$db->quote($frm_in_type),$db->quote($frm_in_urn),$db->quote($frm_in_membername),$db->quote($frm_in_companyname),$db->quote($frm_in_address1),$db->quote($frm_in_address2),$db->quote($frm_in_town),$db->quote($frm_in_postcode),$db->quote($frm_in_telephone),$db->quote($frm_in_mobile),$db->quote($frm_in_email),$db->quote($frm_in_memb_category),'NOW()','NOW()',$db->quote($frm_in_renewaldate),$db->quote($frm_in_disabilities),$db->quote($frm_in_children),$db->quote($frm_in_adminnotes),$db->quote($frm_in_active),$db->quote($user->id));
 				$ins_memb_request
 								->insert($db->quoteName('#__toydatabase_membership'))
 								->columns($db->quoteName($ins_memb_columns))
@@ -163,6 +164,7 @@ switch($member_act) {
 					$db->quoteName('renewaldate') . ' = ' . $db->quote($frm_renewaldate_out),
 					$db->quoteName('disabilities') . ' = ' . $db->quote($frm_in_disabilities),
 					$db->quoteName('children') . ' = ' . $db->quote($frm_in_children),
+					$db->quoteName('adminnotes') . ' = ' . $db->quote($frm_in_adminnotes),
 					$db->quoteName('active') . ' = ' . $db->quote($frm_in_active),
 					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
@@ -305,6 +307,12 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					<tr>
 					<td valign=top><B>Children :</B></td>
 					<td><input type=text size=5 name='in_children' value='<?=$row["children"]?>'></td>
+					</tr>
+					<tr>
+					<td valign=top><B>Notes (Internal Only) :</B></td>
+					<td><?php 
+						echo $editor->display('in_adminnotes', $row["adminnotes"], '60%', '10px', '3', '5',true);
+					?></td>
 					</tr>
 					<tr>
 					<td valign=top><B>Status :</B></td>
