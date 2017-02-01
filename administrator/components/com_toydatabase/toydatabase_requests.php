@@ -49,6 +49,10 @@ switch($loan_act) {
 									</select>
 									</td>
 									</tr>
+									<tr>
+							<td valign=top><B>Send email to member notifying them of their status change? (Approve/Reject) :</B></td>
+							<td><input type=checkbox name='in_emailnotify' id='in_emailnotify'></td>
+							</tr>
 									<tr><td colspan=2 align=right><input type=submit value='Create request'></td></tr>
 									</table>
 									</form>
@@ -78,6 +82,7 @@ switch($loan_act) {
 			};
 				
 			$frm_in_status = $jinput->get('in_status', '', 'RAW');
+			$frm_in_emailnotify = $jinput->get('in_emailnotify', '', 'RAW');
 			
 			$upd_request = $db->getQuery(true);
 			$upd_fields = array(
@@ -141,6 +146,8 @@ switch($loan_act) {
 			$membership_count_check= $db->getNumRows();
 			$membership_row = $db->loadAssoc();
 			
+			if ($frm_in_emailnotify) {
+				// only send if email ticked
 			$userid_mailer = JFactory::getMailer();
 			$sender = array(
 					$config->get( 'mailfrom' ),
@@ -184,6 +191,7 @@ switch($loan_act) {
 			} else {
 				echo "Email has been sent to ".$membership_row["email"]." to update them on their request<BR>\n";
 			};
+			}; // end of email send
 		};
 		break;
 	case "1":
@@ -251,6 +259,10 @@ switch($loan_act) {
 							<option value='4' <?php if ($row["status"] == "4") {echo "selected";}; ?>>Returned</option>
 							</select>
 							</td>
+							</tr>
+							<tr>
+							<td valign=top><B>Send email to member notifying them of their status change? (Approve/Reject) :</B></td>
+							<td><input type=checkbox name='in_emailnotify' id='in_emailnotify'></td>
 							</tr>
 							<tr><td colspan=2 align=right><input type=submit value='Save changes'></td></tr>
 							</table>
@@ -360,12 +372,18 @@ switch($loan_act) {
 						$second_calc_date=$curr_date->toUnix();
 						$overdue_days=($second_calc_date - $first_calc_date);
 						$overdue_days_output=date("d",$overdue_days);
+						// if thats negative it goes weird so use maths for number of days (unixtime in seconds)
+						$overdue_days_negative_output=abs(round($overdue_days/60/60/24,0));
 						// So overdue days will be a positive number of days overdue
 						// anything negative or 0 is ontime (but the returndate will be empty for overdue too)
-						
+						// echo "DEBUG: $overdue_days_output negative $overdue_days_negative_output and $overdue_days<BR>\n";
 						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00" && $overdue_days > 0)) {
-							$overdue_html_text="(Overdue $overdue_days_output days)";
+							$overdue_html_text="(Overdue $overdue_days_negative_output days)";
 							$overdue_row_highlighter=1;
+						} elseif (($overdue_days_negative_output < 3) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+							// 2 days to go before overdue so make them amber
+							$overdue_html_text="(Due in $overdue_days_negative_output days)";
+							$overdue_row_highlighter=2;
 						} else {
 							$overdue_html_text="";
 							$overdue_row_highlighter=0;
@@ -385,7 +403,7 @@ switch($loan_act) {
 								break;
 							case "1":
 								$loan_status="Approved";
-								$row_lighting="green";
+								$row_lighting="light green";
 								break;
 							default:
 								$loan_status="Unknown";
@@ -393,14 +411,13 @@ switch($loan_act) {
 								break;
 						};
 						if ($overdue_row_highlighter == 1) {$row_lighting="rgb(255, 179, 179)";};
+						if ($overdue_row_highlighter == 2) {$row_lighting="rgb(255, 194, 0)";};
 						echo "<tr style='background-color:$row_lighting' onclick='self.location=\"".JURI::getInstance()->toString()."&tab=loan&loan_act=1&ddid=$row_key\"'>";
 						echo "<td>".$loan_status."</td>";
 						echo "<td>".$membername_val."</td>";
 						echo "<td>".$toyequipment_val."</td>";
 						echo "<td>".$entry_requestdate_out."</td>";
-						echo "<td ";
-						if ($overdue_row_highlighter) {echo "bgcolor=red";};
-						echo ">".$entry_returnbydate_out." ".$overdue_html_text." </td>";
+						echo "<td>".$entry_returnbydate_out." ".$overdue_html_text." </td>";
 						echo "<td>".$entry_returndate_out."</td>";
 						echo "</tr>\n";
 					};
