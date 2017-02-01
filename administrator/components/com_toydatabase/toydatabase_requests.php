@@ -9,6 +9,7 @@ switch($loan_act) {
 		// add a manual loan request
 		if($tab == "loan") {
 
+			
 			?>
 									<form method=post name='loanrequest' id='loanrequest' class='form-validate form-horizontal well'>
 									<input type=hidden name='loan_act' value='2'>
