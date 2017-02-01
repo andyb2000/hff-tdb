@@ -72,7 +72,7 @@ switch($act) {
                         <td valign=top><B>Toy Status :</B></td>
                         <td><select name='in_toystatus'>
                         <option value='3'>DAMAGED/NO LONGER AVAILABLE</option>
-                        <option value='2'>AWAITING CLEANING/REPAIR</option>
+                        <option value='2'>AWAITING REPAIR</option>
                         <option value='1'>ON LOAN</option>
                         <option value='0'>AVAILABLE</option>
                         <option value='99'>UNKNOWN</option>
@@ -347,7 +347,7 @@ switch($act) {
 			<td valign=top><B>Toy Status :</B></td>
 			<td><select name='in_toystatus'>
 			<option value='3' <?php if($row["status"] == 3) {echo "selected";}; ?>>DAMAGED/NO LONGER AVAILABLE</option>
-			<option value='2' <?php if($row["status"] == 2) {echo "selected";}; ?>>AWAITING CLEANING/REPAIR</option>
+			<option value='2' <?php if($row["status"] == 2) {echo "selected";}; ?>>AWAITING REPAIR</option>
 			<option value='1' <?php if($row["status"] == 1) {echo "selected";}; ?>>ON LOAN</option>
 			<option value='0' <?php if($row["status"] == 0) {echo "selected";}; ?>>AVAILABLE</option>
 			<option value='99' <?php if($row["status"] == 99) {echo "selected";}; ?>>UNKNOWN</option>
@@ -483,7 +483,7 @@ switch($act) {
 						echo "Damaged/No longer available";
 						break;
 					case "2":
-						echo "Awaiting cleaning/repair";
+						echo "Awaiting repair";
 						break;
 					case "1":
 						echo "On Loan";
