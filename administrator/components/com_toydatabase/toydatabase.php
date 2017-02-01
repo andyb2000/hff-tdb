@@ -8,7 +8,7 @@
 $debug=0;
 
 // shush errors
-//error_reporting(E_ERROR);
+error_reporting(E_ERROR);
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
