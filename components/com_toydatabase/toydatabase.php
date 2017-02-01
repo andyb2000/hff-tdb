@@ -454,6 +454,8 @@ jQuery(document).ready(function(){
 				$frm_email = $jinput->get('user_email', '', 'RAW');
 				$frm_membertype = $jinput->get('user_membertype', '', 'RAW');
 				$frm_membercategory = $jinput->get('user_membercategory', '', 'RAW');
+				$frm_children = $jinput->get('user_children', '', 'RAW');
+				$frm_disabilities = $jinput->get('user_disabilities', '', 'RAW');
 				$frm_notes = $jinput->get('notes', '', 'RAW');
 				$frm_username = $jinput->get('user_username', '', 'RAW');
 				$frm_password1 = $jinput->get('user_password1', '', 'RAW');
@@ -481,7 +483,7 @@ jQuery(document).ready(function(){
 				if ($new_user_id) {
 					// add user to toy database
 					$ins_columns = array('joomla_userid','type', 'name', 'companyname', 'address1', 'address2', 'town', 'postcode', 'telephone', 'mobile', 'email', 'memb_category', 'joindate', 'disabilities', 'children', 'active', 'creationdate');
-					$ins_values = array($new_user_id, "$frm_membertype", $db->quote($frm_fullname), $db->quote($frm_companyname), $db->quote($frm_address1), $db->quote($frm_address2), $db->quote($frm_town), $db->quote($frm_postcode), $db->quote($frm_telephone), $db->quote($frm_mobile), $db->quote($frm_email), "$frm_membercategory", 'NOW()', $db->quote(""), $db->quote(""), '0', 'NOW()');
+					$ins_values = array($new_user_id, "$frm_membertype", $db->quote($frm_fullname), $db->quote($frm_companyname), $db->quote($frm_address1), $db->quote($frm_address2), $db->quote($frm_town), $db->quote($frm_postcode), $db->quote($frm_telephone), $db->quote($frm_mobile), $db->quote($frm_email), "$frm_membercategory", 'NOW()', $db->quote($frm_disabilities), $db->quote($frm_children), '0', 'NOW()');
 					$ins_request = $db->getQuery(true);
 					$ins_request
 					->insert($db->quoteName('#__toydatabase_membership'))
@@ -606,11 +608,12 @@ Register to use the toy database library:<BR>
 <option value='5'>Childminders</option>
 <option value='6'>Organisations outside of Hartlepool</option>
 </select></td></tr>
+<tr><td>Number of Children:</td><td><input type="text" name='user_children' size="5"/></td></tr>
+<tr><td>Disabilities:</td><td><input type="text" name='user_disabilities' size="35" maxsize=255/></td></tr>
 <tr><td>Desired UserName: *</td><td><input type=text name='user_username' class='required validate-username' size=15/></td></tr>
 <tr><td>Password: *</td><td><input class="inputbox required" type="password" id="user_password1" name="user_password1" size="40" value="" /></td></tr>
 <tr><td>Password (confirm): *</td><td><input class="inputbox required validate-passverify" type="password" id="user_password2" name="user_password2" size="40" value="" /></td></tr>
-
-<tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=5 cols=10></textarea></td></tr>
+<tr><td>Any Notes/Comments?:</td><td><textarea name='notes' rows=10 cols=10></textarea></td></tr>
 <tr><td colspan=2 align=right><button type="submit" class="validate">Submit form</button></td></tr>
 </table>
 </form><BR>
@@ -720,7 +723,8 @@ Register to use the toy database library:<BR>
 				$query
 				->select('*')
 				->from($db->quoteName('#__toydatabase_equipment'))
-				->where($db->quoteName('id') . ' = '. $ddid);
+				->where($db->quoteName('id') . ' = '. $ddid, 'AND')
+				->where($db->quoteName('status') . ' != '. $db->quote('3'));
 				$db->setQuery((string) $query);
 				$db->execute();
 				$row = $db->loadAssoc();
@@ -753,7 +757,8 @@ receive email confirmation once it has been accepted.<BR>
 		$query
 		->select('*')
 		->from($db->quoteName('#__toydatabase_equipment'))
-		->where($db->quoteName('id') . ' = '. $ddid);
+		->where($db->quoteName('id') . ' = '. $ddid, 'AND')
+		->where($db->quoteName('status') . ' != '. $db->quote('3'));
 		$db->setQuery((string) $query);
 		$db->execute();
 		$row = $db->loadAssoc();
@@ -816,7 +821,7 @@ receive email confirmation once it has been accepted.<BR>
 			echo "DAMAGED/NO LONGER AVAILABLE";
 			break;
 		case "2":
-			echo "AWAITING CLEANING/REPAIR";
+			echo "AWAITING REPAIR";
 			break;
 		case "1":
 			echo "ON LOAN";
@@ -875,7 +880,8 @@ if ($loanlink_rows["returnbydate"]) {
 			$get_search_category
 			->select('*')
 			->from($db->quoteName('#__toydatabase_categorylink'))
-			->where($db->quoteName('categoryid') . ' = '. $toycategoryselect);					
+			->where($db->quoteName('categoryid') . ' = '. $toycategoryselect, 'AND')
+			->where($db->quoteName('status') . ' != '. $db->quote('3'));
 			$db->setQuery((string) $get_search_category);
 			$db->execute();
 			$category_search_rows = $db->loadAssocList();
@@ -896,7 +902,7 @@ if ($loanlink_rows["returnbydate"]) {
 			->select('SQL_CALC_FOUND_ROWS *')
 			->from($db->quoteName('#__toydatabase_equipment'))
 			//->join('INNER', $db->quoteName('#__toydatabase_equipment_category', 'b') . ' ON (' . $db->quoteName('a.categoryid') . ' = ' . $db->quoteName('b.id') . ')')
-			//->where($db->quoteName('status') . ' = '. $db->quote('1'))
+			->where($db->quoteName('status') . ' != '. $db->quote('3'))
 			->order($db->quoteName('name') . ' ASC');
 		};
 		
@@ -999,7 +1005,7 @@ if (!empty($row)) {
 				echo "Damaged/No longer available";
 				break;
 			case "2":
-				echo "Awaiting cleaning/repair";
+				echo "Awaiting repair";
 				break;
 			case "1":
 				echo "On Loan";
