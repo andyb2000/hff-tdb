@@ -381,7 +381,11 @@ switch($loan_act) {
 						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00" && $overdue_days > 0)) {
 							$overdue_html_text="(Overdue $overdue_days_negative_output days)";
 							$overdue_row_highlighter=1;
+<<<<<<< HEAD
 						} elseif (($overdue_days_negative_output < 3) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+=======
+						} elseif (($overdue_days_output > -2) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+>>>>>>> branch 'master' of ssh://git@github.com/andyb2000/hff-tdb.git
 							// 2 days to go before overdue so make them amber
 							$overdue_html_text="(Due in $overdue_days_negative_output days)";
 							$overdue_row_highlighter=2;
