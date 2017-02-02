@@ -245,11 +245,11 @@ padding: 0;
 }
 </style>
 <script>
-         function showResult(str) {
+         function showResultMember(str) {
 			
             if (str.length == 0) {
-               document.getElementById("livesearch_pop").innerHTML = "";
-               document.getElementById("livesearch_pop").style.border = "0px";
+               document.getElementById("livesearch_pop_member").innerHTML = "";
+               document.getElementById("livesearch_pop_member").style.border = "0px";
                return;
             }
             
@@ -262,8 +262,8 @@ padding: 0;
             xmlhttp.onreadystatechange = function() {
 				
                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                  document.getElementById("livesearch_pop").innerHTML = xmlhttp.responseText;
-                  document.getElementById("livesearch_pop").style.border = "1px solid #A5ACB2";
+                  document.getElementById("livesearch_pop_member").innerHTML = xmlhttp.responseText;
+                  document.getElementById("livesearch_pop_member").style.border = "1px solid #A5ACB2";
                }
             }
             
@@ -325,12 +325,12 @@ padding: 0;
 		?>
 		
 				<!-- Toy member search -->
-		<form method=post onsubmit="return false">
+		<form method=post onsubmit="return false" name='toy_membersearch' id='toy_membersearch' onsubmit="return false">
 		<input type=hidden name='act' value='3'>
 		<input type=hidden name='tab' value='members'>
 		<input type=hidden name='page' value='members'>
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
-		<tr align=right><td align=right>Search toy members:</td><td width=230><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch_pop"></div></td></tr>
+		<tr align=right><td align=right>Search toy members:</td><td width=230><input type=text size=20 onkeyup = "showResultMember(this.value)"><div id = "livesearch_pop_member"></div></td></tr>
 		</table>
 		</form>
 		<!-- END Toy database search -->
