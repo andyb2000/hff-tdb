@@ -267,7 +267,7 @@ padding: 0;
                }
             }
             
-            xmlhttp.open("GET","<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_livesearch_admin.php?pname=<?=JURI::current()?>&q="+str,true);
+            xmlhttp.open("GET","<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_livesearch_members_admin.php?pname=<?=JURI::current()?>&q="+str,true);
             xmlhttp.send();
          }
 
@@ -323,6 +323,17 @@ padding: 0;
 			$pager=new JPagination($num_rows, $limitstart, $limit);
 		};
 		?>
+		
+				<!-- Toy member search -->
+		<form method=post onsubmit="return false">
+		<input type=hidden name='act' value='3'>
+		<input type=hidden name='tab' value='members'>
+		<input type=hidden name='page' value='members'>
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right>Search toy members:</td><td width=230><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch_pop"></div></td></tr>
+		</table>
+		</form>
+		<!-- END Toy database search -->
 						
 						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 						<tr><td width=5%><B>Member joomla ID</B></td>
