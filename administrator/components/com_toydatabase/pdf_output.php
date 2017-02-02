@@ -549,7 +549,7 @@ switch($disp) {
 		};
 		?></td><td valign=top>
 			<table width=100% border=0 cellpadding=0 cellspacing=0>
-				<tr valign=top><td width=100><?=$row_value["name"]?></td></tr>
+				<tr valign=top><td width=100><h2><?=$row_value["name"]?></h2></td></tr>
 				<tr valign=top><td width=100><?=$row_value["urn"]?></td></tr>
 				<tr valign=top><td width=100%><?=$row_value["description"]?></td></tr>
 			</table>
