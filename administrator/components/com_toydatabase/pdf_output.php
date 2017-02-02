@@ -531,7 +531,7 @@ switch($disp) {
 			echo "</PRE><BR>\n";
 		};
 		$db->setQuery($query);
-		$row = $db->loadAssocList('a.id');
+		$row = $db->loadAssocList();
 		print_r($row);
 		
 		if (!empty($row)) {
