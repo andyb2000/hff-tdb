@@ -538,8 +538,8 @@ switch($disp) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
 		?>
-		<table width=96% border=1 cellpadding=0 cellspacing=0>
-		<tr valign=top align=left><td width=75 valign=top><?php
+		<table width=96% border=1 cellpadding=1 cellspacing=1>
+		<tr valign=top align=left><td width=200 valign=top><?php
 		// check the file exists to display the image
 		if (is_file(JPATH_BASE."/".$row_value["picture"])) {
 			// dynamically resize image using php
