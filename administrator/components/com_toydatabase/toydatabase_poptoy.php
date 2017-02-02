@@ -244,11 +244,11 @@ padding: 0;
 }
 </style>
 <script>
-         function showResult(str) {
+         function showResultMembers(str) {
 			
             if (str.length == 0) {
-               document.getElementById("livesearch_pop").innerHTML = "";
-               document.getElementById("livesearch_pop").style.border = "0px";
+               document.getElementById("livesearch_members_pop").innerHTML = "";
+               document.getElementById("livesearch_members_pop").style.border = "0px";
                return;
             }
             
@@ -261,8 +261,8 @@ padding: 0;
             xmlhttp.onreadystatechange = function() {
 				
                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                  document.getElementById("livesearch_pop").innerHTML = xmlhttp.responseText;
-                  document.getElementById("livesearch_pop").style.border = "1px solid #A5ACB2";
+                  document.getElementById("livesearch_members_pop").innerHTML = xmlhttp.responseText;
+                  document.getElementById("livesearch_members_pop").style.border = "1px solid #A5ACB2";
                }
             }
             
@@ -331,7 +331,7 @@ padding: 0;
 		<input type=hidden name='act' value='1'>
 		<input type=hidden name='tab' value='members'>
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
-		<tr align=right><td align=right>Search members:</td><td width=230><input type=text size=20 onkeyup = "showResultMembers(this.value)"><div id = "livesearch_members"></div></td></tr>
+		<tr align=right><td align=right>Search members:</td><td width=230><input type=text size=20 onkeyup = "showResultMembers(this.value)"><div id = "livesearch_members_pop"></div></td></tr>
 		</table>
 		</form>
 		<!-- END Toy database search -->
