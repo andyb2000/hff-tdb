@@ -266,7 +266,7 @@ padding: 0;
                   document.getElementById("livesearch_pop_member").style.border = "1px solid #A5ACB2";
                }
             }
-            
+            alert("<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_livesearch_members_admin.php?pname=<?=JURI::current()?>&q="+str);
             xmlhttp.open("GET","<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_livesearch_members_admin.php?pname=<?=JURI::current()?>&q="+str,true);
             xmlhttp.send();
          }
