@@ -36,6 +36,7 @@ if (strlen($q)>2) {
 			if ($hint) {
 				$hint=$hint."<BR/>";
 			};
+			$hint=$hint."<BR>DEBUG: $pname<BR>\n";
 			if (strpos($pname, 'administrator/') !== false) {
 				$hint=$hint."<a href='".$pname."?option=com_toydatabase&page=toys&tab=toys&act=1&ddid=".$toy_value["id"]."'>".$toy_value["name"]."</a>";
 			} else {
