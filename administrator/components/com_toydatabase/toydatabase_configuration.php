@@ -132,6 +132,7 @@
 	$db->execute();
 	$permissions_rows = $db->loadAssocList("function");
 
+	print_r($permissions_rows);
 ?>
 <form method=post name='configuration'>
 <table width=95% border=1 cellpadding=0 cellspacing=0>
