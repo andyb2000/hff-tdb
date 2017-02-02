@@ -311,7 +311,7 @@ padding: 0;
 		->order($db->quoteName('name') . ' ASC');
 		
 		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limit = @$app->getUserStateFromRequest(@"$option.limit", 'limit', 25, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
