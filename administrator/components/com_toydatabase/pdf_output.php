@@ -532,7 +532,7 @@ switch($disp) {
 		};
 		$db->setQuery($query);
 		$row = $db->loadAssocList();
-		print_r($row);
+		//print_r($row);
 		
 		if (!empty($row)) {
 			// print_r($row);
@@ -549,9 +549,9 @@ switch($disp) {
 		};
 		?></td><td valign=top>
 			<table width=100% border=0 cellpadding=0 cellspacing=0>
-				<tr valign=top><td width=100><?=$row_value["a.name"]?></td></tr>
-				<tr valign=top><td width=100><?=$row_value["a.urn"]?></td></tr>
-				<tr valign=top><td width=100%><?=$row_value["a.description"]?></td></tr>
+				<tr valign=top><td width=100><?=$row_value["name"]?></td></tr>
+				<tr valign=top><td width=100><?=$row_value["urn"]?></td></tr>
+				<tr valign=top><td width=100%><?=$row_value["description"]?></td></tr>
 			</table>
 		</td></tr>
 		</table>
