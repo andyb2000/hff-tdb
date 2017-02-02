@@ -886,8 +886,7 @@ if ($loanlink_rows["returnbydate"]) {
 			$category_search_rows = $db->loadAssocList();
 			$query
 			->select('SQL_CALC_FOUND_ROWS *')
-			->from($db->quoteName('#__toydatabase_equipment'))
-			->where($db->quoteName('status') . ' != '. $db->quote('3'), 'AND');
+			->from($db->quoteName('#__toydatabase_equipment'));
 			$loop_num=0;
 			foreach ($category_search_rows as $cat_search_vals) {
 				if ($loop_num == 0) {
