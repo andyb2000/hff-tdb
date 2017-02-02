@@ -326,15 +326,16 @@ padding: 0;
 		?>
 		
 		<!-- Toy database search -->
-		<form method=post onsubmit="return false">
-		<input type=hidden name='act' value='3'>
-		<input type=hidden name='tab' value='toys'>
-		<input type=hidden name='page' value='toys'>
+		<form method=post name='member_search' id='member_search' onsubmit="return false">
+		<input type=hidden name='page' value='members'>
+		<input type=hidden name='act' value='1'>
+		<input type=hidden name='tab' value='members'>
 		<table width=100% border=0 cellpadding=0 cellspacing=0>
-		<tr align=right><td align=right>Search toy library:</td><td width=230><input type=text size=20 onkeyup = "showResult(this.value)"><div id = "livesearch_pop"></div></td></tr>
+		<tr align=right><td align=right>Search members:</td><td width=230><input type=text size=20 onkeyup = "showResultMembers(this.value)"><div id = "livesearch_members"></div></td></tr>
 		</table>
 		</form>
 		<!-- END Toy database search -->
+		
 
 		<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 		<tr><td width=30%><B>Toy name</B></td>
