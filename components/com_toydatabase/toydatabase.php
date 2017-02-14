@@ -883,14 +883,14 @@ if ($loanlink_rows["returnbydate"]) {
 			$get_search_category
 			->select('*')
 			->from($db->quoteName('#__toydatabase_categorylink'))
-			->where($db->quoteName('categoryid') . ' = '. $toycategoryselect, 'AND')
-			->where($db->quoteName('status') . ' != '. $db->quote('3'));
+			->where($db->quoteName('categoryid') . ' = '. $toycategoryselect);
 			$db->setQuery((string) $get_search_category);
 			$db->execute();
 			$category_search_rows = $db->loadAssocList();
 			$query
 			->select('SQL_CALC_FOUND_ROWS *')
-			->from($db->quoteName('#__toydatabase_equipment'));
+			->from($db->quoteName('#__toydatabase_equipment'))
+			->where($db->quoteName('status') . ' != '. $db->quote('3'),'AND');
 			$loop_num=0;
 			foreach ($category_search_rows as $cat_search_vals) {
 				if ($loop_num == 0) {

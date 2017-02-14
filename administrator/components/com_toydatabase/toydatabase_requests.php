@@ -3,26 +3,28 @@
 //  toydatabase_loanlink contains the loans in the system, historical and active
 //  show them all sorted by which ones are active (then into history)
 //  allow a manual addition for a member (or non-member)
+//
 switch($loan_act) {
 	case "4":
 		// add a manual loan request
 		if($tab == "loan") {
 
+			
 			?>
-									<form method=post name='loanrequest' id='loanrequest'>
+									<form method=post name='loanrequest' id='loanrequest' class='form-validate form-horizontal well'>
 									<input type=hidden name='loan_act' value='2'>
 									<input type=hidden name='ddid' value='0'>
 									<input type=hidden name='tab' value='loan'>
 									<table width=95% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 									<tr>
 									<td valign=top><B>Toy id :</B></td>
-									<td><input type=text size=5 name='in_equipmentid' id='in_equipmentid' value=''>&nbsp;
+									<td><input type=text size=5 name='in_equipmentid' id='in_equipmentid' value='' class='required' >&nbsp;
 									<a href="<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_poptoy.php?curr_toy=<?=$row["equipmentid"]?>" class="modal" id='toyselector' name='toyselector' rel="{handler: 'iframe', size: {x: 500, y: 400}}">Toy selector</a>
 									</td>
 									</tr>
 									<tr>
 									<td valign=top><B>Member id :</B></td>
-									<td><input type=text size=5 name='in_membershipid' id='in_membershipid' value=''>&nbsp;
+									<td><input type=text size=5 name='in_membershipid' id='in_membershipid' value='' class='required' >&nbsp;
 									<a href="<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_popmember.php?curr_member=<?=$row["membershipid"]?>" class="modal" id='memberselector' name='memberselector' rel="{handler: 'iframe', size: {x: 500, y: 400}}">Member selector</a>
 									</td>
 									</tr>
@@ -380,7 +382,7 @@ switch($loan_act) {
 						if (($overdue_days_output > 0) && ($row_value["returndate"] == "0000-00-00 00:00:00" && $overdue_days > 0)) {
 							$overdue_html_text="(Overdue $overdue_days_negative_output days)";
 							$overdue_row_highlighter=1;
-						} elseif (($overdue_days_output > -2) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
+						} elseif (($overdue_days_negative_output < 3) && ($row_value["returndate"] == "0000-00-00 00:00:00")) {
 							// 2 days to go before overdue so make them amber
 							$overdue_html_text="(Due in $overdue_days_negative_output days)";
 							$overdue_row_highlighter=2;

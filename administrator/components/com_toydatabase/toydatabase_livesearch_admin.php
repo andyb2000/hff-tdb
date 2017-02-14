@@ -36,7 +36,7 @@ if (strlen($q)>2) {
 			if ($hint) {
 				$hint=$hint."<BR/>";
 			};
-			if (strpos($pname, 'administrator/') !== false) {
+			if (strpos($pname, 'administrator/components') === false) {
 				$hint=$hint."<a href='".$pname."?option=com_toydatabase&page=toys&tab=toys&act=1&ddid=".$toy_value["id"]."'>".$toy_value["name"]."</a>";
 			} else {
 				$hint=$hint."<a href='#' onclick='Javascript:window.parent.document.getElementById(\"in_equipmentid\").value=\"".$toy_value["id"]."\";window.parent.SqueezeBox.close();'>".$toy_value["name"]."</a>";

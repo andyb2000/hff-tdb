@@ -75,6 +75,8 @@ switch($member_act) {
 			$joomla_userid = $memb_joomlaid["joomla_userid"];
 				
 			// if activated then set the user to registered in joomla too
+			// we can only do this if joomla_userid is valid and not 0
+			if ($joomla_userid && $joomla_userid != 0) {
 			if ($frm_in_active == "1") {
 				// active
 				$get_curruser_joomla = $db->getQuery(true);
@@ -144,6 +146,7 @@ switch($member_act) {
 					$db->execute();
 				};
 			};
+			}; // end checking joomlaid is valid
 			$upd_request = $db->getQuery(true);
 			$upd_fields = array(
 					$db->quoteName('type') . ' = ' . $db->quote($frm_in_type),

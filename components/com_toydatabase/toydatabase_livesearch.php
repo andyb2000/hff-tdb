@@ -20,7 +20,9 @@ if (strlen($q)>2) {
 	$query_toyname
 	->select(array('id','name'))
 	->from($db->quoteName('#__toydatabase_equipment'))
-	->where($db->quoteName('name') . ' like "%'.$q.'%"');
+	->where($db->quoteName('name') . ' like "%'.$q.'%"', 'AND')
+	->where($db->quoteName('status') . ' != '. $db->quote('3'));
+	
 	$db->setQuery((string) $query_toyname);
 	$db->execute();
 	$toydatabase_toyname_num_rows = $db->getNumRows();	

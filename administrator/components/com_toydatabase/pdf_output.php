@@ -531,15 +531,15 @@ switch($disp) {
 			echo "</PRE><BR>\n";
 		};
 		$db->setQuery($query);
-		$row = $db->loadAssocList('a.id');
-		print_r($row);
+		$row = $db->loadAssocList();
+		//print_r($row);
 		
 		if (!empty($row)) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
 		?>
-		<table width=96% border=1 cellpadding=0 cellspacing=0>
-		<tr valign=top aligh=left><td valign=top><?php
+		<table width=96% border=1 cellpadding=1 cellspacing=1>
+		<tr valign=top align=left><td width=200 valign=top><?php
 		// check the file exists to display the image
 		if (is_file(JPATH_BASE."/".$row_value["picture"])) {
 			// dynamically resize image using php
@@ -549,9 +549,9 @@ switch($disp) {
 		};
 		?></td><td valign=top>
 			<table width=100% border=0 cellpadding=0 cellspacing=0>
-				<tr valign=top><td width=100><?=$row_value["a.name"]?></td></tr>
-				<tr valign=top><td width=100><?=$row_value["a.urn"]?></td></tr>
-				<tr valign=top><td width=100%><?=$row_value["a.description"]?></td></tr>
+				<tr valign=top><td width=100><h2><?=$row_value["name"]?></h2></td></tr>
+				<tr valign=top><td width=100><?=$row_value["urn"]?></td></tr>
+				<tr valign=top><td width=100%><?=$row_value["description"]?></td></tr>
 			</table>
 		</td></tr>
 		</table>
