@@ -893,7 +893,7 @@ if ($loanlink_rows["returnbydate"]) {
 				if ($loop_num == 0) {
 					$query->where($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid']);
 				} else {
-					$query->where('OR', $db->quoteName('id') . ' = '. $cat_search_vals['equipmentid'],'OR');
+					$query->where('OR', $db->quoteName('id') . ' = '. $cat_search_vals['equipmentid']);
 				};
 				$loop_num++;
 			};
