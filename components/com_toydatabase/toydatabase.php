@@ -891,10 +891,11 @@ if ($loanlink_rows["returnbydate"]) {
 			$loop_num=0;
 			foreach ($category_search_rows as $cat_search_vals) {
 				if ($loop_num == 0) {
-					$query->where($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid'],'OR');
+					$query->where($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid']);
 				} else {
-					$query->where($db->quoteName('id') . ' = '. $cat_search_vals['equipmentid'],'OR');
+					$query->where('OR', $db->quoteName('id') . ' = '. $cat_search_vals['equipmentid'],'OR');
 				};
+				$loop_num++;
 			};
 			$query->order($db->quoteName('name') . ' ASC');
 		} else {
@@ -923,7 +924,7 @@ if ($loanlink_rows["returnbydate"]) {
 ?>
 
 <!-- Toy database search -->
-<form method=post onsubmit="return false">
+<form method=get onsubmit="return false">
 <input type=hidden name='act' value=''>
 <table width=100% border=0 cellpadding=0 cellspacing=0>
 <tr><td>Toy Category:</td><td><select name='toycategoryselect' onchange='this.form.submit();'>
