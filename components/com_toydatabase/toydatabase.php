@@ -280,6 +280,9 @@ if (in_array($toydatabase_permissions["groupname"],$user->groups)) {
 <?php
 
 switch ($act) {
+	case "900":
+		echo "Test mode for email send<BR>\n";
+		break;
 	case "98":
 		// This is for people who already use the system (so are probably members) but have no login
 		switch($subact) {
