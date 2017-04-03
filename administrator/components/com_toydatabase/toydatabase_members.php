@@ -147,8 +147,10 @@ switch($member_act) {
 				};
 			};
 			}; // end checking joomlaid is valid
+			// 03-04-17 fix by adding joomla_userid to update existing entries.
 			$upd_request = $db->getQuery(true);
 			$upd_fields = array(
+                                        $db->quoteName('joomla_userid') . ' = ' . $db->quote($frm_in_joomla_userid),
 					$db->quoteName('type') . ' = ' . $db->quote($frm_in_type),
 					$db->quoteName('urn') . ' = ' . $db->quote($frm_in_urn),
 					$db->quoteName('name') . ' = ' . $db->quote($frm_in_membername),
@@ -230,8 +232,10 @@ switch($member_act) {
 					<td valign=top><B>Type :</B></td>
 					<td><select name='in_type'>
 <option value=''></option>
-<option value='1'>Individual</option>
-<option value='2'>Organisation</option>
+<option value='1' <?php // added fix 03-04-17
+if ($row["type"] == "1") {echo "selected";}; ?>>Individual</option>
+<option value='2' <?php // added fix 03-04-17
+if ($row["type"] == "2") {echo "selected";}; ?>>Organisation</option>
 					</select></td>
 					</tr>
 					<tr>
@@ -339,7 +343,9 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 		$query
 		->select('SQL_CALC_FOUND_ROWS *')
 		->from($db->quoteName('#__toydatabase_membership'))
-		->order($db->quoteName('name') . ' DESC');
+//		->order($db->quoteName('name') . ' DESC');
+// change 03-04-17 to make finding new members easier
+                ->order($db->quoteName('active') . ' ASC');
 		
 		$app = JFactory::getApplication();
 		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');

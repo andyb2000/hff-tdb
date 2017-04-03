@@ -9,27 +9,27 @@
 	$email_booktoy_approve = $jinput->get('email_booktoy_approve', '', 'RAW');
 	$email_booktoy_reject = $jinput->get('email_booktoy_reject', '', 'RAW');
 
-	function toydatabase_updateconfiguration($param,$param_value) {
+	function toydatabase_updateconfiguration($db_inside,$param,$param_value) {
 		global $db;
 		
 		if ($param) {
 			// check there is an entry in db first
-			$check_request = $db->getQuery(true);
+			$check_request = $db_inside->getQuery(true);
 			$query
 			->select('*')
-			->from($db->quoteName('#__toydatabase_permissions'))
-			->where($db->quoteName('function') . ' = '. $param);
-			$db->setQuery($query);
-			$db->execute();
+			->from($db_inside->quoteName('#__toydatabase_permissions'))
+			->where($db_inside->quoteName('function') . ' = '. $param);
+			$db_inside->setQuery($query);
+			$db_inside->execute();
 			
-			if ($db->getNumRows() > 0) {
+			if ($db_inside->getNumRows() > 0) {
 				// do the update
-				$upd_request = $db->getQuery(true);
-				$upd_fields = array($db->quoteName('groupname') . ' = ' . $db->quote($param_value));
-				$upd_request->update($db->quoteName('#__toydatabase_permissions'))->set($upd_fields)->where($db->quoteName('function') . ' = "'.$param.'"');
+				$upd_request = $db_inside->getQuery(true);
+				$upd_fields = array($db_inside->quoteName('groupname') . ' = ' . $db_inside->quote($param_value));
+				$upd_request->update($db_inside->quoteName('#__toydatabase_permissions'))->set($upd_fields)->where($db_inside->quoteName('function') . ' = "'.$param.'"');
 				try {
-					$db->setQuery($upd_request);
-					$db->execute();
+					$db_inside->setQuery($upd_request);
+					$db_inside->execute();
 				}
 				catch (RuntimeException $e) {
 					JFactory::getApplication()->enqueueMessage($e->getMessage());
@@ -38,16 +38,16 @@
 				};
 			} else {
 				// didnt exist so add it as a new entry in the permissions table
-				$ins_request = $db->getQuery(true);
+				$ins_request = $db_inside->getQuery(true);
 				$ins_columns = array('function','groupname');
-				$ins_values = array($db->quote($param),$db->quote($param_value));
+				$ins_values = array($db_inside->quote($param),$db_inside->quote($param_value));
 				$ins_request
-				->insert($db->quoteName('#__toydatabase_equipment_permissions'))
-				->columns($db->quoteName($ins_columns))
+				->insert($db_inside->quoteName('#__toydatabase_equipment_permissions'))
+				->columns($db_inside->quoteName($ins_columns))
 				->values(implode(',', $ins_values));
 				try {
-					$db->setQuery($ins_request);
-					$db->execute();
+					$db_inside->setQuery($ins_request);
+					$db_inside->execute();
 				}
 				catch (RuntimeException $e) {
 					JFactory::getApplication()->enqueueMessage("Error inserting config entry ".$e->getMessage());
@@ -106,22 +106,22 @@
 	};
 	
 	if ($email_signup) {
-		toydatabase_updateconfiguration("email_signup",$email_signup);
+		toydatabase_updateconfiguration($db,"email_signup",$email_signup);
 	};
 	if ($email_signupapproval) {
-		toydatabase_updateconfiguration("email_signupapproval",$email_signupapproval);
+		toydatabase_updateconfiguration($db,"email_signupapproval",$email_signupapproval);
 	};
 	if ($email_signuprejected) {
-		toydatabase_updateconfiguration("email_signuprejected",$email_signuprejected);
+		toydatabase_updateconfiguration($db,"email_signuprejected",$email_signuprejected);
 	};
 	if ($email_booktoy_request) {
-		toydatabase_updateconfiguration("email_booktoy_request",$email_booktoy_request);
+		toydatabase_updateconfiguration($db,"email_booktoy_request",$email_booktoy_request);
 	};
 	if ($email_booktoy_approve) {
-		toydatabase_updateconfiguration("email_booktoy_approve",$email_booktoy_approve);
+		toydatabase_updateconfiguration($db,"email_booktoy_approve",$email_booktoy_approve);
 	};
 	if ($email_booktoy_reject) {
-		toydatabase_updateconfiguration("email_booktoy_reject",$email_booktoy_reject);
+		toydatabase_updateconfiguration($db,"email_booktoy_reject",$email_booktoy_reject);
 	};
 	
 	$query_permissions=$db->getQuery(true);
