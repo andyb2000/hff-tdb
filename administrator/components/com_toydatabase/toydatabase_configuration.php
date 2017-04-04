@@ -15,11 +15,11 @@
 		if ($param) {
 			// check there is an entry in db first
 			$check_request = $db_inside->getQuery(true);
-			$query
+			$check_request
 			->select('*')
 			->from($db_inside->quoteName('#__toydatabase_permissions'))
-			->where($db_inside->quoteName('function') . ' = '. $param);
-			$db_inside->setQuery($query);
+			->where($db_inside->quoteName('function') . ' = "'. $param .'"');
+			$db_inside->setQuery($check_request);
 			$db_inside->execute();
 			
 			if ($db_inside->getNumRows() > 0) {
@@ -42,7 +42,7 @@
 				$ins_columns = array('function','groupname');
 				$ins_values = array($db_inside->quote($param),$db_inside->quote($param_value));
 				$ins_request
-				->insert($db_inside->quoteName('#__toydatabase_equipment_permissions'))
+				->insert($db_inside->quoteName('#__toydatabase_permissions'))
 				->columns($db_inside->quoteName($ins_columns))
 				->values(implode(',', $ins_values));
 				try {
@@ -179,32 +179,32 @@ $admin_emails=$permissions_rows["admin_emails"]["groupname"];
 <tr><td colspan=2 valign=top align=center><hr width=99%></td></tr>
 <tr><td valign=top><B>Sign up to database email (to users):</B></td><td>
 <?php
-			echo $editor->display('email_signup', $permissions_rows[0]["email_signup"], '5%', '50px', '5', '2',true);
+			echo $editor->display('email_signup', $permissions_rows["email_signup"]["groupname"], '5%', '50px', '5', '2',true);
 ?>
 </td></tr>
 <tr><td valign=top><B>Sign up approval email (to users):</B></td><td>
 <?php
-			echo $editor->display('email_signupapproval', $permissions_rows[0]["email_signupapproval"], '5%', '50px', '5', '2',true);
+			echo $editor->display('email_signupapproval', $permissions_rows["email_signupapproval"]["groupname"], '5%', '50px', '5', '2',true);
 ?>
 </td></tr>
 <tr><td valign=top><B>Sign up rejected email (to users):</B></td><td>
 <?php
-			echo $editor->display('email_signuprejected', $permissions_rows[0]["email_signuprejected"], '5%', '50px', '5', '2',true);
+			echo $editor->display('email_signuprejected', $permissions_rows["email_signuprejected"]["groupname"], '5%', '50px', '5', '2',true);
 ?>
 </td></tr>
 <tr><td valign=top><B>Book a toy request (initial pending approval) email (to users):</B></td><td>
 <?php
-			echo $editor->display('email_booktoy_request', $permissions_rows[0]["email_booktoy_request"], '5%', '50px', '5', '2',true);
+			echo $editor->display('email_booktoy_request', $permissions_rows["email_booktoy_request"]["groupname"], '5%', '50px', '5', '2',true);
 ?>
 </td></tr>
 <tr><td valign=top><B>Toy booking has been approved email (to users):</B></td><td>
 <?php
-			echo $editor->display('email_booktoy_approve', $permissions_rows[0]["email_booktoy_approve"], '5%', '50px', '5', '2',true);
+			echo $editor->display('email_booktoy_approve', $permissions_rows["email_booktoy_approve"]["groupname"], '5%', '50px', '5', '2',true);
 ?>
 </td></tr>
 <tr><td valign=top><B>Toy booking has been rejected email (to users):</B></td><td>
 <?php
-			echo $editor->display('email_booktoy_reject', $permissions_rows[0]["email_booktoy_reject"], '5%', '50px', '5', '2',true);
+			echo $editor->display('email_booktoy_reject', $permissions_rows["email_booktoy_reject"]["groupname"], '5%', '50px', '5', '2',true);
 ?>
 </td></tr>
 <tr><td colspan=2 valign=top align=right><input type=submit name='Save changes'></td></tr>
