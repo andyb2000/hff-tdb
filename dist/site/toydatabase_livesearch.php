@@ -13,13 +13,16 @@ $db = JFactory::getDBO();// Joomla database object
 $q = urldecode($_REQUEST["q"]);
 $pname = $_REQUEST["pname"];
 $query_toyname = $db->getQuery(true);
+$hint="";
 
 if (strlen($q)>2) {
 	$hint = "";
 	$query_toyname
 	->select(array('id','name'))
 	->from($db->quoteName('#__toydatabase_equipment'))
-	->where($db->quoteName('name') . ' like "%'.$q.'%"');
+	->where($db->quoteName('name') . ' like "%'.$q.'%"', 'AND')
+	->where($db->quoteName('status') . ' != '. $db->quote('3'));
+	
 	$db->setQuery((string) $query_toyname);
 	$db->execute();
 	$toydatabase_toyname_num_rows = $db->getNumRows();	
