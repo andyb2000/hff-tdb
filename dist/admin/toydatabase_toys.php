@@ -72,7 +72,7 @@ switch($act) {
                         <td valign=top><B>Toy Status :</B></td>
                         <td><select name='in_toystatus'>
                         <option value='3'>DAMAGED/NO LONGER AVAILABLE</option>
-                        <option value='2'>AWAITING CLEANING/REPAIR</option>
+                        <option value='2'>AWAITING REPAIR</option>
                         <option value='1'>ON LOAN</option>
                         <option value='0'>AVAILABLE</option>
                         <option value='99'>UNKNOWN</option>
@@ -116,6 +116,7 @@ switch($act) {
 		$frm_in_toydescription = $jinput->get('in_toydescription', '', 'RAW');
 		$frm_in_toylocation = $jinput->get('in_toylocation', '', 'RAW');
 		$frm_in_toystatus = $jinput->get('in_toystatus', '', 'RAW');
+		$frm_in_toynotes = $jinput->get('in_toynotes', '', 'RAW');
 		$frm_in_toycat_arr = $jinput->get('toycat_arr', array(), 'ARRAY');
 
 		if ($ddid == 0) {
@@ -172,6 +173,7 @@ switch($act) {
 					$db->quoteName('description') . ' = ' . $db->quote($frm_in_toydescription),
 					$db->quoteName('storagelocation') . ' = ' . $db->quote($frm_in_toylocation),
 					$db->quoteName('status') . ' = ' . $db->quote($frm_in_toystatus),
+					$db->quoteName('notes') . ' = ' . $db->quote($frm_in_toynotes),
 					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
 			$upd_request->update($db->quoteName('#__toydatabase_equipment'))->set($upd_fields)->where($db->quoteName('id') . ' = '. $ddid);
@@ -315,14 +317,11 @@ switch($act) {
 			<td><input type=text size=30 name='in_toylocation' value='<?=$row["storagelocation"]?>'></td>
 		</tr>
 		<tr>
-			<td valign=top><B>Toy Status :</B></td>
-			<td><select name='in_toystatus'>
-			<option value='3' <?php if($row["status"] == 3) {echo "selected";}; ?>>DAMAGED/NO LONGER AVAILABLE</option>
-			<option value='2' <?php if($row["status"] == 2) {echo "selected";}; ?>>AWAITING CLEANING/REPAIR</option>
-			<option value='1' <?php if($row["status"] == 1) {echo "selected";}; ?>>ON LOAN</option>
-			<option value='0' <?php if($row["status"] == 0) {echo "selected";}; ?>>AVAILABLE</option>
-			<option value='99' <?php if($row["status"] == 99) {echo "selected";}; ?>>UNKNOWN</option>
-			</select></td>
+			<td valign=top><B>Toy Notes :</B></td>
+			<td><?php 
+			echo $editor->display('in_toynotes', $row["notes"], '60%', '50px', '5', '2',true);
+			?>
+			</td>
 		</tr>
 		<tr>
 			<td valign=top><B>Toy Category :</B></td>
@@ -344,6 +343,17 @@ switch($act) {
 			?>
 			</td>
 		</tr>
+		<tr>
+			<td valign=top><B>Toy Status :</B></td>
+			<td><select name='in_toystatus'>
+			<option value='3' <?php if($row["status"] == 3) {echo "selected";}; ?>>DAMAGED/NO LONGER AVAILABLE</option>
+			<option value='2' <?php if($row["status"] == 2) {echo "selected";}; ?>>AWAITING REPAIR</option>
+			<option value='1' <?php if($row["status"] == 1) {echo "selected";}; ?>>ON LOAN</option>
+			<option value='0' <?php if($row["status"] == 0) {echo "selected";}; ?>>AVAILABLE</option>
+			<option value='99' <?php if($row["status"] == 99) {echo "selected";}; ?>>UNKNOWN</option>
+			</select></td>
+		</tr>
+		
 		<tr>
 			<td valign=top><B>Toy Loan state :<BR>(Non-edit, go to Approve/View requests tab)</B></td>
 			<td><select name='in_toyloanstate' disabled>
@@ -425,6 +435,19 @@ switch($act) {
 		if (!empty($row)) {
 			// print_r($row);
 			foreach ($row as $row_key=>$row_value) {
+				// And retrieve the loan state _toydatabase_loanlink
+				// If its on loan it will return a row and its status will be 1
+				// when returned the status should be set to 0 or something other than 1 basically
+				$query_loanlink = $db->getQuery(true);
+				$query_loanlink
+				->select('*')
+				->from($db->quoteName('#__toydatabase_loanlink'))
+				->where($db->quoteName('equipmentid') . ' = '. $row_key, 'AND')
+				->where($db->quoteName('status') . ' = '. '1');
+				$db->setQuery((string) $query_loanlink);
+				$db->execute();
+				$loanlink_rows = $db->loadAssoc();
+				
 				echo "<tr onclick='self.location=\"".JURI::getInstance()->toString()."&page=toys&tab=toys&act=1&ddid=$row_key\"'>";
 				echo "<td>".$row_value["name"]."</td>\n";
 				echo "<td>";
@@ -452,12 +475,15 @@ switch($act) {
 				};
 				echo "</td>\n";
 				echo "<td>";
-				switch($row_value["status"]) {
+				if ($loanlink_rows["status"] == 1) {$override_status=1;} else {
+					$override_status=$row_value["status"];
+				};
+				switch($override_status) {
 					case "3":
 						echo "Damaged/No longer available";
 						break;
 					case "2":
-						echo "Awaiting cleaning/repair";
+						echo "Awaiting repair";
 						break;
 					case "1":
 						echo "On Loan";
@@ -472,11 +498,7 @@ switch($act) {
 				echo "</td>\n";
 				echo "</tr>";
 			};
-		} else {
-			// no rows or toys in database found
-			echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
-		};
-		?>
+?>
 		</table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
 		<input type=hidden name='page' value='toys'>
@@ -484,6 +506,12 @@ switch($act) {
 			echo $pager->getListFooter();
 			echo "Number of toys to display per page: ".$pager->getLimitBox()."<BR>\n";
 			echo "</form>";
+
+		} else {
+			// no rows or toys in database found
+			echo "<tr><td colspan=4 align=center><B>Sorry - No items found</B></td></tr>\n";
+			echo "</table>";
+		};
 			// end of default: switch
 			break;
 }; // enc of switch selecting act

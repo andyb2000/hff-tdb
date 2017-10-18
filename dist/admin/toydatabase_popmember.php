@@ -11,6 +11,9 @@ define( '_JEXEC', 1 );
 define('JPATH_BASE', dirname(__FILE__)."/../../.." );//this is when we are in the root,means path to Joomla installation
 define( 'DS', DIRECTORY_SEPARATOR );
 
+// shush errors
+error_reporting(E_ERROR);
+
 require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
 require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
 
@@ -242,11 +245,11 @@ padding: 0;
 }
 </style>
 <script>
-         function showResult(str) {
+         function showResultMember(str) {
 			
             if (str.length == 0) {
-               document.getElementById("livesearch").innerHTML = "";
-               document.getElementById("livesearch").style.border = "0px";
+               document.getElementById("livesearch_pop_member").innerHTML = "";
+               document.getElementById("livesearch_pop_member").style.border = "0px";
                return;
             }
             
@@ -259,12 +262,11 @@ padding: 0;
             xmlhttp.onreadystatechange = function() {
 				
                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                  document.getElementById("livesearch").innerHTML = xmlhttp.responseText;
-                  document.getElementById("livesearch").style.border = "1px solid #A5ACB2";
+                  document.getElementById("livesearch_pop_member").innerHTML = xmlhttp.responseText;
+                  document.getElementById("livesearch_pop_member").style.border = "1px solid #A5ACB2";
                }
             }
-            
-            xmlhttp.open("GET","<?=JURI::root()?>/administrator/components/com_toydatabase/toydatabase_livesearch_admin.php?pname=<?=JURI::current()?>&q="+str,true);
+            xmlhttp.open("GET","<?=JURI::root()?>toydatabase_livesearch_members_admin.php?pname=<?=JURI::current()?>&q="+str,true);
             xmlhttp.send();
          }
 
@@ -308,7 +310,7 @@ padding: 0;
 		->order($db->quoteName('name') . ' DESC');
 		
 		$app = JFactory::getApplication();
-		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+		$limit = @$app->getUserStateFromRequest(@"$option.limit", 'limit', 25, 'int');
 		$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
 		
 		$db->setQuery($query,$limitstart, $limit);
@@ -320,6 +322,17 @@ padding: 0;
 			$pager=new JPagination($num_rows, $limitstart, $limit);
 		};
 		?>
+		
+				<!-- Toy member search -->
+		<form method=post onsubmit="return false" name='toy_membersearch' id='toy_membersearch' onsubmit="return false">
+		<input type=hidden name='act' value='3'>
+		<input type=hidden name='tab' value='members'>
+		<input type=hidden name='page' value='members'>
+		<table width=100% border=0 cellpadding=0 cellspacing=0>
+		<tr align=right><td align=right>Search toy members:</td><td width=230><input type=text size=20 onkeyup = "showResultMember(this.value)"><div id = "livesearch_pop_member"></div></td></tr>
+		</table>
+		</form>
+		<!-- END Toy database search -->
 						
 						<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
 						<tr><td width=5%><B>Member joomla ID</B></td>

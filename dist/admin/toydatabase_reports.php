@@ -163,18 +163,81 @@ switch($report_selector) {
 	<?php
 				$report_query = $db->getQuery(true);
 				$report_query
-				->select(array('a.*', 'b.membershipid', 'b.loandate','b.returnbydate'))
-				->from($db->quoteName('#__toydatabase_equipment', 'a'))
-				->join('LEFT', $db->quoteName('#__toydatabase_loanlink', 'b') . ' ON (' . $db->quoteName('a.id') . ' = ' . $db->quoteName('b.equipmentid') . ')')
+				->select(array('SQL_CALC_FOUND_ROWS a.*', 'b.*', 'c.name as membername', 'c.urn as memberurn'))
+				->from($db->quoteName('#__toydatabase_loanlink', 'a'))
+				->join('INNER', $db->quoteName('#__toydatabase_equipment', 'b') . ' ON (' . $db->quoteName('a.equipmentid') . ' = ' . $db->quoteName('b.id') . ')')
+				->join('INNER', $db->quoteName('#__toydatabase_membership', 'c') . ' ON (' . $db->quoteName('a.membershipid') . ' = ' . $db->quoteName('c.id') . ')')
 				->where($db->quoteName('a.status') . ' = "1"', 'AND')
-				->where($db->quoteName('b.returndate') . ' != "0000-00-00 00:00:00"');
+				->where($db->quoteName('a.returndate') . ' = "0000-00-00 00:00:00"')
+				->order($db->quoteName('a.returnbydate') . ' ASC');
+			if ($debug) {
 				echo "DEBUG:<PRE>\n";
 				echo $db->replacePrefix((string) $report_query);
 				echo "</PRE><BR>\n";
-				$db->setQuery((string) $report_query);
-				$db->execute();
-				$row_count_check= $db->getNumRows();
-				echo "Found $row_count_check items on hire entries<BR>";
+			};
+				$app = JFactory::getApplication();
+				$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
+				$limitstart = JFactory::getApplication()->input->get('limitstart', 0, 'INT');
+				
+				$db->setQuery($report_query,$limitstart, $limit);
+				$row = $db->loadAssocList('id');
+				if(!empty($row)){
+					$db->setQuery('SELECT FOUND_ROWS();');
+					$num_rows=$db->loadResult();
+					jimport('joomla.html.pagination');
+					$pager=new JPagination($num_rows, $limitstart, $limit);
+				};
+				// $row_count_check= $db->getNumRows();
+				?>
+				</form>
+				<!-- Print/PDF button -->
+				<form method=post onsubmit="return false">
+				<table width=100% border=0 cellpadding=0 cellspacing=0>
+				<tr align=right><td align=right><input type=button name='printpage' id='printpage' value='Print Out On Hire Items' onclick='window.open("<?=JURI::root()?>/administrator/components/com_toydatabase/pdf_output.php?disp=onhire");'></td></tr>
+				</table>
+				</form>
+				<!-- end print button -->
+				Found <?=$num_rows?> items on hire entries<BR>
+				<table width=85% border=1 cellpadding=0 cellspacing=0 class="hoverTable">
+				<tr><td width=5%><B>Equipment URN</B></td>
+				<td width=30%><B>Equipment Name</B></td>
+				<td width=5%><B>Member URN</B></td>
+				<td width=20%><B>Member Name</B></td>
+				<td width=20%><B>Loaned on</B></td>
+				<td width=20%><B>Return by date</B></td>
+				</tr>
+				<?php
+				if (!empty($row)) {
+					// print_r($row);
+					foreach ($row as $row_key=>$row_value) {
+						$entry_loandate=JFactory::getDate($row_value["loandate"]);
+						$entry_loandate_out=JHtml::_('date', $entry_loandate, 'd/m/Y');
+						$entry_returnbydate=JFactory::getDate($row_value["returnbydate"]);
+						$entry_returnbydate_out=JHtml::_('date', $entry_returnbydate, 'd/m/Y');
+						
+						echo "<tr>";
+						echo "<td>".$row_value["urn"]."</td>";
+						echo "<td>".$row_value["name"]."</td>";
+						echo "<td>".$row_value["memberurn"]."</td>";
+						echo "<td>".$row_value["membername"]."</td>";
+						echo "<td>".$entry_loandate_out."</td>";
+						echo "<td>".$entry_returnbydate_out."</td>";
+						echo "</tr>\n";
+						};
+				} else {
+							// no rows or toys in database found
+							echo "<tr><td colspan=6 align=center><B>Sorry - No entries found</B></td></tr>\n";
+				};
+						?>
+														</table><form name="adminForm" id="adminForm">
+								<input type=hidden name='option' value='com_toydatabase'>
+								<input type=hidden name='page' value='reports'>
+								<input type=hidden name='tab' value='reports'>
+								<input type=hidden name='report' value='onhire'>
+						<?php
+												echo $pager->getListFooter();
+												echo "Number of entries to display per page: ".$pager->getLimitBox()."<BR>\n";
+												echo "</form>";
 			break;
 	case "hires":
 		$in_hire_startdate = $jinput->get('in_hire_startdate', '', 'RAW');

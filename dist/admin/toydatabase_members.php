@@ -4,6 +4,7 @@ switch($member_act) {
 	case "2":
 		// make changes to selected user
 		if ($tab == "member") {
+			$frm_in_joomla_userid = $jinput->get('in_joomla_userid', '', 'RAW');
 			$frm_in_membername = $jinput->get('in_membername', '', 'RAW');
 			$frm_in_urn = $jinput->get('in_urn', '', 'RAW');
 			$frm_in_type = $jinput->get('in_type', '', 'RAW');
@@ -26,7 +27,9 @@ switch($member_act) {
 			};
 			$frm_in_disabilities = $jinput->get('in_disabilities', '', 'RAW');
 			$frm_in_children = $jinput->get('in_children', '', 'RAW');
+			$frm_in_adminnotes = $jinput->get('in_adminnotes', '', 'RAW');
 			$frm_in_active = $jinput->get('active', '', 'RAW');
+			$frm_in_active_original_value = $jinput->get('active_original_value', '', 'RAW');
 				
 			// get the registered userid from joomla for activating and deactivating users
 			$get_usergroup_joomla = $db->getQuery(true);
@@ -38,6 +41,28 @@ switch($member_act) {
 			$db->execute();
 			$joomlagroup_row = $db->loadAssoc();
 			$joomlagroup_registered = $joomlagroup_row["id"];
+			
+			// If ddid is empty/blank then it's adding a new user, so do the new add part instead
+			if (!$ddid) {
+				$ins_memb_request = $db->getQuery(true);
+				$ins_memb_columns = array('joomla_userid','type','urn','name','companyname','address1','address2','town','postcode','telephone','mobile','email','memb_category','joindate','creationdate','renewaldate','disabilities','children','adminnotes','active','adminuser');
+				$ins_memb_values = array($db->quote($frm_in_joomla_userid),$db->quote($frm_in_type),$db->quote($frm_in_urn),$db->quote($frm_in_membername),$db->quote($frm_in_companyname),$db->quote($frm_in_address1),$db->quote($frm_in_address2),$db->quote($frm_in_town),$db->quote($frm_in_postcode),$db->quote($frm_in_telephone),$db->quote($frm_in_mobile),$db->quote($frm_in_email),$db->quote($frm_in_memb_category),'NOW()','NOW()',$db->quote($frm_in_renewaldate),$db->quote($frm_in_disabilities),$db->quote($frm_in_children),$db->quote($frm_in_adminnotes),$db->quote($frm_in_active),$db->quote($user->id));
+				$ins_memb_request
+								->insert($db->quoteName('#__toydatabase_membership'))
+								->columns($db->quoteName($ins_memb_columns))
+								->values(implode(',', $ins_memb_values));
+				try {
+						$db->setQuery((string) $ins_memb_request);
+						$db->execute();
+						$ddid = $db->insertid();
+						echo "OK, member added with id $ddid<BR>\n";
+				}
+					catch (RuntimeException $e) {
+						echo "Error with inserting member mysql ".$e->getMessage()."<BR><BR>\n";
+						JFactory::getApplication()->enqueueMessage($e->getMessage());
+						return false;
+					};
+			};
 				
 			// get the joomlauserid from the membership database
 			$get_memb_joomlaid = $db->getQuery(true);
@@ -51,6 +76,8 @@ switch($member_act) {
 			$joomla_userid = $memb_joomlaid["joomla_userid"];
 				
 			// if activated then set the user to registered in joomla too
+			// we can only do this if joomla_userid is valid and not 0
+			if ($joomla_userid && $joomla_userid != 0) {
 			if ($frm_in_active == "1") {
 				// active
 				$get_curruser_joomla = $db->getQuery(true);
@@ -120,8 +147,11 @@ switch($member_act) {
 					$db->execute();
 				};
 			};
+			}; // end checking joomlaid is valid
+			// 03-04-17 fix by adding joomla_userid to update existing entries.
 			$upd_request = $db->getQuery(true);
 			$upd_fields = array(
+                                        $db->quoteName('joomla_userid') . ' = ' . $db->quote($frm_in_joomla_userid),
 					$db->quoteName('type') . ' = ' . $db->quote($frm_in_type),
 					$db->quoteName('urn') . ' = ' . $db->quote($frm_in_urn),
 					$db->quoteName('name') . ' = ' . $db->quote($frm_in_membername),
@@ -137,6 +167,7 @@ switch($member_act) {
 					$db->quoteName('renewaldate') . ' = ' . $db->quote($frm_renewaldate_out),
 					$db->quoteName('disabilities') . ' = ' . $db->quote($frm_in_disabilities),
 					$db->quoteName('children') . ' = ' . $db->quote($frm_in_children),
+					$db->quoteName('adminnotes') . ' = ' . $db->quote($frm_in_adminnotes),
 					$db->quoteName('active') . ' = ' . $db->quote($frm_in_active),
 					$db->quoteName('adminuser') . ' = ' . $db->quote($user->id)
 			);
@@ -148,6 +179,80 @@ switch($member_act) {
 			catch (RuntimeException $e) {
 				JFactory::getApplication()->enqueueMessage($e->getMessage());
 				return false;
+			};
+			// now see if active was changed, if it has changed then do the relevant email contact
+			if ($frm_in_active_original_value != $frm_in_active) {
+				if ($frm_in_active == "1") {
+					// now active so let them know
+					$query_email1 = $db->getQuery(true);
+					$query_email1->select('*')
+						->from($db->quoteName('#__toydatabase_permissions'))
+						->where($db->quoteName('function') . ' = "'. $db->quoteName('email_signupapproval').'"');
+						$db->setQuery((string) $query_email1);
+						$db->execute();
+				if ($db->getNumRows() > 0) {
+					$query_email1_rows = $db->loadAssocList("function");
+					print_r($query_email1_rows);
+					// do the replacement for variables we know
+					$query_email1_rows = str_replace("%%membername%%", $frm_fullname, $query_email1_rows);
+					$query_email1_rows = str_replace("%%memberusername%%", $frm_username, $query_email1_rows);
+					$query_email1_rows = str_replace("%%toyname%%", $ddid, $query_email1_rows);
+					$query_email1_rows = str_replace("%%toyrequestdate%%", $frm_requestedloandate, $query_email1_rows);
+					$query_email1_rows = str_replace("%%toyreturndate%%", $frm_requestedloanreturndate, $query_email1_rows);
+					$userid_mail=$query_email1_rows;
+				} else {
+					// show the built-in email text
+						$userid_mail="Hi,
+		Thank you for signing up to the Online Toy Library system ".$config->get('sitename')."
+		The admin has now activated your account.
+					
+					
+					Generated by ToyDatabase(C)2016 Andy Brown";
+				};
+				};
+				if ($frm_in_active == "10") {
+					$query_email1 = $db->getQuery(true);
+					$query_email1->select('*')
+						->from($db->quoteName('#__toydatabase_permissions'))
+						->where($db->quoteName('function') . ' = "'. $db->quoteName('email_signuprejected').'"');
+						$db->setQuery((string) $query_email1);
+						$db->execute();
+				if ($db->getNumRows() > 0) {
+					$query_email1_rows = $db->loadAssocList("function");
+					print_r($query_email1_rows);
+					// do the replacement for variables we know
+					$query_email1_rows = str_replace("%%membername%%", $frm_fullname, $query_email1_rows);
+					$query_email1_rows = str_replace("%%memberusername%%", $frm_username, $query_email1_rows);
+					$query_email1_rows = str_replace("%%toyname%%", $ddid, $query_email1_rows);
+					$query_email1_rows = str_replace("%%toyrequestdate%%", $frm_requestedloandate, $query_email1_rows);
+					$query_email1_rows = str_replace("%%toyreturndate%%", $frm_requestedloanreturndate, $query_email1_rows);
+					$userid_mail=$query_email1_rows;
+				} else {
+					// show the built-in email text
+						$userid_mail="Hi,
+		Thank you for signing up to the Online Toy Library system ".$config->get('sitename')."
+		Unfortunately the admin has deactivated your account. Please get in touch with us if you wish to proceed and use the database.
+					
+					
+					Generated by ToyDatabase(C)2016 Andy Brown";
+				};
+				};
+			}; // end change active if condition
+			if ($userid_mail) { // send the email if it exists
+					$user_mailer = JFactory::getMailer();
+					$sender = array(
+							$config->get( 'mailfrom' ),
+							$config->get( 'fromname' )
+					);
+					$user_mailer->setSender($sender);
+					$user_mailer->addRecipient($user->email);
+					$user_mailer->setSubject($config->get('sitename').'::Toy Database user registration request');
+					$user_mailer->setBody($userid_mail);
+					$user_send = $user_mailer->Send();
+					if ( $user_send !== true ) {
+						echo 'Error sending email to the user. Error message: ' . $user_send->__toString(). '<BR><BR>';
+					};
+
 			};
 			echo "<h2>Complete</h2> - Member has been updated<BR>\n";
 		}; // if tab == member
@@ -202,8 +307,10 @@ switch($member_act) {
 					<td valign=top><B>Type :</B></td>
 					<td><select name='in_type'>
 <option value=''></option>
-<option value='1'>Individual</option>
-<option value='2'>Organisation</option>
+<option value='1' <?php // added fix 03-04-17
+if ($row["type"] == "1") {echo "selected";}; ?>>Individual</option>
+<option value='2' <?php // added fix 03-04-17
+if ($row["type"] == "2") {echo "selected";}; ?>>Organisation</option>
 					</select></td>
 					</tr>
 					<tr>
@@ -281,8 +388,15 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 					<td><input type=text size=5 name='in_children' value='<?=$row["children"]?>'></td>
 					</tr>
 					<tr>
+					<td valign=top><B>Notes (Internal Only) :</B></td>
+					<td><?php 
+						echo $editor->display('in_adminnotes', $row["adminnotes"], '60%', '10px', '3', '5',true);
+					?></td>
+					</tr>
+					<tr>
 					<td valign=top><B>Status :</B></td>
-					<td><select name='active'>
+					<td><input type=hidden name='active_original_value' value='<?=$row["active"]?>'>
+						<select name='active'>
 					<option value='0' <?php if ($row["active"] == "0") {echo "selected";}; ?>>Pending approval</option>
 					<option value='1' <?php if ($row["active"] == "1") {echo "selected";}; ?>>Active</option>
 					<option value='10' <?php if ($row["active"] == "10") {echo "selected";}; ?>>Suspended</option>
@@ -305,7 +419,9 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 		$query
 		->select('SQL_CALC_FOUND_ROWS *')
 		->from($db->quoteName('#__toydatabase_membership'))
-		->order($db->quoteName('name') . ' DESC');
+//		->order($db->quoteName('name') . ' DESC');
+// change 03-04-17 to make finding new members easier
+                ->order($db->quoteName('active') . ' ASC');
 		
 		$app = JFactory::getApplication();
 		$limit = $app->getUserStateFromRequest("$option.limit", 'limit', 25, 'int');
@@ -417,10 +533,6 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 								echo "<td>".$entry_active."</td>";
 								echo "</tr>\n";
 							};
-						} else {
-							// no rows or toys in database found
-							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
-						};
 ?>
 								</table><form name="adminForm" id="adminForm">
 		<input type=hidden name='option' value='com_toydatabase'>
@@ -429,6 +541,11 @@ foreach ($membershiptypes_rows as $membershiptypes_output) {
 						echo $pager->getListFooter();
 						echo "Number of members to display per page: ".$pager->getLimitBox()."<BR>\n";
 						echo "</form>";
+						} else {
+							// no rows or toys in database found
+							echo "<tr><td colspan=8 align=center><B>Sorry - No members found</B></td></tr>\n";
+							echo "</table>";
+						};
 			// end of default: switch
 		break;
 };

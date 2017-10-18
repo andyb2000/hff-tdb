@@ -7,6 +7,9 @@
  */
 $debug=0;
 
+// shush errors
+error_reporting(E_ERROR);
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
@@ -75,6 +78,14 @@ $query = $db->getQuery(true);
 //->where($db->quoteName('status') . ' = '. $db->quote('1'))
 //->order($db->quoteNAme('a.name') . ' DESC');
 $user = JFactory::getUser();
+$query_permissions=$db->getQuery(true);
+$query_permissions
+->select("*")
+->from($db->quoteName('#__toydatabase_permissions'));
+$db->setQuery((string) $query_permissions);
+$db->execute();
+$permissions_rows = $db->loadAssocList("function");
+
 if ($debug) {
 	echo "Database prefix is : " . $db->getPrefix()."<BR>";
 	echo "<BR>";
