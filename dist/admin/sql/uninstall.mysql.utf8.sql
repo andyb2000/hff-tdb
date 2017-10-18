@@ -1,1 +1,9 @@
 DROP TABLE IF EXISTS `#__toydatabase`;
+DROP TABLE IF EXISTS `#__toydatabase_categorylink`;
+DROP TABLE IF EXISTS `#__toydatabase_equipment`;
+DROP TABLE IF EXISTS `#__toydatabase_equipment_category`;
+DROP TABLE IF EXISTS `#__toydatabase_loanlink`;
+DROP TABLE IF EXISTS `#__toydatabase_membership`;
+DROP TABLE IF EXISTS `#__toydatabase_membershiplink`;
+DROP TABLE IF EXISTS `#__toydatabase_membershiptypes`;
+DROP TABLE IF EXISTS `#__toydatabase_permissions`;
